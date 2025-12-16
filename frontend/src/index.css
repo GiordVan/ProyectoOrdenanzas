@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent); 
+}
+
+.text-shadow-diagonal {
+  text-shadow: 2px 2px 0px #000;
+}
