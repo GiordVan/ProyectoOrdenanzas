@@ -8,17 +8,19 @@ from dotenv import load_dotenv
 import re
 from datetime import datetime
 from sentence_transformers import SentenceTransformer
+from functools import lru_cache
 
 # ⚡ NUEVO: Importar stemmer español
 try:
     from nltk.stem import SnowballStemmer
     import nltk
+
     # Descargar recursos si es necesario
     try:
-        nltk.data.find('tokenizers/punkt')
+        nltk.data.find("tokenizers/punkt")
     except LookupError:
-        nltk.download('punkt', quiet=True)
-    stemmer = SnowballStemmer('spanish')
+        nltk.download("punkt", quiet=True)
+    stemmer = SnowballStemmer("spanish")
 except ImportError:
     print("⚠️ NLTK no instalado. Instalar con: pip install nltk")
     stemmer = None
@@ -30,7 +32,7 @@ DATA_PATH = "Data"
 INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
-TOP_K = 3
+TOP_K = 10  # ⚡ Aumentado de 3 a 10 para mejor contexto
 
 # Variables globales
 index = None
@@ -38,7 +40,8 @@ metadatos = []
 chunks = []
 _index_loaded = False
 _index_lock = threading.Lock()
-embedding_model = SentenceTransformer('BAAI/bge-m3', device='cpu')
+embedding_model = SentenceTransformer("BAAI/bge-m3", device="cpu")
+
 
 def ensure_index_loaded():
     global _index_loaded, index, metadatos, chunks
@@ -48,8 +51,20 @@ def ensure_index_loaded():
                 cargar_indice_y_metadatos()
                 _index_loaded = True
 
+
 def normalizar_numero(num: str) -> str:
-    return re.sub(r'\D', '', num)
+    return re.sub(r"\D", "", num)
+
+
+def obtener_chunk_y_meta_seguro(idx: int):
+    """
+    Obtiene chunk y metadato de forma segura.
+    Retorna None si el índice está fuera de rango.
+    """
+    if 0 <= idx < len(chunks) and 0 <= idx < len(metadatos):
+        return chunks[idx], metadatos[idx]
+    return None, None
+
 
 def cargar_indice_y_metadatos():
     """Carga el índice FAISS y metadatos livianos en RAM."""
@@ -61,50 +76,93 @@ def cargar_indice_y_metadatos():
 
     with open(METADATA_FILE, "r", encoding="utf-8") as f:
         metadatos_comprimidos = json.load(f)
-    
-    # ⚡ Expandir metadatos comprimidos si es necesario
-    metadatos = []
-    for meta in metadatos_comprimidos:
-        if "chunk_indices" in meta:
-            # Formato comprimido: expandir
-            chunk_indices = meta.pop("chunk_indices")
-            total_chunks = meta.get("total_chunks", len(chunk_indices))
-            
-            for chunk_id in chunk_indices:
-                meta_expandido = meta.copy()
-                meta_expandido["chunk_id"] = chunk_id
-                meta_expandido["total_chunks"] = total_chunks
-                metadatos.append(meta_expandido)
-        else:
-            # Formato legacy: usar tal cual
-            metadatos.append(meta)
 
+    # ⚡ Cargar chunks primero para saber la cantidad
     with open(CHUNKS_FILE, "r", encoding="utf-8") as f:
         chunks = json.load(f)
 
+    # ⚡ Expandir metadatos comprimidos
+    # IMPORTANTE: Los chunk_indices en metadatos.json son LOCALES (0,1,2... por ordenanza)
+    # pero chunks.json es GLOBAL (secuencial). Necesitamos crear un metadato por cada chunk global.
+    metadatos = []
+    global_chunk_idx = 0
+
+    for meta in metadatos_comprimidos:
+        meta_copy = {k: v for k, v in meta.items() if k != "chunk_indices"}
+
+        if "chunk_indices" in meta:
+            # Formato comprimido: crear un metadato por cada chunk de esta ordenanza
+            num_chunks = len(meta["chunk_indices"])
+            total_chunks = meta.get("total_chunks", num_chunks)
+
+            for local_idx in range(num_chunks):
+                meta_expandido = meta_copy.copy()
+                meta_expandido["chunk_id"] = local_idx
+                meta_expandido["total_chunks"] = total_chunks
+                meta_expandido["global_chunk_idx"] = global_chunk_idx
+                metadatos.append(meta_expandido)
+                global_chunk_idx += 1
+        else:
+            # Formato legacy: usar tal cual
+            meta_copy["global_chunk_idx"] = global_chunk_idx
+            metadatos.append(meta_copy)
+            global_chunk_idx += 1
+
+    print(f"📊 Cargados {len(chunks)} chunks y {len(metadatos)} metadatos expandidos")
+    if len(chunks) != len(metadatos):
+        print(
+            f"⚠️ ADVERTENCIA: Desajuste chunks ({len(chunks)}) vs metadatos ({len(metadatos)})"
+        )
+
+
+# ⚡ Cache LRU para embeddings - evita recalcular para consultas repetidas
+@lru_cache(maxsize=500)
+def _generar_embedding_cached(texto: str) -> tuple:
+    """Versión cacheada que devuelve tupla (hasheable para lru_cache)."""
+    embedding = embedding_model.encode(texto, normalize_embeddings=True)
+    return tuple(embedding.tolist())
+
+
 def generar_embedding_local(texto: str):
-    return embedding_model.encode(texto, normalize_embeddings=True)
+    """Genera embedding con cache. Consultas repetidas son instantáneas."""
+    # Normalizar texto para mejor hit rate del cache
+    texto_norm = texto.strip().lower()
+    cached = _generar_embedding_cached(texto_norm)
+    return np.array(cached)
+
 
 def extraer_numero_ordenanza_de_pregunta(pregunta: str):
-    match = re.search(r'(?:ordenanza\s*[n°º]?\s*)?(\d{4,5})', pregunta, re.IGNORECASE)
+    match = re.search(r"(?:ordenanza\s*[n°º]?\s*)?(\d{4,5})", pregunta, re.IGNORECASE)
     if match:
         return match.group(1)
     return None
 
+
 def extraer_fecha_de_pregunta(pregunta: str):
     meses = {
-        "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
-        "mayo": "05", "junio": "06", "julio": "07", "agosto": "08",
-        "septiembre": "09", "octubre": "10", "noviembre": "11", "diciembre": "12"
+        "enero": "01",
+        "febrero": "02",
+        "marzo": "03",
+        "abril": "04",
+        "mayo": "05",
+        "junio": "06",
+        "julio": "07",
+        "agosto": "08",
+        "septiembre": "09",
+        "octubre": "10",
+        "noviembre": "11",
+        "diciembre": "12",
     }
 
-    match_texto = re.search(rf'({"|".join(meses.keys())})\s*(?:de\s*)?(\d{{4}})', pregunta, re.IGNORECASE)
+    match_texto = re.search(
+        rf'({"|".join(meses.keys())})\s*(?:de\s*)?(\d{{4}})', pregunta, re.IGNORECASE
+    )
     if match_texto:
         mes_palabra = match_texto.group(1).lower()
         anio = match_texto.group(2)
         return f"{meses[mes_palabra]}/{anio}"
 
-    match_num = re.search(r'(0?[1-9]|1[0-2])/(\d{4})', pregunta)
+    match_num = re.search(r"(0?[1-9]|1[0-2])/(\d{4})", pregunta)
     if match_num:
         mes = int(match_num.group(1))
         anio = match_num.group(2)
@@ -112,15 +170,18 @@ def extraer_fecha_de_pregunta(pregunta: str):
 
     return None
 
+
 def normalizar_texto_para_busqueda(texto: str) -> str:
     """Normaliza texto eliminando acentos y caracteres especiales."""
     import unicodedata
+
     texto = texto.lower()
-    texto = unicodedata.normalize('NFD', texto)
-    texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
-    texto = re.sub(r'[^a-z0-9\s]', ' ', texto)
-    texto = re.sub(r'\s+', ' ', texto).strip()
+    texto = unicodedata.normalize("NFD", texto)
+    texto = "".join(c for c in texto if unicodedata.category(c) != "Mn")
+    texto = re.sub(r"[^a-z0-9\s]", " ", texto)
+    texto = re.sub(r"\s+", " ", texto).strip()
     return texto
+
 
 def aplicar_stemming(texto: str) -> str:
     """
@@ -131,57 +192,67 @@ def aplicar_stemming(texto: str) -> str:
     """
     if not stemmer:
         return normalizar_texto_para_busqueda(texto)
-    
+
     texto_norm = normalizar_texto_para_busqueda(texto)
     palabras = texto_norm.split()
     palabras_stem = [stemmer.stem(palabra) for palabra in palabras]
-    return ' '.join(palabras_stem)
+    return " ".join(palabras_stem)
+
 
 def busqueda_textual_directa(terminos: list, top_k=10, usar_stemming=True):
     """
     Búsqueda textual con stemming y palabras clave.
-    Busca en: chunks + palabras_clave de metadatos.
+    Busca en: chunks + palabras_clave + Art N°1 de metadatos.
     """
     resultados = []
-    
+
     if usar_stemming and stemmer:
         terminos_stem = [aplicar_stemming(t) for t in terminos]
     else:
         terminos_stem = [normalizar_texto_para_busqueda(t) for t in terminos]
-    
-    for i, chunk in enumerate(chunks):
+
+    # Usar zip para iterar de forma segura sobre chunks y metadatos
+    # Esto evita IndexError si tienen diferente longitud
+    for chunk, meta in zip(chunks, metadatos):
         if usar_stemming and stemmer:
             chunk_stem = aplicar_stemming(chunk)
         else:
             chunk_stem = normalizar_texto_para_busqueda(chunk)
-        
-        meta = metadatos[i]
-        
+
         # Buscar en el chunk
         coincidencias = sum(1 for t in terminos_stem if t in chunk_stem)
-        
-        # ⚡ NUEVO: Buscar también en palabras_clave de metadatos
+
+        # ⚡ Buscar en palabras_clave de metadatos
         palabras_clave = meta.get("palabras_clave", [])
         if palabras_clave:
-            palabras_clave_norm = ' '.join(palabras_clave).lower()
-            for termino_original in terminos:  # Usar términos originales para match exacto
+            palabras_clave_norm = " ".join(palabras_clave).lower()
+            for termino_original in terminos:
                 if termino_original.lower() in palabras_clave_norm:
-                    coincidencias += 2  # ⚡ Más peso a coincidencias en palabras clave
-        
+                    coincidencias += 2  # Más peso a coincidencias en palabras clave
+
+        # ⚡ NUEVO: Buscar en Art N°1 (campo importante que contiene nombres de empresas, etc.)
+        art1 = meta.get("Art N°1", "")
+        if art1:
+            art1_lower = art1.lower()
+            for termino_original in terminos:
+                if termino_original.lower() in art1_lower:
+                    coincidencias += 3  # ⚡ Alto peso a coincidencias en Art N°1
+
         if coincidencias > 0:
             meta_copy = dict(meta)
             meta_copy["chunk_texto"] = chunk
             meta_copy["coincidencias_textuales"] = coincidencias
             resultados.append(meta_copy)
-    
+
     resultados.sort(key=lambda x: x.get("coincidencias_textuales", 0), reverse=True)
     return resultados[:top_k]
+
 
 def expandir_consulta(pregunta: str) -> str:
     """Expande la consulta con variaciones y sinónimos."""
     pregunta_lower = pregunta.lower()
     expansion = pregunta
-    
+
     # Diccionario de expansiones
     expansiones = {
         "acta": ["convenio", "acuerdo"],
@@ -193,16 +264,17 @@ def expandir_consulta(pregunta: str) -> str:
         "inauguración": ["inaugurar", "inaugurese", "apertura"],
         "inaugurese": ["inaugurar", "inauguración", "apertura"],
     }
-    
+
     terminos_agregados = []
     for termino_base, sinonimos in expansiones.items():
         if termino_base in pregunta_lower:
             terminos_agregados.extend(sinonimos[:2])
-    
+
     if terminos_agregados:
         expansion = f"{pregunta} {' '.join(terminos_agregados)}"
-    
+
     return expansion
+
 
 def detectar_tipo_pregunta(pregunta: str) -> str:
     """
@@ -214,79 +286,153 @@ def detectar_tipo_pregunta(pregunta: str) -> str:
     """
     pregunta_limpia = pregunta.strip()
     palabras = pregunta_limpia.split()
-    
+
     # Si es una sola palabra, es búsqueda por palabra clave
     if len(palabras) == 1:
-        return 'palabra_clave'
-    
-    palabras_interrogativas = ['qué', 'que', 'cuál', 'cual', 'cuándo', 'cuando', 
-                               'cómo', 'como', 'dónde', 'donde', 'quién', 'quien',
-                               'por', 'para']
-    
-    tiene_interrogativa = any(palabra.lower() in palabras_interrogativas for palabra in palabras)
-    
+        return "palabra_clave"
+
+    palabras_interrogativas = [
+        "qué",
+        "que",
+        "cuál",
+        "cual",
+        "cuándo",
+        "cuando",
+        "cómo",
+        "como",
+        "dónde",
+        "donde",
+        "quién",
+        "quien",
+        "por",
+        "para",
+    ]
+
+    tiene_interrogativa = any(
+        palabra.lower() in palabras_interrogativas for palabra in palabras
+    )
+
     if len(palabras) <= 4 and not tiene_interrogativa:
-        return 'generica'
-    
+        return "generica"
+
     pregunta_lower = pregunta.lower()
     patrones_referencia = [
-        r'cu[áa]ndo\s+(?:se\s+)?(?:dio\s+de\s+baja|derog[óo]|modific[óo]|suspend[ióo])',
-        r'(?:fue\s+)?(?:dada\s+de\s+baja|derogada|modificada|suspendida)',
-        r'qu[ée]\s+ordenanza\s+(?:deroga|modifica|suspende|da\s+de\s+baja)',
-        r'qu[ée]\s+norma\s+(?:deroga|modifica|suspende)',
-        r'est[áa]\s+(?:vigente|derogada|activa)',
-        r'sigue\s+en\s+vigor',
+        r"cu[áa]ndo\s+(?:se\s+)?(?:dio\s+de\s+baja|derog[óo]|modific[óo]|suspend[ióo])",
+        r"(?:fue\s+)?(?:dada\s+de\s+baja|derogada|modificada|suspendida)",
+        r"qu[ée]\s+ordenanza\s+(?:deroga|modifica|suspende|da\s+de\s+baja)",
+        r"qu[ée]\s+norma\s+(?:deroga|modifica|suspende)",
+        r"est[áa]\s+(?:vigente|derogada|activa)",
+        r"sigue\s+en\s+vigor",
     ]
-    
+
     for patron in patrones_referencia:
         if re.search(patron, pregunta_lower):
             return "referencia"
-    
+
     return "directa"
+
 
 def buscar_ordenanzas_que_mencionan(numero_ordenanza: str, top_k=10):
     num_norm = normalizar_numero(numero_ordenanza)
     resultados = []
-    
+
     patrones = [
-        rf'ordenanza\s*[n°º]?\s*{numero_ordenanza}',
-        rf'ordenanza\s*[n°º]?\s*{num_norm}',
-        rf'\b{numero_ordenanza}\b',
+        rf"ordenanza\s*[n°º]?\s*{numero_ordenanza}",
+        rf"ordenanza\s*[n°º]?\s*{num_norm}",
+        rf"\b{numero_ordenanza}\b",
     ]
-    
-    for i, chunk in enumerate(chunks):
+
+    # Usar zip para iterar de forma segura
+    for chunk, meta in zip(chunks, metadatos):
         chunk_lower = chunk.lower()
-        meta = metadatos[i]
-        
+
         if normalizar_numero(meta.get("numero_ordenanza", "")) == num_norm:
             continue
-        
+
         for patron in patrones:
             if re.search(patron, chunk_lower, re.IGNORECASE):
-                palabras_clave = ['derog', 'modific', 'suspend', 'dej', 'sin efecto', 
-                                 'baja', 'anula', 'revoca', 'sustitu', 'reemplaza']
-                
+                palabras_clave = [
+                    "derog",
+                    "modific",
+                    "suspend",
+                    "dej",
+                    "sin efecto",
+                    "baja",
+                    "anula",
+                    "revoca",
+                    "sustitu",
+                    "reemplaza",
+                ]
+
                 if any(palabra in chunk_lower for palabra in palabras_clave):
                     meta_copy = dict(meta)
                     meta_copy["chunk_texto"] = chunk
                     meta_copy["relevancia_referencia"] = True
                     resultados.append(meta_copy)
                     break
-    
+
     return resultados[:top_k]
+
 
 def extraer_terminos_clave(pregunta: str) -> list:
     terminos = []
-    stopwords = {'el', 'la', 'de', 'del', 'en', 'y', 'a', 'que', 'es', 'por', 
-                 'para', 'con', 'un', 'una', 'los', 'las', 'se', 'sobre'}
-    
-    palabras = re.findall(r'\b\w{3,}\b', pregunta.lower())
+    stopwords = {
+        "el",
+        "la",
+        "de",
+        "del",
+        "en",
+        "y",
+        "a",
+        "que",
+        "es",
+        "por",
+        "para",
+        "con",
+        "un",
+        "una",
+        "los",
+        "las",
+        "se",
+        "sobre",
+        "esta",
+        "este",
+        "esto",
+        "este",
+        "aquella",
+        "aquel",
+        "aquello",
+        "estos",
+        "estas",
+        "aquellos",
+        "aquellas",
+        "villa",
+        "maria",
+        "municipalidad",
+        "ordenanza",
+        "ciudad",
+        "intendente",
+        "concejo",
+        "deliberante",
+        "villa",
+        "maria",
+        "cordoba",
+        "ratifica",
+        "ratificase",
+        "ratificanse",
+        "artículo",
+        "articulo",
+        "provincia",
+    }
+
+    palabras = re.findall(r"\b\w{3,}\b", pregunta.lower())
     terminos = [p for p in palabras if p not in stopwords]
-    
-    siglas = re.findall(r'\b[A-ZÁÉÍÓÚ]{2,}\b', pregunta)
+
+    siglas = re.findall(r"\b[A-ZÁÉÍÓÚ]{2,}\b", pregunta)
     terminos.extend([s.lower() for s in siglas])
-    
+
     return list(set(terminos))
+
 
 def agrupar_por_ordenanza(resultados):
     """
@@ -297,11 +443,17 @@ def agrupar_por_ordenanza(resultados):
         num_ord = r.get("numero_ordenanza", "desconocido")
         if num_ord not in ordenanzas:
             ordenanzas[num_ord] = r
-    
+
     return list(ordenanzas.values())
 
-def buscar_similares(pregunta: str, top_k=TOP_K):
+
+def buscar_similares(pregunta: str, top_k=None):
     """Búsqueda mejorada con stemming y agrupamiento por ordenanza."""
+    if top_k is None:
+        top_k = TOP_K
+
+    ensure_index_loaded()
+
     num_ord = extraer_numero_ordenanza_de_pregunta(pregunta)
     fecha_ord = extraer_fecha_de_pregunta(pregunta)
     tipo_pregunta = detectar_tipo_pregunta(pregunta)
@@ -310,41 +462,44 @@ def buscar_similares(pregunta: str, top_k=TOP_K):
     if num_ord and (tipo_pregunta == "directa" or len(pregunta.strip().split()) <= 2):
         resultados_exactos = []
         num_norm = normalizar_numero(num_ord)
-        
+
         for i, meta in enumerate(metadatos):
             if normalizar_numero(meta.get("numero_ordenanza", "")) == num_norm:
-                resultados_exactos.append({
-                    "chunk_texto": chunks[i],
-                    **meta
-                })
-        
+                chunk, _ = obtener_chunk_y_meta_seguro(i)
+                if chunk:
+                    resultados_exactos.append({"chunk_texto": chunk, **meta})
+
         if resultados_exactos:
-            return resultados_exactos[:top_k * 2]
+            return resultados_exactos[: top_k * 2]
 
     # 🔥 CASO 2: Búsqueda por PALABRA CLAVE (nueva lógica)
     if tipo_pregunta == "palabra_clave":
         print(f"🔍 Búsqueda por palabra clave: {pregunta}")
-        
+
         # Expandir consulta con variaciones
         pregunta_expandida = expandir_consulta(pregunta)
         terminos = extraer_terminos_clave(pregunta_expandida)
-        
+
         # Búsqueda textual con stemming (más resultados)
         resultados_textuales = busqueda_textual_directa(
-            terminos, 
+            terminos,
             top_k=20,  # ⚡ Más resultados para palabras clave
-            usar_stemming=True
+            usar_stemming=True,
         )
-        
+
         # Búsqueda semántica complementaria
         emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
         dist, idxs = index.search(emb, 10)
-        resultados_semanticos = [{"chunk_texto": chunks[i], **metadatos[i]} for i in idxs[0]]
-        
+        resultados_semanticos = []
+        for i in idxs[0]:
+            chunk, meta = obtener_chunk_y_meta_seguro(i)
+            if chunk and meta:
+                resultados_semanticos.append({"chunk_texto": chunk, **meta})
+
         # Combinar y agrupar por ordenanza
         todos_resultados = resultados_textuales + resultados_semanticos
         resultados_unicos = agrupar_por_ordenanza(todos_resultados)
-        
+
         print(f"✓ Encontradas {len(resultados_unicos)} ordenanzas con '{pregunta}'")
         return resultados_unicos[:15]  # Máximo 15 ordenanzas diferentes
 
@@ -356,18 +511,30 @@ def buscar_similares(pregunta: str, top_k=TOP_K):
             emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
             dist, idxs = index.search(emb, top_k)
             resultados_semanticos = []
-            nombres_referencia = {r.get("nombre_archivo") for r in resultados_referencia}
+            nombres_referencia = {
+                r.get("nombre_archivo") for r in resultados_referencia
+            }
             for i in idxs[0]:
-                meta = dict(metadatos[i])
-                meta["chunk_texto"] = chunks[i]
-                if meta.get("nombre_archivo") not in nombres_referencia:
-                    resultados_semanticos.append(meta)
-            return resultados_referencia[:top_k] + resultados_semanticos[:max(0, top_k - len(resultados_referencia))]
+                chunk, meta = obtener_chunk_y_meta_seguro(i)
+                if chunk and meta:
+                    meta_copy = dict(meta)
+                    meta_copy["chunk_texto"] = chunk
+                    if meta_copy.get("nombre_archivo") not in nombres_referencia:
+                        resultados_semanticos.append(meta_copy)
+            return (
+                resultados_referencia[:top_k]
+                + resultados_semanticos[: max(0, top_k - len(resultados_referencia))]
+            )
         else:
             pregunta_expandida = f"{pregunta} derogación modificación"
             emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
             dist, idxs = index.search(emb, top_k * 2)
-            return [{"chunk_texto": chunks[i], **metadatos[i]} for i in idxs[0]]
+            resultados = []
+            for i in idxs[0]:
+                chunk, meta = obtener_chunk_y_meta_seguro(i)
+                if chunk and meta:
+                    resultados.append({"chunk_texto": chunk, **meta})
+            return resultados
 
     # CASO 4: Búsqueda por fecha
     if fecha_ord and not num_ord:
@@ -380,22 +547,24 @@ def buscar_similares(pregunta: str, top_k=TOP_K):
                 if len(resultados) >= top_k * 2:
                     break
         if resultados:
-            return resultados[:top_k * 2]
+            return resultados[: top_k * 2]
 
     # CASO 5: Búsqueda híbrida general
     terminos_clave = extraer_terminos_clave(pregunta)
     resultados_textuales = []
     if terminos_clave:
         resultados_textuales = busqueda_textual_directa(
-            terminos_clave, 
-            top_k=top_k * 2,
-            usar_stemming=True  # ⚡ Activar stemming
+            terminos_clave, top_k=top_k * 2, usar_stemming=True  # ⚡ Activar stemming
         )
 
     pregunta_expandida = expandir_consulta(pregunta)
     emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
     dist, idxs = index.search(emb, top_k * 2)
-    resultados_semanticos = [{"chunk_texto": chunks[i], **metadatos[i]} for i in idxs[0]]
+    resultados_semanticos = []
+    for i in idxs[0]:
+        chunk, meta = obtener_chunk_y_meta_seguro(i)
+        if chunk and meta:
+            resultados_semanticos.append({"chunk_texto": chunk, **meta})
 
     # Combinar resultados
     resultados_finales = []
@@ -412,70 +581,97 @@ def buscar_similares(pregunta: str, top_k=TOP_K):
         if nombre not in nombres_incluidos:
             resultados_finales.append(r)
             nombres_incluidos.add(nombre)
-        limite = top_k * 2 if tipo_pregunta == "generica" else top_k
-        if len(resultados_finales) >= limite:
+
+        # ⚡ Límite dinámico basado en top_k
+        if len(resultados_finales) >= (top_k * 2):
             break
 
-    if tipo_pregunta == "generica":
-        return resultados_finales[:top_k * 2]
+    if tipo_pregunta == "generica" or tipo_pregunta == "directa":
+        return resultados_finales[: top_k * 2]
     else:
         return resultados_finales[:top_k]
 
-def armar_contexto(resultados, max_chars=1500, incluir_metadatos=True):
+
+def armar_contexto(resultados, max_chars=5000, incluir_metadatos=True):
     """Arma contexto truncado con metadatos completos."""
     contexto = ""
-    
+
     if incluir_metadatos:
         # Formato con metadatos completos
         for r in resultados:
-            num = r.get('numero_ordenanza', 'N/A')
-            fecha = r.get('fecha_sancion', 'desconocida')
-            fragmento = r['chunk_texto'][:350]
-            
+            num = r.get("numero_ordenanza", "N/A")
+            fecha = r.get("fecha_sancion", "desconocida")
+            fragmento = r["chunk_texto"][:500]  # ⚡ Un poco más de texto por fragmento
+
             contexto += f"\n[Ordenanza N° {num} - {fecha}]\n{fragmento}\n"
-            
+
             if len(contexto) > max_chars:
                 break
     else:
         # Formato simple (legacy)
         for r in resultados:
-            fragmento = r['chunk_texto'][:400]
+            fragmento = r["chunk_texto"][:400]
             contexto += f"\n[Ord. {r.get('numero_ordenanza', 'N/A')}] {fragmento}\n"
             if len(contexto) > max_chars:
                 break
-    
+
     return contexto[:max_chars]
+
 
 def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> str:
     """Genera respuesta con GPT optimizada."""
-    
+
     tipo_pregunta = detectar_tipo_pregunta(pregunta)
-    
+
     if tipo_pregunta == "palabra_clave":
-        # ⚡ FORMATO MEJORADO: Extraer info de resultados directamente
+        # ⚡ Respuesta estructurada sin GPT para palabras clave
         if resultados:
             ordenanzas_info = []
             vistas = set()
-            
-            for r in resultados[:10]:  # Máximo 10
-                num = r.get('numero_ordenanza', 'N/A')
-                if num in vistas or num == 'N/A':
+
+            for r in resultados[:15]:  # Máximo 15
+                num = r.get("numero_ordenanza", "N/A")
+                if num in vistas or num == "N/A" or num == "desconocido":
                     continue
                 vistas.add(num)
-                
-                fecha = r.get('fecha_sancion', 'desconocida')
-                fragmento = r['chunk_texto'][:200].strip()
-                
-                # ⚡ NUEVO: Mostrar palabras clave relevantes
-                palabras_clave = r.get('palabras_clave', [])
-                tags = f" [{', '.join(palabras_clave[:3])}]" if palabras_clave else ""
-                
-                ordenanzas_info.append(f"- Ordenanza N° {num} ({fecha}): {fragmento}{tags}")
-            
+
+                fecha = r.get("fecha_sancion", "desconocida")
+                art1 = r.get("Art N°1", "")
+
+                # Extraer una breve descripción del Art 1
+                if art1:
+                    # Limpiar y truncar
+                    descripcion = art1[:150].strip()
+                    if len(art1) > 150:
+                        descripcion += "..."
+                else:
+                    descripcion = r["chunk_texto"][:100].strip() + "..."
+
+                ordenanzas_info.append(
+                    {"num": num, "fecha": fecha, "descripcion": descripcion}
+                )
+
             if ordenanzas_info:
-                lista_ordenanzas = "\n".join(ordenanzas_info)
-                return f"Se encontraron las siguientes ordenanzas con el término '{pregunta}':\n\n{lista_ordenanzas}"
-        
+                # Ordenar por número de ordenanza descendente (más nuevas primero)
+                ordenanzas_info.sort(
+                    key=lambda x: int(x["num"]) if x["num"].isdigit() else 0,
+                    reverse=True,
+                )
+
+                # Formatear respuesta
+                lineas = []
+                for info in ordenanzas_info:
+                    lineas.append(f"• **Ordenanza N° {info['num']}** ({info['fecha']})")
+                    lineas.append(f"  {info['descripcion']}")
+                    lineas.append("")  # Línea vacía entre ordenanzas
+
+                lista_formateada = "\n".join(lineas)
+                total = len(ordenanzas_info)
+
+                return f"""El término **"{pregunta}"** aparece en {total} ordenanza{'s' if total > 1 else ''}:
+
+{lista_formateada}"""
+
         # Fallback con GPT si no hay resultados estructurados
         prompt = f"""Eres el Digesto Digital de Villa María. El usuario busca "{pregunta}".
 
@@ -494,19 +690,25 @@ Contexto:
 
 Pregunta: {pregunta}
 Respuesta:"""
-    
+
     try:
         response = openai.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
             max_tokens=250 if tipo_pregunta == "palabra_clave" else 150,
-            timeout=8
+            timeout=8,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"Error en OpenAI: {e}")
         if resultados:
-            num_ordenanzas = len(set(r.get('numero_ordenanza', 'N/A') for r in resultados if r.get('numero_ordenanza') != 'N/A'))
+            num_ordenanzas = len(
+                set(
+                    r.get("numero_ordenanza", "N/A")
+                    for r in resultados
+                    if r.get("numero_ordenanza") != "N/A"
+                )
+            )
             return f"Encontradas {num_ordenanzas} ordenanzas relacionadas con '{pregunta}'. Ver documentos para detalles."
         return "Error al generar respuesta. Intenta nuevamente."
