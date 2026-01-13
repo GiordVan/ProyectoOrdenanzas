@@ -1,0 +1,10 @@
+# Instalacion: pip install -r requirements.txt
+faiss-cpu==1.12.0
+numpy==2.3.3
+python-dotenv==1.1.1
+sentence-transformers>=3.0.0
+pypdf
+pdf2image
+pytesseract
+torch
+boto3
