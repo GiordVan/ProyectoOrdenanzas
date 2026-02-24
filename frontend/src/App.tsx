@@ -37,7 +37,7 @@ function App() {
                 <img 
                   src="/images/logo.webp" 
                   alt="Logo Municipalidad" 
-                  className="relative w-12 h-12 object-contain bg-white rounded-full p-1 shadow-sm"
+                  className="relative w-12 h-12 object-contain bg-white rounded-full shadow-sm"
                 />
               </div>
               <div className="flex flex-col">

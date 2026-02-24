@@ -45,8 +45,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
 
   const abrirPDF = (nombrePDF: string) => {
     if (!nombrePDF) return;
-    const pdfConSufijo = nombrePDF.replace(".pdf", "_2.pdf");
-    window.open(`${API_URL}/pdfs/${pdfConSufijo}`, "_blank");
+    window.open(`${API_URL}/pdfs/${nombrePDF}`, "_blank");
   };
 
   const toggleDocs = (index: number) => {

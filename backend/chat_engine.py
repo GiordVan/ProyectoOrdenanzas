@@ -281,6 +281,7 @@ def expandir_consulta(pregunta: str) -> str:
 def detectar_tipo_pregunta(pregunta: str) -> str:
     """
     Detecta el tipo de pregunta:
+    - 'numero_especifico': Solo un número de ordenanza (ej: "8058")
     - 'palabra_clave': Una sola palabra o término (ej: "inaugurese", "SUOEM")
     - 'generica': Búsqueda simple sin contexto
     - 'referencia': Pregunta sobre derogaciones, modificaciones
@@ -289,7 +290,11 @@ def detectar_tipo_pregunta(pregunta: str) -> str:
     pregunta_limpia = pregunta.strip()
     palabras = pregunta_limpia.split()
 
-    # Si es una sola palabra, es búsqueda por palabra clave
+    # Si es un solo número, es consulta de ordenanza específica → GPT resume
+    if len(palabras) == 1 and pregunta_limpia.isdigit():
+        return "numero_especifico"
+
+    # Si es una sola palabra no numérica, es búsqueda por palabra clave
     if len(palabras) == 1:
         return "palabra_clave"
 
@@ -650,8 +655,25 @@ def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> di
 
     tipo_pregunta = detectar_tipo_pregunta(pregunta)
 
-    if tipo_pregunta == "palabra_clave":
+    if tipo_pregunta == "numero_especifico":
+        # ⚡ Número de ordenanza directo → GPT resume el contenido
+        prompt = f"""Eres el Digesto Digital de Villa María. El usuario quiere saber de qué trata la ordenanza N° {pregunta}.
+
+Usando SOLO la información del contexto, escribe un resumen claro y conciso de lo que establece esta ordenanza.
+Comienza tu respuesta con "La Ordenanza N° {pregunta}" y describe su contenido principal.
+Si hay múltiples artículos importantes, menciónalos brevemente.
+
+Contexto:
+{contexto}
+
+Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin bloques de código):
+{{"respuesta": "...", "ordenanzas_citadas": ["{pregunta}"]}}"""
+
+    elif tipo_pregunta == "palabra_clave":
         # ⚡ Respuesta estructurada sin GPT para palabras clave
+        # Pero primero verificar que el término realmente aparece en cada resultado
+        pregunta_lower = pregunta.lower().strip()
+
         if resultados:
             ordenanzas_info = []
             vistas = set()
@@ -660,15 +682,30 @@ def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> di
                 num = r.get("numero_ordenanza", "N/A")
                 if num in vistas or num == "N/A" or num == "desconocido":
                     continue
+
+                # ⚡ VERIFICACIÓN: El término debe aparecer literalmente en el contenido
+                chunk_texto = r.get("chunk_texto", "").lower()
+                art1 = r.get("Art N°1", "").lower()
+                palabras_clave = " ".join(r.get("palabras_clave", [])).lower()
+                temas = " ".join(r.get("temas", [])).lower()
+
+                if not (
+                    pregunta_lower in chunk_texto
+                    or pregunta_lower in art1
+                    or pregunta_lower in palabras_clave
+                    or pregunta_lower in temas
+                ):
+                    continue  # ⚡ No incluir si el término no aparece literalmente
+
                 vistas.add(num)
 
                 fecha = r.get("fecha_sancion", "desconocida")
-                art1 = r.get("Art N°1", "")
+                art1_raw = r.get("Art N°1", "")
 
                 # Extraer una breve descripción del Art 1
-                if art1:
-                    descripcion = art1[:150].strip()
-                    if len(art1) > 150:
+                if art1_raw:
+                    descripcion = art1_raw[:150].strip()
+                    if len(art1_raw) > 150:
                         descripcion += "..."
                 else:
                     descripcion = r["chunk_texto"][:100].strip() + "..."
@@ -683,18 +720,27 @@ def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> di
                     reverse=True,
                 )
 
+                # ⚡ Limitar la lista mostrada para consistencia con los documentos
+                ordenanzas_mostradas = ordenanzas_info[:MAX_DOCS_MOSTRADOS]
+                total = len(ordenanzas_info)
+
                 lineas = []
-                for info in ordenanzas_info:
+                for info in ordenanzas_mostradas:
                     lineas.append(f"• **Ordenanza N° {info['num']}** ({info['fecha']})")
                     lineas.append(f"  {info['descripcion']}")
                     lineas.append("")
 
                 lista_formateada = "\n".join(lineas)
-                total = len(ordenanzas_info)
                 nums_citados = [info["num"] for info in ordenanzas_info]
 
+                # Mensaje con total real y cuántas se muestran
+                if total > MAX_DOCS_MOSTRADOS:
+                    encabezado = f'El término **"{pregunta}"** aparece en {total} ordenanzas (mostrando las {len(ordenanzas_mostradas)} más relevantes):'
+                else:
+                    encabezado = f'El término **"{pregunta}"** aparece en {total} ordenanza{"s" if total > 1 else ""}:'
+
                 return {
-                    "respuesta": f"""El término **"{pregunta}"** aparece en {total} ordenanza{'s' if total > 1 else ''}:\n\n{lista_formateada}""",
+                    "respuesta": f"{encabezado}\n\n{lista_formateada}",
                     "ordenanzas_citadas": nums_citados,
                 }
 

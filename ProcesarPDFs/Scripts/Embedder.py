@@ -739,15 +739,7 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
     # Embeddings
     embeddings = []
     with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
-        futures = {
-            executor.submit(generar_embedding_local, chunk): chunk
-            for chunk in chunks_base
-        }
-        for future in as_completed(futures):
-            try:
-                embeddings.append(future.result())
-            except Exception as e:
-                print(f"⚠️ Error en embedding: {e}")
+        embeddings = list(executor.map(generar_embedding_local, chunks_base))
 
     return metadatos, chunks_base, embeddings, archivo_subir
 
@@ -827,10 +819,20 @@ def guardar_checkpoint(metadatos, chunks, embeddings):
         # Agregar índice del chunk
         metadatos_comprimidos[num_ord]["chunk_indices"].append(chunk_id)
 
-    # Convertir a lista ordenada
-    metadatos_lista = [
-        {**v, "numero_ordenanza": k} for k, v in sorted(metadatos_comprimidos.items())
-    ]
+    # Convertir a lista preservando el orden de aparición en 'metadatos'
+    # Creamos una lista de las ordenanzas en el orden que aparecen
+    orden_visto = []
+    for meta in metadatos:
+        num = meta["numero_ordenanza"]
+        if num not in orden_visto:
+            orden_visto.append(num)
+
+    metadatos_lista = []
+    for num in orden_visto:
+        if num in metadatos_comprimidos:
+            metadatos_lista.append(
+                {**metadatos_comprimidos[num], "numero_ordenanza": num}
+            )
 
     # Guardar formato comprimido
     with open(os.path.join(CARPETA_DATA, "metadatos.json"), "w", encoding="utf-8") as f:
