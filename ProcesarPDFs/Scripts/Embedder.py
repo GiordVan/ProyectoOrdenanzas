@@ -16,7 +16,9 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 load_dotenv()
 
 CARPETA_PDFS = "PDFs"
-CARPETA_DATA = "Data"
+CARPETA_DATA = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "..", "backend", "Data"
+)
 MAX_CHUNK_LEN = 500
 NUM_THREADS = 8
 

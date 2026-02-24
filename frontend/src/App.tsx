@@ -1,33 +1,13 @@
 import { useState, lazy, Suspense } from "react";
-import { Sparkles, Filter } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import pattern from "./assets/pattern.webp";
 import consejo from "./assets/Consejo.webp";
 
-const BuscadorIA = lazy(() => import("./components/BuscadorIA"));
 const BuscadorManual = lazy(() => import("./components/BuscadorManual"));
-
-// Componente de pestañas
-function TabButton({ active, onClick, icon: Icon, children }: any) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-6 py-3 font-medium transition-all relative ${
-        active
-          ? "text-blue-600"
-          : "text-gray-500 hover:text-gray-700"
-      }`}
-    >
-      <Icon className="w-5 h-5" />
-      {children}
-      {active && (
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
-      )}
-    </button>
-  );
-}
+const ChatIA = lazy(() => import("./components/ChatIA"));
 
 function App() {
-  const [tabActiva, setTabActiva] = useState("ia");
+  const [chatAbierto, setChatAbierto] = useState(false);
 
   return (
     <div 
@@ -39,38 +19,43 @@ function App() {
       }}
     >
       {/* Imagen superior que se desvanece */}
-      <div className="absolute top-0 left-0 w-full h-[45vh] md:h-[50vh] overflow-hidden z-0">
+      <div className="absolute top-16 left-0 w-full h-[45vh] md:h-[50vh] overflow-hidden z-0">
         <img
           src={consejo}
           alt="Consejo"
           className="w-full h-full object-cover mask-fade-bottom"
         />
       </div>
-      
 
-      {/* Header o Navegación por pestañas */}
-      <header className="sticky top-0 relative z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+      {/* Header simplificado con Logo y Banner */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-center gap-4">
-            <TabButton
-              active={tabActiva === "ia"}
-              onClick={() => setTabActiva("ia")}
-              icon={Sparkles}
-            >
-              Búsqueda Asistida por IA
-            </TabButton>
-            <TabButton
-              active={tabActiva === "manual"}
-              onClick={() => setTabActiva("manual")}
-              icon={Filter}
-            >
-              Búsqueda Manual por Filtros
-            </TabButton>
+          <div className="flex items-center justify-between py-3">
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#da1062] to-[#114380] rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <img 
+                  src="/images/logo.webp" 
+                  alt="Logo Municipalidad" 
+                  className="relative w-12 h-12 object-contain bg-white rounded-full p-1 shadow-sm"
+                />
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-2xl md:text-3xl font-black tracking-tight leading-none bg-gradient-to-r from-[#da1062] to-[#114380] bg-clip-text text-transparent italic uppercase">
+                  Digesto Digital
+                </h1>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#114380] font-bold mt-1">
+                  Villa María — Córdoba
+                </p>
+              </div>
+            </div>
+            
+            
           </div>
         </div>
       </header>
 
-      {/* Contenido principal envuelto en un flex-grow */}
+      {/* Contenido principal: BuscadorManual */}
       <main className="flex-grow relative z-10 max-w-7xl mx-auto w-full px-4 py-8 pt-4 md:pt-4">
         <Suspense
           fallback={
@@ -80,16 +65,36 @@ function App() {
             </div>
           }
         >
-          {tabActiva === "ia" ? <BuscadorIA /> : <BuscadorManual />}
+          <BuscadorManual />
         </Suspense>
       </main>
 
-      {/* Footer fijo al final */}
+      {/* Footer */}
       <footer className="relative z-10 py-6 border-t border-gray-200 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
           Sistema de búsqueda de ordenanzas municipales
         </div>
       </footer>
+
+      {/* Botón flotante "Asistente de IA" */}
+      <button
+        onClick={() => setChatAbierto(true)}
+        className={`fixed bottom-6 right-6 z-[997] flex items-center gap-2.5 px-5 py-3.5
+          bg-gradient-to-r from-[#da1062] to-[#114380] hover:brightness-110
+          text-white font-medium rounded-2xl shadow-xl shadow-[#da1062]/20
+          hover:shadow-2xl hover:shadow-[#da1062]/30 hover:scale-105
+          active:scale-95 transition-all duration-200
+          ${chatAbierto ? "opacity-0 pointer-events-none scale-90" : "opacity-100"}`}
+        aria-label="Abrir Asistente de IA"
+      >
+        <Sparkles className="w-5 h-5" />
+        <span className="hidden sm:inline">Asistente de IA</span>
+      </button>
+
+      {/* Panel de chat IA */}
+      <Suspense fallback={null}>
+        <ChatIA abierto={chatAbierto} onCerrar={() => setChatAbierto(false)} />
+      </Suspense>
     </div>
   );
 }

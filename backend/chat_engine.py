@@ -33,6 +33,8 @@ INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
 TOP_K = 10  # ⚡ Aumentado de 3 a 10 para mejor contexto
+SIMILARITY_THRESHOLD = 0.60  # ⚡ Umbral mínimo de similitud coseno (0.0-1.0)
+MAX_DOCS_MOSTRADOS = 5  # Máximo de documentos únicos a mostrar al usuario
 
 # Variables globales
 index = None
@@ -491,10 +493,14 @@ def buscar_similares(pregunta: str, top_k=None):
         emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
         dist, idxs = index.search(emb, 10)
         resultados_semanticos = []
-        for i in idxs[0]:
+        for score, i in zip(dist[0], idxs[0]):
+            if score < SIMILARITY_THRESHOLD:
+                continue  # ⚡ Descartar resultados poco relevantes
             chunk, meta = obtener_chunk_y_meta_seguro(i)
             if chunk and meta:
-                resultados_semanticos.append({"chunk_texto": chunk, **meta})
+                resultados_semanticos.append(
+                    {"chunk_texto": chunk, "score_semantico": float(score), **meta}
+                )
 
         # Combinar y agrupar por ordenanza
         todos_resultados = resultados_textuales + resultados_semanticos
@@ -561,35 +567,52 @@ def buscar_similares(pregunta: str, top_k=None):
     emb = generar_embedding_local(pregunta_expandida).reshape(1, -1)
     dist, idxs = index.search(emb, top_k * 2)
     resultados_semanticos = []
-    for i in idxs[0]:
+    for score, i in zip(dist[0], idxs[0]):
+        if score < SIMILARITY_THRESHOLD:
+            continue  # ⚡ Filtrar semánticos debajo del umbral de relevancia
         chunk, meta = obtener_chunk_y_meta_seguro(i)
         if chunk and meta:
-            resultados_semanticos.append({"chunk_texto": chunk, **meta})
+            resultados_semanticos.append(
+                {"chunk_texto": chunk, "score_semantico": float(score), **meta}
+            )
 
-    # Combinar resultados
+    # Combinar: textuales primero (más precisos), luego semánticos
+    # Los textuales ya tienen coincidencias_textuales como score
     resultados_finales = []
     nombres_incluidos = set()
 
+    # Calcular score combinado para los textuales (normalizar coincidencias)
+    max_coincidencias = (
+        max(
+            (r.get("coincidencias_textuales", 0) for r in resultados_textuales),
+            default=1,
+        )
+        or 1
+    )
     for r in resultados_textuales:
         nombre = r.get("nombre_archivo", "")
         if nombre not in nombres_incluidos:
+            r["score_combinado"] = (
+                r.get("coincidencias_textuales", 0) / max_coincidencias
+            )
             resultados_finales.append(r)
             nombres_incluidos.add(nombre)
 
     for r in resultados_semanticos:
         nombre = r.get("nombre_archivo", "")
         if nombre not in nombres_incluidos:
+            r["score_combinado"] = r.get("score_semantico", 0)
             resultados_finales.append(r)
             nombres_incluidos.add(nombre)
 
-        # ⚡ Límite dinámico basado en top_k
         if len(resultados_finales) >= (top_k * 2):
             break
 
-    if tipo_pregunta == "generica" or tipo_pregunta == "directa":
-        return resultados_finales[: top_k * 2]
-    else:
-        return resultados_finales[:top_k]
+    # Ordenar por score combinado descendente
+    resultados_finales.sort(key=lambda x: x.get("score_combinado", 0), reverse=True)
+
+    limite = top_k * 2 if (tipo_pregunta in ("generica", "directa")) else top_k
+    return resultados_finales[:limite]
 
 
 def armar_contexto(resultados, max_chars=5000, incluir_metadatos=True):
@@ -618,8 +641,12 @@ def armar_contexto(resultados, max_chars=5000, incluir_metadatos=True):
     return contexto[:max_chars]
 
 
-def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> str:
-    """Genera respuesta con GPT optimizada."""
+def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> dict:
+    """
+    Genera respuesta con GPT y retorna un dict con:
+      - respuesta: texto de la respuesta
+      - ordenanzas_citadas: lista de números de ordenanza que GPT realmente usó
+    """
 
     tipo_pregunta = detectar_tipo_pregunta(pregunta)
 
@@ -640,7 +667,6 @@ def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> st
 
                 # Extraer una breve descripción del Art 1
                 if art1:
-                    # Limpiar y truncar
                     descripcion = art1[:150].strip()
                     if len(art1) > 150:
                         descripcion += "..."
@@ -652,25 +678,25 @@ def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> st
                 )
 
             if ordenanzas_info:
-                # Ordenar por número de ordenanza descendente (más nuevas primero)
                 ordenanzas_info.sort(
                     key=lambda x: int(x["num"]) if x["num"].isdigit() else 0,
                     reverse=True,
                 )
 
-                # Formatear respuesta
                 lineas = []
                 for info in ordenanzas_info:
                     lineas.append(f"• **Ordenanza N° {info['num']}** ({info['fecha']})")
                     lineas.append(f"  {info['descripcion']}")
-                    lineas.append("")  # Línea vacía entre ordenanzas
+                    lineas.append("")
 
                 lista_formateada = "\n".join(lineas)
                 total = len(ordenanzas_info)
+                nums_citados = [info["num"] for info in ordenanzas_info]
 
-                return f"""El término **"{pregunta}"** aparece en {total} ordenanza{'s' if total > 1 else ''}:
-
-{lista_formateada}"""
+                return {
+                    "respuesta": f"""El término **"{pregunta}"** aparece en {total} ordenanza{'s' if total > 1 else ''}:\n\n{lista_formateada}""",
+                    "ordenanzas_citadas": nums_citados,
+                }
 
         # Fallback con GPT si no hay resultados estructurados
         prompt = f"""Eres el Digesto Digital de Villa María. El usuario busca "{pregunta}".
@@ -681,27 +707,62 @@ Lista las ordenanzas encontradas con este formato:
 Contexto:
 {contexto}
 
-Respuesta:"""
+Responde SOLO con JSON en este formato exacto:
+{{"respuesta": "...", "ordenanzas_citadas": ["XXXX", "YYYY"]}}"""
     else:
-        prompt = f"""(Dando formato como para poner en una pagina web)Ordenanzas de Villa María. Responde en máximo 2 oraciones.
+        numeros_disponibles = []
+        if resultados:
+            vistos = set()
+            for r in resultados:
+                n = r.get("numero_ordenanza", "")
+                if n and n not in vistos and n != "desconocido":
+                    vistos.add(n)
+                    numeros_disponibles.append(n)
 
-Contexto:
+        lista_nums = (
+            ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
+        )
+
+        prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde en máximo 2 oraciones usando SOLO la información del contexto.
+
+Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
 
 Pregunta: {pregunta}
-Respuesta:"""
+
+Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin bloques de código):
+{{"respuesta": "...", "ordenanzas_citadas": ["XXXX"]}}
+
+En ordenanzas_citadas incluye ÚNICAMENTE los números de ordenanza que realmente usaste para responder."""
 
     try:
         response = openai.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=250 if tipo_pregunta == "palabra_clave" else 150,
-            timeout=8,
+            max_tokens=300 if tipo_pregunta == "palabra_clave" else 200,
+            timeout=10,
+            response_format={"type": "json_object"},
         )
-        return response.choices[0].message.content.strip()
+        content = response.choices[0].message.content.strip()
+        parsed = json.loads(content)
+        return {
+            "respuesta": parsed.get("respuesta", "").strip(),
+            "ordenanzas_citadas": [
+                str(n) for n in parsed.get("ordenanzas_citadas", [])
+            ],
+        }
     except Exception as e:
-        print(f"Error en OpenAI: {e}")
+        print(f"Error en OpenAI o parsing: {e}")
+        # Fallback: devolver todos los resultados sin filtrar
+        nums_fallback = []
+        if resultados:
+            vistos = set()
+            for r in resultados:
+                n = r.get("numero_ordenanza", "")
+                if n and n not in vistos:
+                    vistos.add(n)
+                    nums_fallback.append(n)
         if resultados:
             num_ordenanzas = len(
                 set(
@@ -710,5 +771,11 @@ Respuesta:"""
                     if r.get("numero_ordenanza") != "N/A"
                 )
             )
-            return f"Encontradas {num_ordenanzas} ordenanzas relacionadas con '{pregunta}'. Ver documentos para detalles."
-        return "Error al generar respuesta. Intenta nuevamente."
+            return {
+                "respuesta": f"Encontradas {num_ordenanzas} ordenanzas relacionadas con '{pregunta}'. Ver documentos para detalles.",
+                "ordenanzas_citadas": nums_fallback,
+            }
+        return {
+            "respuesta": "Error al generar respuesta. Intenta nuevamente.",
+            "ordenanzas_citadas": [],
+        }

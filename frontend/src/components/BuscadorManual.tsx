@@ -12,6 +12,8 @@ import {
   Calendar,
   AlertCircle,
   MoveUp,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 interface Metadato {
@@ -65,6 +67,8 @@ function BuscadorManual() {
 
   // 🚀 Estado para mostrar/ocultar botón de scroll to top
   const [mostrarScrollTop, setMostrarScrollTop] = useState(false);
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false); // Nuevo estado para colapsable en móvil
+  const [expandida, setExpandida] = useState<string | null>(null); // Nuevo estado para expandir cards en móvil
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -234,8 +238,7 @@ function BuscadorManual() {
   const abrirPDF = (nombrePDF: string) => {
     if (!nombrePDF) return;
     const pdfConSufijo = nombrePDF.replace(".pdf", "_2.pdf");
-    const pdfUrl = `/PDFs/${pdfConSufijo}`;
-    window.open(pdfUrl, "_blank");
+    window.open(`${API_URL}/pdfs/${pdfConSufijo}`, "_blank");
   };
 
   const categoriasUnicas = Array.from(
@@ -298,115 +301,134 @@ function BuscadorManual() {
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Panel de Filtros - Sticky a la izquierda en desktop, arriba en mobile */}
+        {/* Panel de Filtros - Sticky a la izquierda en desktop, colapsable en mobile */}
         <div className="w-full lg:w-80 lg:flex-shrink-0">
-          <div className="lg:sticky lg:top-16 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-6">
-              <Filter className="w-5 h-5" />
-              Filtros de búsqueda
-            </h2>
-
-            <div className="space-y-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  N° de Ordenanza
-                </label>
-                <input
-                  type="text"
-                  value={numeroOrdenanza}
-                  onChange={(e) => setNumeroOrdenanza(e.target.value)}
-                  placeholder="Ej: 6000"
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Palabra Clave
-                </label>
-                <input
-                  type="text"
-                  value={palabraClave}
-                  onChange={(e) => setPalabraClave(e.target.value)}
-                  placeholder="Buscar..."
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fecha Desde
-                </label>
-                <input
-                  type="date"
-                  value={fechaDesde}
-                  onChange={(e) => setFechaDesde(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fecha Hasta
-                </label>
-                <input
-                  type="date"
-                  value={fechaHasta}
-                  onChange={(e) => setFechaHasta(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Categoría
-                </label>
-                <select
-                  value={categoriaSeleccionada}
-                  onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Todas las categorías</option>
-                  {categoriasUnicas.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Estado de Vigencia
-                </label>
-                <select
-                  value={estadoVigencia}
-                  onChange={(e) => setEstadoVigencia(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Todos los estados</option>
-                  <option value="vigente">Vigente</option>
-                  <option value="derogada">Derogada</option>
-                </select>
-              </div>
-            </div>
-
-            <button
-              onClick={limpiarFiltros}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition border border-gray-200 rounded-lg hover:bg-gray-50"
+          <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg transition-all duration-300">
+            {/* Header / Toggle Button */}
+            <button 
+              onClick={() => setFiltrosAbiertos(!filtrosAbiertos)}
+              className="w-full flex items-center justify-between p-6 lg:cursor-default"
+              disabled={window.innerWidth >= 1024}
             >
-              <X className="w-4 h-4" />
-              Limpiar filtros
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-[#da1062]" />
+                <h2 className="text-lg font-semibold text-gray-800">
+                  Filtros de búsqueda
+                </h2>
+              </div>
+              <div className="lg:hidden">
+                {filtrosAbiertos ? (
+                  <ChevronUp className="w-5 h-5 text-gray-400" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-gray-400" />
+                )}
+              </div>
             </button>
 
-            <div className="mt-4 text-xs text-gray-500 text-center">
-              {cargando
-                ? "Cargando..."
-                : usarPaginacion
-                ? `${ordenanzas.length} primeras ordenanzas (Total: ${totalOrdenanzas})`
-                : `${Math.min(itemsVisibles, filtradas.length)} de ${
-                    filtradas.length
-                  } resultados`}
+            {/* Contenido de Filtros (Siempre visible en LG, condicional en móvil) */}
+            <div className={`px-6 pb-6 space-y-4 ${filtrosAbiertos ? 'block' : 'hidden lg:block'}`}>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    N° de Ordenanza
+                  </label>
+                  <input
+                    type="text"
+                    value={numeroOrdenanza}
+                    onChange={(e) => setNumeroOrdenanza(e.target.value)}
+                    placeholder="Ej: 6000"
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Palabra Clave
+                  </label>
+                  <input
+                    type="text"
+                    value={palabraClave}
+                    onChange={(e) => setPalabraClave(e.target.value)}
+                    placeholder="Buscar..."
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fecha Desde
+                  </label>
+                  <input
+                    type="date"
+                    value={fechaDesde}
+                    onChange={(e) => setFechaDesde(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fecha Hasta
+                  </label>
+                  <input
+                    type="date"
+                    value={fechaHasta}
+                    onChange={(e) => setFechaHasta(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Categoría
+                  </label>
+                  <select
+                    value={categoriaSeleccionada}
+                    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Todas las categorías</option>
+                    {categoriasUnicas.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Estado de Vigencia
+                  </label>
+                  <select
+                    value={estadoVigencia}
+                    onChange={(e) => setEstadoVigencia(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Todos los estados</option>
+                    <option value="vigente">Vigente</option>
+                    <option value="derogada">Derogada</option>
+                  </select>
+                </div>
+              </div>
+
+              <button
+                onClick={limpiarFiltros}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition border border-gray-200 rounded-lg hover:bg-gray-50"
+              >
+                <X className="w-4 h-4" />
+                Limpiar filtros
+              </button>
+
+              <div className="mt-4 text-xs text-gray-500 text-center">
+                {cargando
+                  ? "Cargando..."
+                  : usarPaginacion
+                  ? `${ordenanzas.length} primeras ordenanzas (Total: ${totalOrdenanzas})`
+                  : `${Math.min(itemsVisibles, filtradas.length)} de ${
+                      filtradas.length
+                    } resultados`}
+              </div>
             </div>
           </div>
         </div>
@@ -451,7 +473,8 @@ function BuscadorManual() {
                 {ordenanzasAMostrar.map((ord) => (
                   <div
                     key={ord.numero_ordenanza}
-                    className="bg-white/95 backdrop-blur-sm rounded-xl shadow p-6 hover:shadow-md transition"
+                    onClick={() => setExpandida(expandida === ord.numero_ordenanza ? null : ord.numero_ordenanza)}
+                    className="bg-white/95 backdrop-blur-sm rounded-xl shadow p-6 hover:shadow-md transition cursor-pointer lg:cursor-default group"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
@@ -482,7 +505,7 @@ function BuscadorManual() {
                           </span>
                         </div>
 
-                        <div className="mb-3">
+                        <div className={`mb-3 overflow-hidden transition-all duration-300 ${expandida === ord.numero_ordenanza ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 lg:max-h-[1000px] lg:opacity-100'}`}>
                           <p className="text-sm font-semibold text-gray-700 mb-1">
                             Artículo 1°:
                           </p>
@@ -491,22 +514,34 @@ function BuscadorManual() {
                           </p>
                         </div>
 
-                        {ord.temas && ord.temas.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {ord.temas.slice(0, 3).map((tema, i) => (
-                              <span
-                                key={i}
-                                className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
-                              >
-                                {tema}
-                              </span>
-                            ))}
-                          </div>
+                        <div className={`transition-all duration-300 ${expandida === ord.numero_ordenanza ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 lg:max-h-[500px] lg:opacity-100 overflow-hidden'}`}>
+                          {ord.temas && ord.temas.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {ord.temas.slice(0, 3).map((tema, i) => (
+                                <span
+                                  key={i}
+                                  className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
+                                >
+                                  {tema}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {expandida !== ord.numero_ordenanza && (
+                          <p className="text-[10px] text-[#da1062] font-semibold lg:hidden text-center mt-2 border-t border-dashed border-[#da1062]/20 pt-2">
+                            Click para ver más detalles
+                          </p>
                         )}
                       </div>
+                      
 
                       <button
-                        onClick={() => abrirPDF(ord.nombre_archivo)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Evitar que el click en el botón triggereé el colapsable
+                          abrirPDF(ord.nombre_archivo);
+                        }}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition text-white text-sm font-medium whitespace-nowrap shadow-md hover:shadow-lg"
                       >
                         <FileText className="w-4 h-4" />
@@ -551,7 +586,7 @@ function BuscadorManual() {
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="fixed bottom-8 right-8 z-50 text-white bg-blue-600 hover:bg-blue-700 rounded-full p-4 shadow-lg hover:scale-110 transition-all duration-300"
+          className="fixed bottom-20 right-6 z-50 text-white bg-[#da1062] hover:brightness-110 rounded-full p-4 shadow-lg hover:scale-110 transition-all duration-300 shadow-[#da1062]/20"
           aria-label="Volver arriba"
         >
           <MoveUp className="w-6 h-6" />

@@ -15,7 +15,7 @@ function BuscadorIA() {
   const abrirPDF = (nombrePDF: string) => {
     if (!nombrePDF) return;
     const pdfConSufijo = nombrePDF.replace(".pdf", "_2.pdf");
-    window.open(`/PDFs/${pdfConSufijo}`, "_blank");
+    window.open(`${API_URL}/pdfs/${pdfConSufijo}`, "_blank");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +104,7 @@ function BuscadorIA() {
           />
           <button
             onClick={handleBuscar}
-            className="px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md hover:shadow-lg"
+            className="px-8 py-4 bg-[#da1062] text-white rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md hover:shadow-lg shadow-[#da1062]/20"
             disabled={cargando || cargandoRespuesta}
           >
             {cargando ? "Buscando..." : "Buscar"}
@@ -133,7 +133,7 @@ function BuscadorIA() {
       {cargandoRespuesta && !respuesta && (
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-6">
           <div className="flex items-center gap-3">
-            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#da1062] border-t-transparent"></div>
             <p className="text-gray-600">Generando respuesta con IA...</p>
           </div>
         </div>
@@ -143,7 +143,7 @@ function BuscadorIA() {
       {respuesta && (
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-6">
           <h2 className="font-semibold mb-4 text-gray-800 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-blue-600" />
+            <Sparkles className="w-5 h-5 text-[#da1062]" />
             Respuesta
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4 whitespace-pre-wrap">
@@ -153,7 +153,7 @@ function BuscadorIA() {
           {documentos.length > 0 && (
             <button
               onClick={() => setMostrarDocs(!mostrarDocs)}
-              className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
+              className="px-4 py-2 bg-pink-50 text-[#da1062] rounded-lg hover:bg-pink-100 transition font-medium"
             >
               {mostrarDocs
                 ? "Ocultar documentos"
@@ -187,7 +187,7 @@ function BuscadorIA() {
                 {doc.pdf && (
                   <button
                     onClick={() => abrirPDF(doc.pdf)}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
+                    className="text-[#da1062] hover:brightness-110 text-sm font-medium flex items-center gap-1"
                   >
                     <FileText className="w-4 h-4" />
                     PDF

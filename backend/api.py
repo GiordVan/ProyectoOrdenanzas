@@ -14,6 +14,7 @@ from chat_engine import (
     armar_contexto,
     preguntar_a_gpt,
     generar_embedding_local,
+    MAX_DOCS_MOSTRADOS,
 )
 
 app = FastAPI(title="Chat Legal IA API")
@@ -29,11 +30,26 @@ app.add_middleware(
 # ⚡ CONFIGURACIÓN DE RUTAS
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "Data"
-PDFS_DIR = BASE_DIR / "PDFs"
+PDFS_ROOT_DIR = BASE_DIR.parent / "PDFs"
+PDFS_FRONTEND_DIR = BASE_DIR.parent / "frontend" / "public" / "PDFs"
 
-# ⚡ Servir PDFs estáticos (opcional, si quieres servirlos desde el backend)
-if PDFS_DIR.exists():
-    app.mount("/pdfs", StaticFiles(directory=str(PDFS_DIR)), name="pdfs")
+from fastapi.responses import FileResponse
+
+
+# ⚡ Servir PDFs con fallback: primero en frontend/public/PDFs, luego en raíz /PDFs
+@app.get("/pdfs/{filename}")
+async def get_pdf(filename: str):
+    # 1. Intentar en la carpeta del frontend
+    frontend_file = PDFS_FRONTEND_DIR / filename
+    if frontend_file.exists():
+        return FileResponse(frontend_file)
+
+    # 2. Intentar en la carpeta raíz
+    root_file = PDFS_ROOT_DIR / filename
+    if root_file.exists():
+        return FileResponse(root_file)
+
+    raise HTTPException(status_code=404, detail="PDF no encontrado")
 
 
 # ⚡ Precarga del índice al iniciar
@@ -104,29 +120,36 @@ async def ask_question(q: Question):
     resultados = await loop.run_in_executor(None, buscar_similares, q.pregunta)
 
     contexto = armar_contexto(resultados)
-    respuesta = await loop.run_in_executor(
+    resultado_gpt = await loop.run_in_executor(
         None, preguntar_a_gpt, q.pregunta, contexto, resultados
     )
+    respuesta_texto = resultado_gpt["respuesta"]
+    ordenanzas_citadas = set(resultado_gpt.get("ordenanzas_citadas", []))
 
+    # Construir documentos: solo los que GPT citó (o todos si no citó ninguno)
     documentos_info = []
     ordenanzas_vistas = set()
     for r in resultados:
         num_ord = r.get("numero_ordenanza", "desconocido")
-        if num_ord not in ordenanzas_vistas:
-            ordenanzas_vistas.add(num_ord)
-            documentos_info.append(
-                {
-                    "nombre": r.get("nombre_archivo", ""),
-                    "numero_ordenanza": num_ord,
-                    "fecha_sancion": r.get("fecha_sancion"),
-                    "fragmento": r["chunk_texto"][:250] + "...",
-                    "pdf": r.get("nombre_archivo"),
-                }
-            )
-            if len(documentos_info) >= 10:
-                break
+        if num_ord in ordenanzas_vistas:
+            continue
+        # Si GPT citó ordenanzas específicas, filtrar. Si no especificó, mostrar todas
+        if ordenanzas_citadas and num_ord not in ordenanzas_citadas:
+            continue
+        ordenanzas_vistas.add(num_ord)
+        documentos_info.append(
+            {
+                "nombre": r.get("nombre_archivo", ""),
+                "numero_ordenanza": num_ord,
+                "fecha_sancion": r.get("fecha_sancion"),
+                "fragmento": r["chunk_texto"][:250] + "...",
+                "pdf": r.get("nombre_archivo"),
+            }
+        )
+        if len(documentos_info) >= MAX_DOCS_MOSTRADOS:
+            break
 
-    return Answer(respuesta=respuesta, documentos=documentos_info)
+    return Answer(respuesta=respuesta_texto, documentos=documentos_info)
 
 
 # ⚡ ENDPOINT CON STREAMING (respuesta incremental)
@@ -144,32 +167,39 @@ async def ask_question_stream(q: Question):
         loop = asyncio.get_event_loop()
         resultados = await loop.run_in_executor(None, buscar_similares, q.pregunta)
 
+        # Llamar a GPT primero (incluye qué ordenanzas citó)
+        contexto = armar_contexto(resultados)
+        resultado_gpt = await loop.run_in_executor(
+            None, preguntar_a_gpt, q.pregunta, contexto, resultados
+        )
+        respuesta_texto = resultado_gpt["respuesta"]
+        ordenanzas_citadas = set(resultado_gpt.get("ordenanzas_citadas", []))
+
+        # Filtrar documentos según lo que GPT citó
         documentos_info = []
         ordenanzas_vistas = set()
         for r in resultados:
             num_ord = r.get("numero_ordenanza", "desconocido")
-            if num_ord not in ordenanzas_vistas:
-                ordenanzas_vistas.add(num_ord)
-                documentos_info.append(
-                    {
-                        "nombre": r.get("nombre_archivo", ""),
-                        "numero_ordenanza": num_ord,
-                        "fecha_sancion": r.get("fecha_sancion"),
-                        "fragmento": r["chunk_texto"][:250] + "...",
-                        "pdf": r.get("nombre_archivo"),
-                    }
-                )
-                if len(documentos_info) >= 10:
-                    break
+            if num_ord in ordenanzas_vistas:
+                continue
+            if ordenanzas_citadas and num_ord not in ordenanzas_citadas:
+                continue
+            ordenanzas_vistas.add(num_ord)
+            documentos_info.append(
+                {
+                    "nombre": r.get("nombre_archivo", ""),
+                    "numero_ordenanza": num_ord,
+                    "fecha_sancion": r.get("fecha_sancion"),
+                    "fragmento": r["chunk_texto"][:250] + "...",
+                    "pdf": r.get("nombre_archivo"),
+                }
+            )
+            if len(documentos_info) >= MAX_DOCS_MOSTRADOS:
+                break
 
+        # Enviar documentos y respuesta juntos
         yield f"data: {json.dumps({'tipo': 'documentos', 'documentos': documentos_info})}\n\n"
-
-        contexto = armar_contexto(resultados)
-        respuesta = await loop.run_in_executor(
-            None, preguntar_a_gpt, q.pregunta, contexto
-        )
-
-        yield f"data: {json.dumps({'tipo': 'respuesta', 'respuesta': respuesta})}\n\n"
+        yield f"data: {json.dumps({'tipo': 'respuesta', 'respuesta': respuesta_texto})}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")
