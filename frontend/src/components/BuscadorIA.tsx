@@ -3,10 +3,18 @@ import { Sparkles, FileText } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
+interface Documento {
+  numero_ordenanza?: string;
+  nombre?: string;
+  fecha_sancion?: string;
+  pdf?: string;
+  fragmento?: string;
+}
+
 function BuscadorIA() {
   const [busqueda, setBusqueda] = useState("");
   const [respuesta, setRespuesta] = useState<string | null>(null);
-  const [documentos, setDocumentos] = useState<any[]>([]);
+  const [documentos, setDocumentos] = useState<Documento[]>([]);
   const [mostrarDocs, setMostrarDocs] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [cargandoRespuesta, setCargandoRespuesta] = useState(false);
@@ -70,7 +78,7 @@ function BuscadorIA() {
                 setRespuesta(parsed.respuesta);
                 setCargandoRespuesta(false);
               }
-            } catch (e) {
+            } catch {
               // Ignorar líneas malformadas
             }
           }

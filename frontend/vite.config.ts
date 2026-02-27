@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { visualizer } from 'rollup-plugin-visualizer' // ✅ esta línea te falta
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
-  plugins: [react(), visualizer()],
+  plugins: [react(), visualizer() as PluginOption],
   build: {
-    minify: 'esbuild', // o 'terser'
+    minify: 'esbuild'
   }
 })

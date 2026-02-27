@@ -4,10 +4,11 @@ import threading
 import faiss
 import numpy as np
 import openai
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 import re
 from datetime import datetime
-from sentence_transformers import SentenceTransformer
+from datetime import datetime
 from functools import lru_cache
 
 # ⚡ NUEVO: Importar stemmer español
@@ -28,6 +29,7 @@ except ImportError:
 # --- Configuración ---
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+aclient = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 DATA_PATH = "Data"
 INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
@@ -42,7 +44,6 @@ metadatos = []
 chunks = []
 _index_loaded = False
 _index_lock = threading.Lock()
-embedding_model = SentenceTransformer("BAAI/bge-m3", device="cpu")
 
 
 def ensure_index_loaded():
@@ -121,8 +122,9 @@ def cargar_indice_y_metadatos():
 @lru_cache(maxsize=500)
 def _generar_embedding_cached(texto: str) -> tuple:
     """Versión cacheada que devuelve tupla (hasheable para lru_cache)."""
-    embedding = embedding_model.encode(texto, normalize_embeddings=True)
-    return tuple(embedding.tolist())
+    response = openai.embeddings.create(input=texto, model="text-embedding-3-small")
+    embedding = response.data[0].embedding
+    return tuple(embedding)
 
 
 def generar_embedding_local(texto: str):
@@ -825,3 +827,54 @@ En ordenanzas_citadas incluye ÚNICAMENTE los números de ordenanza que realment
             "respuesta": "Error al generar respuesta. Intenta nuevamente.",
             "ordenanzas_citadas": [],
         }
+
+
+async def preguntar_a_gpt_stream(pregunta: str, contexto: str, resultados: list = None):
+    """
+    Genera respuesta con AsyncOpenAI usando stream=True y la devuelve como generador.
+    Como el streaming requiere JSON chunks, cambiaremos el formato o
+    extreremos los tokens progresivamente e incluiremos metadatos en un formato sencillo de leer.
+    """
+    tipo_pregunta = detectar_tipo_pregunta(pregunta)
+
+    # Pre-calculamos números disponibles
+    numeros_disponibles = []
+    if resultados:
+        vistos = set()
+        for r in resultados:
+            n = r.get("numero_ordenanza", "")
+            if n and n not in vistos and n != "desconocido":
+                vistos.add(n)
+                numeros_disponibles.append(n)
+
+    lista_nums = ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
+
+    # Hacemos un prompt que pida responder libremente sin forzar JSON rígido,
+    # y que al final ponga las citas.
+    prompt = f"""Eres el Digesto Digital de Villa María. Responde de manera clara y concisa usando SOLO la información del contexto. 
+
+Contexto (ordenanzas disponibles: {lista_nums}):
+{contexto}
+
+Pregunta: {pregunta}
+
+Responde directamente usando un formato limpio Markdown. No uses la palabra 'JSON'. 
+IMPORTANTE: Al final de tu respuesta, en una línea nueva, escribe exactamente "CITAS: " seguido de los números de ordenanza que realmente usaste, separados por coma (ejemplo: "CITAS: 5040, 8050"). Si no usaste ninguna, escribe "CITAS: NINGUNA".
+"""
+
+    try:
+        stream = await aclient.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.0,
+            max_tokens=400,
+            stream=True,
+        )
+
+        async for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                yield chunk.choices[0].delta.content
+
+    except Exception as e:
+        print(f"Error en OpenAI Async Stream: {e}")
+        yield "Hubo un error al generar la respuesta. Por favor, intenta de nuevo."

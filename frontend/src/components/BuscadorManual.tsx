@@ -4,6 +4,7 @@ import {
   useRef,
   useCallback,
   useDeferredValue,
+  useMemo,
 } from "react";
 import {
   Filter,
@@ -42,7 +43,6 @@ const ITEMS_POR_PAGINA = 20; // Renderizar 20 ordenanzas por vez
 function BuscadorManual() {
   const [, setMetadatos] = useState<Metadato[]>([]);
   const [ordenanzas, setOrdenanzas] = useState<Metadato[]>([]);
-  const [filtradas, setFiltradas] = useState<Metadato[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,19 +70,7 @@ function BuscadorManual() {
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false); // Nuevo estado para colapsable en móvil
   const [expandida, setExpandida] = useState<string | null>(null); // Nuevo estado para expandir cards en móvil
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if ("requestIdleCallback" in window) {
-        (window as any).requestIdleCallback(cargarMetadatos);
-      } else {
-        cargarMetadatos();
-      }
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const cargarMetadatos = async () => {
+  const cargarMetadatos = useCallback(async () => {
     try {
       setCargando(true);
       setError(null);
@@ -115,14 +103,13 @@ function BuscadorManual() {
 
       const data: Metadato[] = await response.json();
 
-      const ordenanzasUnicas = data.some((m: any) => "chunk_id" in m)
-        ? data.filter((m: any) => m.chunk_id === 0)
+      const ordenanzasUnicas = data.some((m: Metadato) => "chunk_id" in m)
+        ? data.filter((m: Metadato) => (m as Metadato & { chunk_id?: number }).chunk_id === 0)
         : data;
 
       // Los datos ya vienen ordenados del backend (descendente por número)
       setMetadatos(data);
       setOrdenanzas(ordenanzasUnicas);
-      setFiltradas(ordenanzasUnicas);
       setTotalOrdenanzas(ordenanzasUnicas.length);
 
       console.log(
@@ -136,11 +123,22 @@ function BuscadorManual() {
           : "Error desconocido al cargar datos"
       );
       setOrdenanzas([]);
-      setFiltradas([]);
     } finally {
       setCargando(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if ("requestIdleCallback" in window) {
+        (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(cargarMetadatos);
+      } else {
+        cargarMetadatos();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [cargarMetadatos]);
 
   const cargarConPaginacion = async () => {
     try {
@@ -151,7 +149,6 @@ function BuscadorManual() {
 
       setTotalOrdenanzas(data.total);
       setOrdenanzas(data.metadatos);
-      setFiltradas(data.metadatos);
 
       console.log(
         `✅ Modo paginación: ${data.metadatos.length} de ${data.total} ordenanzas cargadas`
@@ -162,12 +159,12 @@ function BuscadorManual() {
     }
   };
 
-  const aplicarFiltros = () => {
+  const filtradas = useMemo(() => {
     let resultados = [...ordenanzas];
 
-    if (numeroOrdenanza.trim()) {
+    if (deferredNumero.trim()) {
       resultados = resultados.filter((ord) =>
-        ord.numero_ordenanza.includes(numeroOrdenanza.trim())
+        ord.numero_ordenanza.includes(deferredNumero.trim())
       );
     }
 
@@ -195,8 +192,8 @@ function BuscadorManual() {
       );
     }
 
-    if (palabraClave.trim()) {
-      const palabraLower = palabraClave.toLowerCase();
+    if (deferredPalabraClave.trim()) {
+      const palabraLower = deferredPalabraClave.toLowerCase();
       resultados = resultados.filter((ord) => {
         const temas = ord.temas.join(" ").toLowerCase();
         const palabras = ord.palabras_clave.join(" ").toLowerCase();
@@ -209,20 +206,21 @@ function BuscadorManual() {
       });
     }
 
-    setFiltradas(resultados);
-    setItemsVisibles(ITEMS_POR_PAGINA); // Reset al aplicar filtros
-  };
-
-  useEffect(() => {
-    aplicarFiltros();
+    return resultados;
   }, [
-    deferredNumero, // Usa valores con debounce
+    ordenanzas,
+    deferredNumero,
     fechaDesde,
     fechaHasta,
     categoriaSeleccionada,
     estadoVigencia,
-    deferredPalabraClave, // Usa valores con debounce
+    deferredPalabraClave,
   ]);
+
+  // Reset items visibles cuando cambian los filtros
+  useEffect(() => {
+    setItemsVisibles(ITEMS_POR_PAGINA);
+  }, [filtradas]);
 
   const limpiarFiltros = () => {
     setNumeroOrdenanza("");
@@ -231,8 +229,7 @@ function BuscadorManual() {
     setCategoriaSeleccionada("");
     setEstadoVigencia("");
     setPalabraClave("");
-    setFiltradas(ordenanzas);
-    setItemsVisibles(ITEMS_POR_PAGINA);
+    // setItemsVisibles is resetted by the useEffect above
   };
 
   const abrirPDF = (nombrePDF: string) => {
@@ -240,9 +237,9 @@ function BuscadorManual() {
     window.open(`${API_URL}/pdfs/${nombrePDF}`, "_blank");
   };
 
-  const categoriasUnicas = Array.from(
-    new Set(ordenanzas.map((o) => o.descripcion_categoria))
-  ).sort();
+  const categoriasUnicas: string[] = Array.from(
+    new Set(ordenanzas.map((o: Metadato) => o.descripcion_categoria))
+  ).sort() as string[];
 
   // ⚡ Función para cargar más items
   const cargarMasItems = useCallback(() => {
@@ -250,7 +247,7 @@ function BuscadorManual() {
 
     setCargandoMas(true);
     setTimeout(() => {
-      setItemsVisibles((prev) =>
+      setItemsVisibles((prev: number) =>
         Math.min(prev + ITEMS_POR_PAGINA, filtradas.length)
       );
       setCargandoMas(false);
@@ -387,7 +384,7 @@ function BuscadorManual() {
                     className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Todas las categorías</option>
-                    {categoriasUnicas.map((cat) => (
+                    {categoriasUnicas.map((cat: string) => (
                       <option key={cat} value={cat}>
                         {cat}
                       </option>
@@ -469,7 +466,7 @@ function BuscadorManual() {
               </div>
             ) : (
               <>
-                {ordenanzasAMostrar.map((ord) => (
+                {ordenanzasAMostrar.map((ord: Metadato) => (
                   <div
                     key={ord.numero_ordenanza}
                     onClick={() => setExpandida(expandida === ord.numero_ordenanza ? null : ord.numero_ordenanza)}
@@ -516,7 +513,7 @@ function BuscadorManual() {
                         <div className={`transition-all duration-300 ${expandida === ord.numero_ordenanza ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 lg:max-h-[500px] lg:opacity-100 overflow-hidden'}`}>
                           {ord.temas && ord.temas.length > 0 && (
                             <div className="flex flex-wrap gap-2 mt-3">
-                              {ord.temas.slice(0, 3).map((tema, i) => (
+                              {ord.temas.slice(0, 3).map((tema: string, i: number) => (
                                 <span
                                   key={i}
                                   className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
@@ -537,8 +534,8 @@ function BuscadorManual() {
                       
 
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation(); // Evitar que el click en el botón triggereé el colapsable
+                        onClick={(event) => {
+                          event.stopPropagation(); // Evitar que el click en el botón triggereé el colapsable
                           abrirPDF(ord.nombre_archivo);
                         }}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition text-white text-sm font-medium whitespace-nowrap shadow-md hover:shadow-lg"

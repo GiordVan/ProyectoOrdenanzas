@@ -13,6 +13,7 @@ from chat_engine import (
     buscar_similares,
     armar_contexto,
     preguntar_a_gpt,
+    preguntar_a_gpt_stream,
     generar_embedding_local,
     MAX_DOCS_MOSTRADOS,
 )
@@ -166,24 +167,16 @@ async def ask_question_stream(q: Question):
     async def generate():
         loop = asyncio.get_event_loop()
         resultados = await loop.run_in_executor(None, buscar_similares, q.pregunta)
-
-        # Llamar a GPT primero (incluye qué ordenanzas citó)
         contexto = armar_contexto(resultados)
-        resultado_gpt = await loop.run_in_executor(
-            None, preguntar_a_gpt, q.pregunta, contexto, resultados
-        )
-        respuesta_texto = resultado_gpt["respuesta"]
-        ordenanzas_citadas = set(resultado_gpt.get("ordenanzas_citadas", []))
 
-        # Filtrar documentos según lo que GPT citó
+        # Enviar resultados encontrados como primer evento
         documentos_info = []
         ordenanzas_vistas = set()
         for r in resultados:
             num_ord = r.get("numero_ordenanza", "desconocido")
             if num_ord in ordenanzas_vistas:
                 continue
-            if ordenanzas_citadas and num_ord not in ordenanzas_citadas:
-                continue
+
             ordenanzas_vistas.add(num_ord)
             documentos_info.append(
                 {
@@ -197,9 +190,16 @@ async def ask_question_stream(q: Question):
             if len(documentos_info) >= MAX_DOCS_MOSTRADOS:
                 break
 
-        # Enviar documentos y respuesta juntos
         yield f"data: {json.dumps({'tipo': 'documentos', 'documentos': documentos_info})}\n\n"
-        yield f"data: {json.dumps({'tipo': 'respuesta', 'respuesta': respuesta_texto})}\n\n"
+
+        # Consumir el stream de OpenAI token por token
+        async for chunk_text in preguntar_a_gpt_stream(
+            q.pregunta, contexto, resultados
+        ):
+            # Escapar saltos de línea para el formato SSE
+            safe_text = json.dumps({"tipo": "chunk", "texto": chunk_text})
+            yield f"data: {safe_text}\n\n"
+
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")

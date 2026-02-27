@@ -8,12 +8,13 @@ from dotenv import load_dotenv
 from pypdf import PdfReader
 from pdf2image import convert_from_path
 import pytesseract
-from sentence_transformers import SentenceTransformer
+import openai
 from collections import defaultdict, Counter
 
 # Configuración
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 CARPETA_PDFS = "PDFs"
 CARPETA_DATA = os.path.join(
@@ -21,12 +22,6 @@ CARPETA_DATA = os.path.join(
 )
 MAX_CHUNK_LEN = 500
 NUM_THREADS = 8
-
-# Cargar modelo una vez
-import torch
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-embedding_model = SentenceTransformer("BAAI/bge-m3", device=device)
 
 # --- Categorías del Digesto ---
 CATEGORIAS_DIGESTO_COMPLETO = {
@@ -521,10 +516,6 @@ def dividir_en_chunks_mejorado(texto, max_len=MAX_CHUNK_LEN):
     return [c for c in chunks if c]
 
 
-def generar_embedding_local(texto: str):
-    return embedding_model.encode(texto, normalize_embeddings=True)
-
-
 # --- Agrupamiento y combinación MEJORADA ---
 def extraer_numero_desde_nombre(nombre):
     """Extrae número de ordenanza desde el nombre del archivo"""
@@ -736,10 +727,16 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
             }
         )
 
-    # Embeddings
+    # Embeddings en batch con OpenAI
     embeddings = []
-    with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
-        embeddings = list(executor.map(generar_embedding_local, chunks_base))
+    if chunks_base:
+        batch_size = 500
+        for i in range(0, len(chunks_base), batch_size):
+            batch = chunks_base[i : i + batch_size]
+            response = openai.embeddings.create(
+                input=batch, model="text-embedding-3-small"
+            )
+            embeddings.extend([data.embedding for data in response.data])
 
     return metadatos, chunks_base, embeddings, archivo_subir
 

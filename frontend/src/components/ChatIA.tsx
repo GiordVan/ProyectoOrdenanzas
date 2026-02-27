@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, FileText, ChevronDown, ChevronUp, Bot, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
@@ -89,7 +90,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value);
+        const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split("\n");
 
         for (const line of lines) {
@@ -102,8 +103,27 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
 
               if (parsed.tipo === "documentos") {
                 docsRecibidos = parsed.documentos;
-              } else if (parsed.tipo === "respuesta") {
-                respuestaTexto = parsed.respuesta;
+                // Actualizar documentos tan pronto llegan
+                setMensajes((prev) => {
+                  const updated = [...prev];
+                  updated[idxAsistente] = {
+                    ...updated[idxAsistente],
+                    documentos: docsRecibidos,
+                  };
+                  return updated;
+                });
+              } else if (parsed.tipo === "chunk") {
+                respuestaTexto += parsed.texto;
+                // Actualizar texto progresivamente con cada chunk y quitar indicador de carga
+                setMensajes((prev) => {
+                  const updated = [...prev];
+                  updated[idxAsistente] = {
+                    ...updated[idxAsistente],
+                    texto: respuestaTexto,
+                    cargando: false
+                  };
+                  return updated;
+                });
               }
             } catch {
               // Ignorar líneas malformadas
@@ -236,9 +256,9 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                     </div>
                   ) : (
                     <>
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                        {msg.texto}
-                      </p>
+                      <div className="text-sm leading-relaxed prose prose-invert prose-p:leading-relaxed prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-700 max-w-none">
+                        <ReactMarkdown>{msg.texto}</ReactMarkdown>
+                      </div>
 
                       {/* Documentos referenciados */}
                       {msg.documentos && msg.documentos.length > 0 && (
