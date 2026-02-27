@@ -81,7 +81,12 @@ def subir_pdfs_a_r2():
     if not s3_client:
         raise ValueError("Faltan credenciales de R2 en las variables de entorno.")
 
-    CARPETA_PDFS = os.getenv("PDF_FOLDER_PATH", "PDFs")
+    CARPETA_PDFS = os.getenv(
+        "PDF_FOLDER_PATH",
+        os.path.join(
+            os.path.dirname(__file__), "..", "..", "frontend", "public", "PDFs"
+        ),
+    )
 
     print(f"BUCKET_NAME: {BUCKET_NAME}")
     print(f"CARPETA_PDFS: {CARPETA_PDFS}")

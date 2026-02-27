@@ -26,7 +26,7 @@ from Uploader import subir_pdf_individual
 
 # Configuración de rutas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CARPETA_PDFS = os.path.join(BASE_DIR, "..", "PDFs")
+CARPETA_PDFS = os.path.join(BASE_DIR, "..", "frontend", "public", "PDFs")
 CARPETA_DATA = os.path.join(BASE_DIR, "..", "backend", "Data")
 
 

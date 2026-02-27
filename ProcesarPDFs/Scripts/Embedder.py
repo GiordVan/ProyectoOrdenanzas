@@ -16,7 +16,9 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-CARPETA_PDFS = "PDFs"
+CARPETA_PDFS = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "..", "frontend", "public", "PDFs"
+)
 CARPETA_DATA = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "..", "backend", "Data"
 )
