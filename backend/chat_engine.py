@@ -30,7 +30,10 @@ except ImportError:
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 aclient = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-DATA_PATH = "Data"
+
+# ⚡ Usar rutas absolutas para evitar errores en Railway/servidores
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "Data")
 INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
