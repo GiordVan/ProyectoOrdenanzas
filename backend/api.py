@@ -36,19 +36,7 @@ app.add_middleware(
 # ⚡ CONFIGURACIÓN DE RUTAS
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "Data"
-PDFS_ROOT_DIR = BASE_DIR / "PDFs"  # Antes estaba en BASE_DIR.parent / "PDFs"
-
-from fastapi.responses import FileResponse
-
-
-# ⚡ Servir PDFs desde la carpeta local backend/PDFs
-@app.get("/pdfs/{filename}")
-async def get_pdf(filename: str):
-    root_file = PDFS_ROOT_DIR / filename
-    if root_file.exists():
-        return FileResponse(root_file)
-
-    raise HTTPException(status_code=404, detail="PDF no encontrado")
+# Los PDFs se sirven directamente desde el frontend (Netlify) para optimizar el rendimiento.
 
 
 # ⚡ Precarga del índice al iniciar

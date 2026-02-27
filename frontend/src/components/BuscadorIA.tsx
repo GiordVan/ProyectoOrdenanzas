@@ -28,7 +28,7 @@ function BuscadorIA() {
 
   const abrirPDF = (nombrePDF: string) => {
     if (!nombrePDF) return;
-    window.open(`${API_URL}/pdfs/${nombrePDF}`, "_blank");
+    window.open(`/PDFs/${nombrePDF}`, "_blank");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
