@@ -23,7 +23,7 @@ app = FastAPI(title="Chat Legal IA API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://buscadordeodenanzasia.netlify.app",
+        "https://demo-digestodigital.netlify.app",
         "http://localhost:5173",
         "http://localhost:3000",
         "http://127.0.0.1:5173",
