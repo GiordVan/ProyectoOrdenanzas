@@ -36,21 +36,14 @@ app.add_middleware(
 # ⚡ CONFIGURACIÓN DE RUTAS
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "Data"
-PDFS_ROOT_DIR = BASE_DIR.parent / "PDFs"
-PDFS_FRONTEND_DIR = BASE_DIR.parent / "frontend" / "public" / "PDFs"
+PDFS_ROOT_DIR = BASE_DIR / "PDFs"  # Antes estaba en BASE_DIR.parent / "PDFs"
 
 from fastapi.responses import FileResponse
 
 
-# ⚡ Servir PDFs con fallback: primero en frontend/public/PDFs, luego en raíz /PDFs
+# ⚡ Servir PDFs desde la carpeta local backend/PDFs
 @app.get("/pdfs/{filename}")
 async def get_pdf(filename: str):
-    # 1. Intentar en la carpeta del frontend
-    frontend_file = PDFS_FRONTEND_DIR / filename
-    if frontend_file.exists():
-        return FileResponse(frontend_file)
-
-    # 2. Intentar en la carpeta raíz
     root_file = PDFS_ROOT_DIR / filename
     if root_file.exists():
         return FileResponse(root_file)
