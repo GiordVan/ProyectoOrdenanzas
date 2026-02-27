@@ -2,7 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, FileText, ChevronDown, ChevronUp, Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+if (API_URL && !API_URL.startsWith("http")) {
+  API_URL = `https://${API_URL}`;
+}
+if (API_URL.endsWith("/")) {
+  API_URL = API_URL.slice(0, -1);
+}
 
 interface Documento {
   nombre: string;

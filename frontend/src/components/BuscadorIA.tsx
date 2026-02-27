@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Sparkles, FileText } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+if (API_URL && !API_URL.startsWith("http")) {
+  API_URL = `https://${API_URL}`;
+}
+if (API_URL.endsWith("/")) {
+  API_URL = API_URL.slice(0, -1);
+}
 
 interface Documento {
   numero_ordenanza?: string;
@@ -193,7 +199,7 @@ function BuscadorIA() {
                 </div>
                 {doc.pdf && (
                   <button
-                    onClick={() => abrirPDF(doc.pdf)}
+                    onClick={() => doc.pdf && abrirPDF(doc.pdf)}
                     className="text-[#da1062] hover:brightness-110 text-sm font-medium flex items-center gap-1"
                   >
                     <FileText className="w-4 h-4" />

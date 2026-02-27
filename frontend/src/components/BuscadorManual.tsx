@@ -37,7 +37,15 @@ interface Metadato {
   chunk_indices?: number[];
 }
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// Asegurar que la URL tenga protocolo (evita que se trate como ruta relativa en Netlify/Railway)
+if (API_URL && !API_URL.startsWith("http")) {
+  API_URL = `https://${API_URL}`;
+}
+// Eliminar barra final si existe
+if (API_URL.endsWith("/")) {
+  API_URL = API_URL.slice(0, -1);
+}
 const ITEMS_POR_PAGINA = 20; // Renderizar 20 ordenanzas por vez
 
 function BuscadorManual() {
