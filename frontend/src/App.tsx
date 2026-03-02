@@ -82,8 +82,9 @@ function App() {
             </div>
 
             {ultimaFecha && (
-              <span className="text-xs text-gray-400 whitespace-nowrap">
-                Fecha última actualización {ultimaFecha}
+              <span className="text-[10px] md:text-xs text-gray-400 text-right leading-tight">
+                <span className="block md:inline">Fecha última actualización</span>
+                <span className="block md:inline md:ml-1 font-semibold md:font-normal">{ultimaFecha}</span>
               </span>
             )}
           </div>
