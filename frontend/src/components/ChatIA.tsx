@@ -37,6 +37,11 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
   const [docsExpandidos, setDocsExpandidos] = useState<Record<number, boolean>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const conversationIdRef = useRef<string>(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `conv-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 
   // Auto-scroll al fondo cuando hay nuevos mensajes
   useEffect(() => {
@@ -80,7 +85,10 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
       const res = await fetch(`${API_URL}/ask-stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pregunta }),
+        body: JSON.stringify({
+          pregunta,
+          conversation_id: conversationIdRef.current,
+        }),
       });
 
       if (!res.ok) throw new Error("Error al obtener respuesta");
@@ -217,9 +225,9 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                 </p>
                 <div className="space-y-2 w-full max-w-xs">
                   {[
-                    "¿Qué dice la ordenanza 8000?",
-                    "Ordenanzas sobre transporte",
-                    "Normativa ambiental vigente",
+                    "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+                    "¿Cuánto cuesta que saquen mi auto del depósito municipal?",
+                    "¿Califico para la tarifa social si tengo bajos ingresos?",
                   ].map((sugerencia) => (
                     <button
                       key={sugerencia}

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "tarifaria_tasa_propiedad_sin_anio",
+    "question": "Cuanto tengo que pagar de tasa anual por mi propiedad?",
+    "expect": {
+      "type": "clarification",
+      "patterns": ["año", "ordenanza"]
+    }
+  },
+  {
+    "id": "tarifaria_cuotas_sin_anio",
+    "question": "Puedo pagar en cuotas o solo al contado?",
+    "expect": {
+      "type": "clarification",
+      "patterns": ["año"]
+    }
+  },
+  {
+    "id": "comparativa_sin_dos_anios",
+    "question": "Que porcentaje de aumento hay entre las tarifarias?",
+    "expect": {
+      "type": "clarification",
+      "patterns": ["años", "comparar"]
+    }
+  },
+  {
+    "id": "presupuesto_total_2025",
+    "question": "Cual es el presupuesto total para Villa Maria en 2025?",
+    "expect": {
+      "type": "contains_all",
+      "patterns": ["74", "908", "214", "520"]
+    }
+  },
+  {
+    "id": "presupuesto_secretaria_responsable",
+    "question": "Que secretaria es responsable de ejecutar y seguir este presupuesto 2025?",
+    "expect": {
+      "type": "contains_all",
+      "patterns": [
+        "Secretaría de Economía, Transformación Digital y Desarrollo Productivo"
+      ]
+    }
+  },
+  {
+    "id": "presupuesto_modificable",
+    "question": "El municipio puede cambiar el presupuesto 2025 durante el año?",
+    "expect": {
+      "type": "contains_all",
+      "patterns": ["sí", "Art. 4", "Art. 5"]
+    }
+  }
+]

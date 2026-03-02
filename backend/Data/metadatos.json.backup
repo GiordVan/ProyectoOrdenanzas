@@ -49,10 +49,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "declaracion",
-      "tarifaria_2025"
     ]
   },
   {
@@ -105,16 +101,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "convenio",
-      "cultura",
-      "deporte",
-      "turismo",
-      "gobierno",
-      "relaciones_institucionales",
-      "municipalidad"
     ]
   },
   {
@@ -167,14 +153,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cooperacion",
-      "cultura",
-      "musica",
-      "convenio",
-      "2025"
     ]
   },
   {
@@ -221,11 +199,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "transporte",
-      "denominacion_calle"
     ]
   },
   {
@@ -278,8 +251,7 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8243.pdf",
@@ -342,8 +314,7 @@
       21,
       22,
       23
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8242.pdf",
@@ -394,15 +365,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "salud",
-      "convenio",
-      "municipalidad",
-      "colegio_psicologos",
-      "ratificacion",
-      "2025"
     ]
   },
   {
@@ -530,13 +492,6 @@
       80,
       81,
       82
-    ],
-    "etiquetas": [
-      "transporte",
-      "obra_publica",
-      "ente_movilidada_urbana",
-      "declaracion",
-      "presupuesto_2025"
     ]
   },
   {
@@ -582,16 +537,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2025",
-      "tasa_propiedad",
-      "servicios_publicos",
-      "agua_potable",
-      "desagües",
-      "mantenimiento",
-      "cooperativa"
     ]
   },
   {
@@ -646,10 +591,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "declaracion"
     ]
   },
   {
@@ -702,13 +643,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cooperacion",
-      "seguridad",
-      "convivencia_urbana",
-      "fundacion_isitrans"
     ]
   },
   {
@@ -761,11 +695,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "regimen_laboral"
     ]
   },
   {
@@ -818,10 +747,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "declaracion"
     ]
   },
   {
@@ -871,13 +796,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "viviendas",
-      "interes_publico",
-      "barrio_bello_horizonte"
     ]
   },
   {
@@ -930,13 +848,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "desarrollo_productivo",
-      "ratificacion_contrato",
-      "municipalidad",
-      "2025"
     ]
   },
   {
@@ -989,12 +900,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "convenio",
-      "cooperativa_trabajo",
-      "servicios_urbanos"
     ]
   },
   {
@@ -1170,13 +1075,6 @@
       128,
       129,
       130
-    ],
-    "etiquetas": [
-      "adhesion_legislativa",
-      "licencias_conducir",
-      "revisiones_tecnicas",
-      "normativa_nacional",
-      "normativa_provincial"
     ]
   },
   {
@@ -1238,15 +1136,6 @@
       25,
       26,
       27
-    ],
-    "etiquetas": [
-      "tasa_propiedad",
-      "medio_ambiente",
-      "obra_publica",
-      "regimen_laboral",
-      "denominacion_calle",
-      "declaracion",
-      "tarifaria_2025"
     ]
   },
   {
@@ -1354,12 +1243,6 @@
       65,
       66,
       67
-    ],
-    "etiquetas": [
-      "tarifaria_2025",
-      "multas",
-      "transporte",
-      "modificacion_ordenanza"
     ]
   },
   {
@@ -1441,13 +1324,6 @@
       37,
       38,
       39
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "transporte",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2025"
     ]
   },
   {
@@ -1515,16 +1391,6 @@
       30,
       31,
       32
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "obra_publica",
-      "declaracion",
-      "modificacion",
-      "justicia_administrativa",
-      "tramite_electronico",
-      "villa_maria",
-      "2025"
     ]
   },
   {
@@ -1577,10 +1443,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "denominacion_calle"
     ]
   },
   {
@@ -1626,12 +1488,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "ratificacion_contrato",
-      "denominacion_calle",
-      "obra_publica",
-      "presupuesto_2025"
     ]
   },
   {
@@ -1675,16 +1531,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "ordenamiento_urbano",
-      "subdivisiones",
-      "acceso_vial",
-      "servidumbres",
-      "parcelas",
-      "integracion_terrenos",
-      "modificacion_ordenanza"
     ]
   },
   {
@@ -1735,10 +1581,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2025"
     ]
   },
   {
@@ -1791,12 +1633,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "convenio_colaboracion",
-      "ratificacion_convenio",
-      "municipalidad",
-      "2025"
     ]
   },
   {
@@ -1849,16 +1685,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "regimen_laboral",
-      "comunicación",
-      "convenio",
-      "desarrollo_humano",
-      "comunicación_institucional",
-      "contrato_comodato"
     ]
   },
   {
@@ -1909,16 +1735,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "transporte",
-      "seguridad",
-      "comodato",
-      "policia",
-      "municipalidad",
-      "villa_maria"
     ]
   },
   {
@@ -1972,13 +1788,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "tarifaria_2025",
-      "presupuesto_2025",
-      "denominacion_calle",
-      "servicios_municipales"
     ]
   },
   {
@@ -2027,12 +1836,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "obra_publica",
-      "declaracion",
-      "tarifaria_2025"
     ]
   },
   {
@@ -2084,11 +1887,6 @@
       5,
       6,
       7
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2025",
-      "transporte"
     ]
   },
   {
@@ -2141,14 +1939,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "transporte",
-      "regimen_laboral",
-      "denominacion_calle",
-      "medio_ambiente",
-      "tarifaria_2025"
     ]
   },
   {
@@ -2203,10 +1993,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "declaracion"
     ]
   },
   {
@@ -2260,13 +2046,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "contribucion_por_mejoras",
-      "pavimentacion",
-      "denominacion_calle",
-      "presupuesto_2025"
     ]
   },
   {
@@ -2322,12 +2101,6 @@
       17,
       18,
       19
-    ],
-    "etiquetas": [
-      "tarifaria_2025",
-      "habilitacion_comercial",
-      "alojamientos_temporarios",
-      "código_actividad"
     ]
   },
   {
@@ -2609,13 +2382,6 @@
       5,
       6,
       7
-    ],
-    "etiquetas": [
-      "convenio_colaboracion",
-      "salud",
-      "municipalidad",
-      "ratificacion",
-      "2025"
     ]
   },
   {
@@ -2668,16 +2434,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "presupuesto",
-      "presupuesto_2025",
-      "desarrollo_humano",
-      "cultura",
-      "convenio",
-      "logistica",
-      "talleres"
     ]
   },
   {
@@ -2731,16 +2487,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "comision_apoyo",
-      "talleres_comunitarios",
-      "higiene",
-      "participacion_vecinal",
-      "difusion_actividades",
-      "uso_espacios"
     ]
   },
   {
@@ -2797,12 +2543,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "transporte",
-      "declaracion",
-      "obra_publica",
-      "presupuesto_2025"
     ]
   },
   {
@@ -2850,12 +2590,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "regimen_laboral",
-      "presupuesto_2025"
     ]
   },
   {
@@ -2909,14 +2643,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "convenio",
-      "cultura",
-      "comunidad_regional",
-      "municipalidad",
-      "2025"
     ]
   },
   {
@@ -2976,16 +2702,6 @@
       12,
       13,
       14
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "cultura",
-      "participacion_ciudadana",
-      "talleres_culturales",
-      "instituto_municipal_artes",
-      "convenio",
-      "cooperativa"
     ]
   },
   {
@@ -3039,13 +2755,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "patrimonio",
-      "cultura",
-      "historia",
-      "denominacion_calle"
     ]
   },
   {
@@ -3094,13 +2803,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "presupuesto_2025",
-      "obra_publica",
-      "declaracion",
-      "medio_ambiente",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -3152,12 +2854,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "medio_ambiente",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3226,13 +2922,6 @@
       27,
       28,
       29
-    ],
-    "etiquetas": [
-      "habilitacion_comercial",
-      "alojamiento_temporario",
-      "regimen_laboral",
-      "denominacion_calle",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3285,12 +2974,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3343,14 +3026,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "colaboracion",
-      "comunidad",
-      "talleres",
-      "espacios_comunes",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3403,14 +3078,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "convenio_colaboracion",
-      "disposicion_residuos",
-      "ratificacion_convenio",
-      "intermunicipal",
-      "2025"
     ]
   },
   {
@@ -3485,13 +3152,6 @@
       12,
       13,
       14
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "obra_publica",
-      "regimen_laboral",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3545,13 +3205,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto_2025",
-      "denominacion_calle",
-      "medio_ambiente",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -3597,11 +3250,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "designacion",
-      "ente_desarrollo_productivo",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3654,11 +3302,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "presupuesto_2025"
     ]
   },
   {
@@ -3711,12 +3354,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto_2025",
-      "denominacion_calle",
-      "medio_ambiente"
     ]
   },
   {
@@ -3761,14 +3398,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "presupuesto_2025",
-      "tarifaria_2025",
-      "cultura",
-      "participacion_ciudadana"
     ]
   },
   {
@@ -3838,14 +3467,6 @@
       16,
       17,
       18
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "regimen_laboral",
-      "declaracion",
-      "medio_ambiente",
-      "tarifaria_2026"
     ]
   },
   {
@@ -4085,12 +3706,6 @@
       195,
       196,
       197
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "cultura",
-      "convenio",
-      "ratificacion"
     ]
   },
   {
@@ -4148,12 +3763,6 @@
       15,
       16,
       17
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "declaracion",
-      "obra_publica",
-      "presupuesto_2025"
     ]
   },
   {
@@ -4207,11 +3816,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "habilitacion_comercial",
-      "obra_publica",
-      "tarifaria_2025"
     ]
   },
   {
@@ -4431,13 +4035,6 @@
       85,
       86,
       87
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "obra_publica",
-      "presupuesto_2025",
-      "declaracion",
-      "denominacion_calle"
     ]
   },
   {
@@ -4489,10 +4086,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "tarifaria_2025"
     ]
   },
   {
@@ -4543,12 +4136,6 @@
       11,
       12,
       13
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "presupuesto_2025",
-      "declaracion"
     ]
   },
   {
@@ -4595,12 +4182,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "denominacion_calle",
-      "medio_ambiente",
-      "obra_publica"
     ]
   },
   {
@@ -4642,13 +4223,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "desarrollo_local",
-      "entidades_colaborativas"
     ]
   },
   {
@@ -4718,14 +4292,6 @@
       21,
       22,
       23
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "regimen_laboral",
-      "transporte",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -4777,16 +4343,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "declaracion",
-      "programa_vivienda",
-      "fondo_garantia_alquileres",
-      "servicios_municipales",
-      "educacion_no_formal",
-      "talleres_oficios"
     ]
   },
   {
@@ -4835,16 +4391,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "denominacion_calle",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "regimen_laboral",
-      "tarifaria_2024"
     ]
   },
   {
@@ -4939,16 +4485,6 @@
       50,
       51,
       52
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "medio_ambiente",
-      "denominacion_calle",
-      "habilitacion_comercial",
-      "convenios_urbanisticos",
-      "fraccionamiento_suelo"
     ]
   },
   {
@@ -5005,13 +4541,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "medio_ambiente",
-      "denominacion_calle"
     ]
   },
   {
@@ -5065,13 +4594,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "tarifaria",
-      "tarifaria_2024"
     ]
   },
   {
@@ -5122,12 +4644,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "transporte",
-      "presupuesto_2024",
-      "obra_publica"
     ]
   },
   {
@@ -5175,12 +4691,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "denominacion_calle"
     ]
   },
   {
@@ -5234,16 +4744,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "saneamiento",
-      "ingresos_corrientes"
     ]
   },
   {
@@ -5285,16 +4785,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "inclusion",
-      "accesibilidad",
-      "derechos_humanos",
-      "comercio",
-      "supermercados"
     ]
   },
   {
@@ -5347,13 +4837,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "medio_ambiente",
-      "denominacion_calle"
     ]
   },
   {
@@ -5420,16 +4903,6 @@
       21,
       22,
       23
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "denominacion_calle",
-      "habilitacion_comercial",
-      "medio_ambiente",
-      "tarifaria_2024"
     ]
   },
   {
@@ -5485,14 +4958,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "medio_ambiente",
-      "denominacion_calle",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -5545,12 +5010,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -5604,15 +5063,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "medio_ambiente",
-      "denominacion_calle",
-      "tarifaria",
-      "tarifaria_2024"
     ]
   },
   {
@@ -5666,12 +5116,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -5737,13 +5181,6 @@
       14,
       15,
       16
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "denominacion_calle",
-      "escuela_municipal",
-      "remodelacion_tunel"
     ]
   },
   {
@@ -5796,13 +5233,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -5847,11 +5277,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -5898,12 +5323,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -5954,13 +5373,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -6008,14 +5420,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "declaracion",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -6065,15 +5469,6 @@
       8,
       9,
       10
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "obra_publica",
-      "denominacion_calle",
-      "declaracion",
-      "emergencia_vial",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -6122,12 +5517,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "convenio",
-      "servicios_municipales"
     ]
   },
   {
@@ -6209,14 +5598,6 @@
       32,
       33,
       34
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2025",
-      "tasa_propiedad",
-      "obra_publica",
-      "servicios_municipales",
-      "rezonificacion"
     ]
   },
   {
@@ -6309,15 +5690,6 @@
       40,
       41,
       42
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2025",
-      "tarifaria",
-      "tarifaria_2025",
-      "tasa_propiedad",
-      "bonificaciones",
-      "contribuyentes"
     ]
   },
   {
@@ -6474,16 +5846,6 @@
       106,
       107,
       108
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2025",
-      "tarifaria",
-      "tarifaria_2025",
-      "productos_agropecuarios",
-      "productos_mineros",
-      "productos_metálicos",
-      "ingresos_corrientes"
     ]
   },
   {
@@ -6962,16 +6324,6 @@
       421,
       422,
       423
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "servicios_municipales",
-      "eventos",
-      "salones_fiestas",
-      "impuestos",
-      "base_imponible"
     ]
   },
   {
@@ -7849,15 +7201,6 @@
       832,
       833,
       834
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2025",
-      "obra_publica",
-      "subsidios",
-      "gastos_municipales",
-      "equipos_oficina",
-      "bienes_de_capital"
     ]
   },
   {
@@ -7915,13 +7258,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "transporte",
-      "obra_publica",
-      "regimen_laboral",
-      "denominacion_calle",
-      "tarifaria_2024"
     ]
   },
   {
@@ -7993,12 +7329,6 @@
       18,
       19,
       20
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "declaracion",
-      "tarifaria_2024"
     ]
   },
   {
@@ -8039,16 +7369,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "desarrollo_economico",
-      "emprendimiento",
-      "capacitación",
-      "fondo_municipal",
-      "registro_emprendedores",
-      "espacios_coworking"
     ]
   },
   {
@@ -8111,14 +7431,6 @@
       22,
       23,
       24
-    ],
-    "etiquetas": [
-      "subasta_vehiculos",
-      "emprendimiento",
-      "espacios_trabajo",
-      "ferias",
-      "reconocimiento_oficial",
-      "tarifaria_2024"
     ]
   },
   {
@@ -8191,12 +7503,6 @@
       27,
       28,
       29
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "publicidad",
-      "servicios_municipales"
     ]
   },
   {
@@ -8268,16 +7574,6 @@
       19,
       20,
       21
-    ],
-    "etiquetas": [
-      "convenio",
-      "tecnologia",
-      "cooperacion",
-      "municipalidad",
-      "desarrollo_productivo",
-      "transformacion_digital",
-      "cultura",
-      "relaciones_institucionales"
     ]
   },
   {
@@ -8356,10 +7652,6 @@
       30,
       31,
       32
-    ],
-    "etiquetas": [
-      "habilitacion_comercial",
-      "denominacion_calle"
     ]
   },
   {
@@ -8429,12 +7721,6 @@
       16,
       17,
       18
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "habilitacion_comercial",
-      "regimen_laboral"
     ]
   },
   {
@@ -8520,16 +7806,6 @@
       43,
       44,
       45
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "educacion",
-      "construccion",
-      "jardin_infantil",
-      "municipalidad",
-      "contrato",
-      "villa_maria"
     ]
   },
   {
@@ -8596,16 +7872,6 @@
       13,
       14,
       15
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "regimen_laboral",
-      "presupuesto_2024",
-      "tarifaria",
-      "tarifaria_2024",
-      "medio_ambiente",
-      "declaracion"
     ]
   },
   {
@@ -8666,11 +7932,6 @@
       18,
       19,
       20
-    ],
-    "etiquetas": [
-      "programa_fomento_emprendimiento",
-      "capacitación_servicios_emergencia",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -8766,13 +8027,6 @@
       42,
       43,
       44
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "declaracion"
     ]
   },
   {
@@ -8835,16 +8089,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "declaracion",
-      "convenio_colaboracion",
-      "cooperativa",
-      "prestacion_servicios",
-      "salud",
-      "municipalidad",
-      "asociados",
-      "equipamiento"
     ]
   },
   {
@@ -8898,10 +8142,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente"
     ]
   },
   {
@@ -8979,11 +8219,6 @@
       24,
       25,
       26
-    ],
-    "etiquetas": [
-      "ratificacion_contrato",
-      "denominacion_calle",
-      "obra_publica"
     ]
   },
   {
@@ -9035,10 +8270,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente"
     ]
   },
   {
@@ -9091,10 +8322,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "declaracion"
     ]
   },
   {
@@ -9217,13 +8444,6 @@
       84,
       85,
       86
-    ],
-    "etiquetas": [
-      "programa_infantil",
-      "convivencia_comunitaria",
-      "valores_democraticos",
-      "participacion_infantil",
-      "educacion_civica"
     ]
   },
   {
@@ -9305,12 +8525,6 @@
       28,
       29,
       30
-    ],
-    "etiquetas": [
-      "convenio",
-      "salud",
-      "servicios_municipales",
-      "denominacion_calle"
     ]
   },
   {
@@ -9352,13 +8566,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "interes_social",
-      "extension_legislativa",
-      "ciclo_de_charlas",
-      "programa_permanente"
     ]
   },
   {
@@ -9405,12 +8612,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "declaracion",
-      "tarifaria_2024"
     ]
   },
   {
@@ -9478,13 +8679,6 @@
       14,
       15,
       16
-    ],
-    "etiquetas": [
-      "declaracion",
-      "habilitacion_comercial",
-      "transporte",
-      "obra_publica",
-      "regimen_laboral"
     ]
   },
   {
@@ -9538,14 +8732,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "violencia_de_genero",
-      "adhesion_ley_nacional",
-      "comunicacion",
-      "registro_municipal"
     ]
   },
   {
@@ -9600,12 +8786,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "habilitacion_comercial",
-      "obra_publica",
-      "tarifaria_2024"
     ]
   },
   {
@@ -9655,15 +8835,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cooperacion",
-      "comodato",
-      "cultura",
-      "teatro",
-      "convenio",
-      "2024"
     ]
   },
   {
@@ -9716,13 +8887,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "regimen_laboral",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -9767,13 +8931,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "educacion",
-      "convenio",
-      "jardin_infantil",
-      "presupuesto_2024"
     ]
   },
   {
@@ -9827,13 +8984,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "comodato",
-      "denominacion_calle",
-      "obra_publica",
-      "habilitacion_comercial",
-      "presupuesto_2024"
     ]
   },
   {
@@ -9897,12 +9047,6 @@
       10,
       11,
       12
-    ],
-    "etiquetas": [
-      "comodato",
-      "denominacion_calle",
-      "obra_publica",
-      "regimen_laboral"
     ]
   },
   {
@@ -9966,14 +9110,6 @@
       10,
       11,
       12
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "concientizacion",
-      "salud_publica",
-      "comunidad",
-      "barrio_bello_horizonte"
     ]
   },
   {
@@ -10026,12 +9162,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "declaracion",
-      "medio_ambiente"
     ]
   },
   {
@@ -10075,12 +9205,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -10180,15 +9304,6 @@
       42,
       43,
       44
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "regimen_laboral",
-      "servicios_municipales",
-      "gastos_funcionamiento",
-      "honorarios_profesionales"
     ]
   },
   {
@@ -10262,14 +9377,6 @@
       21,
       22,
       23
-    ],
-    "etiquetas": [
-      "educacion",
-      "convenio",
-      "inteligencia_multiple",
-      "programas_vocacionales",
-      "jornadas_abiertas",
-      "denominacion_calle"
     ]
   },
   {
@@ -10359,16 +9466,6 @@
       36,
       37,
       38
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "tarifaria",
-      "tarifaria_2024",
-      "medio_ambiente",
-      "denominacion_calle",
-      "habilitacion_comercial",
-      "regimen_laboral",
-      "cementerio"
     ]
   },
   {
@@ -10410,14 +9507,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "saneamiento",
-      "servicios_municipales",
-      "actualizacion_tarifa"
     ]
   },
   {
@@ -10462,12 +9551,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "habilitacion_comercial",
-      "tarifaria_2024",
-      "presupuesto_2024"
     ]
   },
   {
@@ -10519,12 +9602,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -10575,11 +9652,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "regimen_laboral_2024",
-      "declaracion"
     ]
   },
   {
@@ -10631,12 +9703,6 @@
       7,
       8,
       9
-    ],
-    "etiquetas": [
-      "transporte",
-      "obra_publica",
-      "declaracion",
-      "medio_ambiente"
     ]
   },
   {
@@ -10690,13 +9756,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "educacion",
-      "practicas_profesionales",
-      "deporte",
-      "cultura"
     ]
   },
   {
@@ -10740,12 +9799,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "obra_publica",
-      "tarifaria_2024"
     ]
   },
   {
@@ -10810,12 +9863,6 @@
       11,
       12,
       13
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "obra_publica",
-      "presupuesto_2024"
     ]
   },
   {
@@ -10868,13 +9915,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "denominacion_calle",
-      "declaracion",
-      "medio_ambiente"
     ]
   },
   {
@@ -10939,13 +9979,6 @@
       22,
       23,
       24
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "transporte",
-      "obra_publica"
     ]
   },
   {
@@ -10990,16 +10023,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "programa_acceso_informacion",
-      "lenguaje_claro",
-      "ratificacion_contrato",
-      "infraestructura",
-      "desarrollo_urbano",
-      "medio_ambiente",
-      "municipalidad",
-      "2024"
     ]
   },
   {
@@ -11049,14 +10072,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "declaracion",
-      "comision_apoyo",
-      "ciudad_administrativa",
-      "ciudad_judicial",
-      "villa_maria",
-      "2024"
     ]
   },
   {
@@ -11110,12 +10125,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "obra_publica",
-      "presupuesto_2024"
     ]
   },
   {
@@ -11168,13 +10177,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "denominacion_calle",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -11231,12 +10233,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "transporte",
-      "denominacion_calle",
-      "obra_publica",
-      "regimen_laboral"
     ]
   },
   {
@@ -11289,12 +10285,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "obra_publica",
-      "tarifaria_2024"
     ]
   },
   {
@@ -11348,12 +10338,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -11406,12 +10390,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "ni_una_menos",
-      "fecha_importante",
-      "anexo"
     ]
   },
   {
@@ -11465,16 +10443,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "presupuesto_2024",
-      "tarifaria_2024",
-      "habilitacion_comercial",
-      "denominacion_calle",
-      "regimen_laboral",
-      "declaracion"
     ]
   },
   {
@@ -11633,13 +10601,6 @@
       112,
       113,
       114
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "regimen_laboral",
-      "denominacion_calle",
-      "convenio",
-      "presupuesto_2024"
     ]
   },
   {
@@ -11703,14 +10664,6 @@
       10,
       11,
       12
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "presupuesto",
-      "presupuesto_2024",
-      "denominacion_calle",
-      "regimen_laboral",
-      "medio_ambiente"
     ]
   },
   {
@@ -11771,16 +10724,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "declaracion",
-      "obra_publica",
-      "regimen_laboral",
-      "transporte",
-      "medio_ambiente",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -11824,13 +10767,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "obra_publica",
-      "denominacion_calle",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -11884,13 +10820,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "regimen_laboral",
-      "denominacion_calle",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -11962,13 +10891,6 @@
       18,
       19,
       20
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "tarifaria_2025",
-      "regimen_laboral",
-      "denominacion_calle",
-      "medio_ambiente"
     ]
   },
   {
@@ -12048,16 +10970,6 @@
       26,
       27,
       28
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "regimen_laboral",
-      "denominacion_calle",
-      "tarifaria",
-      "tarifaria_2024",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -12138,13 +11050,6 @@
       27,
       28,
       29
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "obra_publica",
-      "tarifaria_2024",
-      "presupuesto_2024",
-      "tasa_propiedad"
     ]
   },
   {
@@ -12197,16 +11102,6 @@
       7,
       8,
       9
-    ],
-    "etiquetas": [
-      "donacion",
-      "espacios_verdes",
-      "estacionamiento",
-      "sanciones",
-      "reglamento_vial",
-      "transporte",
-      "municipalidad",
-      "2024"
     ]
   },
   {
@@ -12257,12 +11152,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "habilitacion_comercial",
-      "obra_publica",
-      "presupuesto_2024"
     ]
   },
   {
@@ -12303,16 +11192,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "reglamento_faltas",
-      "transporte",
-      "denominacion_calle",
-      "sanciones",
-      "autorizacion",
-      "estacionamiento",
-      "prohibicion",
-      "regimen_laboral"
     ]
   },
   {
@@ -12361,12 +11240,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "denominacion_calle",
-      "presupuesto_2024"
     ]
   },
   {
@@ -12438,14 +11311,6 @@
       31,
       32,
       33
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "flexibilizacion_loteos",
-      "acceso_suelo_urbano",
-      "modificacion_ordenanza",
-      "urbanismo",
-      "desarrollo_inmobiliario"
     ]
   },
   {
@@ -12490,12 +11355,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "programa_prevencion_acoso",
-      "medio_ambiente",
-      "educacion",
-      "derechos_infantiles"
     ]
   },
   {
@@ -12569,14 +11428,6 @@
       28,
       29,
       30
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cultura",
-      "convenio",
-      "musica",
-      "eventos",
-      "festival"
     ]
   },
   {
@@ -12624,13 +11475,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "ratificacion_decreto",
-      "anexos",
-      "documentacion_oficial"
     ]
   },
   {
@@ -12682,12 +11526,6 @@
       5,
       6,
       7
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "transporte",
-      "obra_publica"
     ]
   },
   {
@@ -12740,13 +11578,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "obra_publica",
-      "tarifaria_2024"
     ]
   },
   {
@@ -12819,13 +11650,6 @@
       19,
       20,
       21
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "denominacion_calle",
-      "regimen_laboral",
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -12877,16 +11701,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "protocolo_trabajo",
-      "relaciones_institucionales",
-      "educacion",
-      "universidad",
-      "cooperacion",
-      "municipalidad",
-      "2024"
     ]
   },
   {
@@ -12934,16 +11748,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "programa_formacion",
-      "salud_mental",
-      "empleados_municipales",
-      "regimen_laboral",
-      "capacitación",
-      "comunicación",
-      "bienestar_comunitario",
-      "obligatorio"
     ]
   },
   {
@@ -13005,13 +11809,6 @@
       8,
       9,
       10
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "hospital",
-      "salud",
-      "comodato",
-      "provincia_cordoba"
     ]
   },
   {
@@ -13072,16 +11869,6 @@
       7,
       8,
       9
-    ],
-    "etiquetas": [
-      "declaracion",
-      "educacion",
-      "infancias",
-      "convenio",
-      "fortalecimiento_educativo",
-      "programa_provincial",
-      "municipalismo",
-      "red_internacional"
     ]
   },
   {
@@ -13144,14 +11931,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "declaracion",
-      "tarifaria_2024",
-      "tarifaria",
-      "comunicacion",
-      "anexo",
-      "red_iberinfancias"
     ]
   },
   {
@@ -13205,16 +11984,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "regimen_laboral",
-      "derechos_humanos",
-      "capacitación_obligatoria",
-      "adherencia_ley",
-      "municipalidad",
-      "funcion_publica",
-      "convenio"
     ]
   },
   {
@@ -13263,11 +12032,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "tarifaria_2024",
-      "presupuesto_2024"
     ]
   },
   {
@@ -13321,12 +12085,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "obra_publica"
     ]
   },
   {
@@ -13376,14 +12134,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "confidencialidad",
-      "convenio_colaboracion",
-      "municipalidad",
-      "colegio_farmaceuticos",
-      "2024"
     ]
   },
   {
@@ -13479,12 +12229,6 @@
       42,
       43,
       44
-    ],
-    "etiquetas": [
-      "servicios_postales",
-      "convenio",
-      "municipalidad",
-      "declaracion"
     ]
   },
   {
@@ -13531,14 +12275,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "transporte",
-      "declaracion",
-      "habilitacion_comercial",
-      "obra_publica",
-      "tarifaria_2024"
     ]
   },
   {
@@ -13597,13 +12333,6 @@
       5,
       6,
       7
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "denominacion_calle",
-      "declaracion",
-      "tarifaria_2024"
     ]
   },
   {
@@ -13666,13 +12395,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "convenio",
-      "medio_ambiente",
-      "obra_publica",
-      "transporte",
-      "tarifaria_2024"
     ]
   },
   {
@@ -13749,12 +12471,6 @@
       23,
       24,
       25
-    ],
-    "etiquetas": [
-      "medio_ambiente",
-      "obra_publica",
-      "denominacion_calle",
-      "declaracion"
     ]
   },
   {
@@ -13814,16 +12530,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "declaracion",
-      "convenio",
-      "colaboracion",
-      "agencia_competitividad",
-      "municipalidad",
-      "protocolizacion",
-      "publicacion",
-      "registro"
     ]
   },
   {
@@ -13911,14 +12617,6 @@
       43,
       44,
       45
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "tasa_propiedad",
-      "regimen_laboral",
-      "obligaciones_tributarias",
-      "regularizacion_de_deudas"
     ]
   },
   {
@@ -13958,12 +12656,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "declaracion",
-      "memoria",
-      "cultura",
-      "educacion"
     ]
   },
   {
@@ -14015,13 +12707,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "deporte",
-      "programa_deportivo",
-      "actividades_amateur",
-      "actividades_profesionales"
     ]
   },
   {
@@ -14077,14 +12762,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "becas",
-      "educacion",
-      "subsidios",
-      "programa_becas",
-      "derechos_humanos",
-      "contencion_social"
     ]
   },
   {
@@ -14131,13 +12808,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "fomento_deportivo",
-      "declaracion",
-      "programa_permanente",
-      "saludable",
-      "ordenanza_2024"
     ]
   },
   {
@@ -14200,13 +12870,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "declaracion",
-      "incremento_salarial",
-      "dialogo_sindical",
-      "servicios_publicos"
     ]
   },
   {
@@ -14267,10 +12930,6 @@
       8,
       9,
       10
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "transporte"
     ]
   },
   {
@@ -14322,10 +12981,6 @@
       9,
       10,
       11
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "transporte"
     ]
   },
   {
@@ -14380,11 +13035,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2024",
-      "transporte"
     ]
   },
   {
@@ -14449,13 +13099,6 @@
       16,
       17,
       18
-    ],
-    "etiquetas": [
-      "tarifaria_2024",
-      "transporte",
-      "estacionamiento_medido",
-      "movilidad",
-      "vía_pública"
     ]
   },
   {
@@ -14531,12 +13174,6 @@
       22,
       23,
       24
-    ],
-    "etiquetas": [
-      "declaracion",
-      "vinculacion_tecnologica",
-      "universidad",
-      "municipalidad"
     ]
   },
   {
@@ -14594,14 +13231,6 @@
       7,
       8,
       9
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "tarifaria",
-      "tarifaria_2024"
     ]
   },
   {
@@ -14677,12 +13306,6 @@
       22,
       23,
       24
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cultura",
-      "convenio_colaboracion",
-      "agencia_cordoba_cultura"
     ]
   },
   {
@@ -14771,8 +13394,7 @@
       37,
       38,
       39
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8035.pdf",
@@ -14875,11 +13497,6 @@
       51,
       52,
       53
-    ],
-    "etiquetas": [
-      "contrato_locacion",
-      "auditoria_general",
-      "ratificacion_contrato"
     ]
   },
   {
@@ -14924,12 +13541,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "declaracion",
-      "cultura",
-      "arte_local",
-      "extension_legislativa"
     ]
   },
   {
@@ -14977,12 +13588,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "transporte",
-      "declaracion",
-      "emergencia_transporte",
-      "emergencia_2023"
     ]
   },
   {
@@ -15034,13 +13639,6 @@
       13,
       14,
       15
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "obra_publica",
-      "modificacion_ordenanza",
-      "control_infracciones",
-      "funcionarios_municipales"
     ]
   },
   {
@@ -15083,13 +13681,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "autonomia_municipal",
-      "ley_provincial",
-      "competencia_territorial",
-      "poderes_reservados"
     ]
   },
   {
@@ -15142,14 +13733,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "convenio",
-      "prestaciones",
-      "municipalidad",
-      "servicios_municipales",
-      "ratificacion",
-      "2023"
     ]
   },
   {
@@ -15200,11 +13783,6 @@
       0,
       1,
       2
-    ],
-    "etiquetas": [
-      "declaracion",
-      "medio_ambiente",
-      "adhesion_ley_lucio"
     ]
   },
   {
@@ -15246,13 +13824,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "tarifaria",
-      "tarifaria_2023",
-      "tasa_propiedad",
-      "saneamiento",
-      "servicios_municipales"
     ]
   },
   {
@@ -15302,9 +13873,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion"
     ]
   },
   {
@@ -15363,10 +13931,6 @@
       3,
       4,
       5
-    ],
-    "etiquetas": [
-      "transporte",
-      "denominacion_calle"
     ]
   },
   {
@@ -15420,8 +13984,7 @@
       0,
       1,
       2
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8024.pdf",
@@ -15482,14 +14045,6 @@
       21,
       22,
       23
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2023",
-      "financiamiento",
-      "letras_del_tesoro",
-      "departamento_ejecutivo",
-      "recursos_municipales"
     ]
   },
   {
@@ -15538,8 +14093,7 @@
       0,
       1,
       2
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8022.pdf",
@@ -15588,10 +14142,6 @@
       5,
       6,
       7
-    ],
-    "etiquetas": [
-      "declaracion",
-      "habilitacion_comercial"
     ]
   },
   {
@@ -15649,13 +14199,6 @@
       8,
       9,
       10
-    ],
-    "etiquetas": [
-      "seguridad_ciudadana",
-      "convivencia_vial",
-      "consejo_municipal",
-      "prevencion",
-      "convivencia_urbana"
     ]
   },
   {
@@ -15790,16 +14333,6 @@
       79,
       80,
       81
-    ],
-    "etiquetas": [
-      "declaracion",
-      "emergencia_economica",
-      "presupuesto_2023",
-      "regimen_laboral",
-      "situacion_financiera",
-      "organismos_publicos",
-      "entidades_autarquicas",
-      "sociedades_municipales"
     ]
   },
   {
@@ -15978,14 +14511,6 @@
       123,
       124,
       125
-    ],
-    "etiquetas": [
-      "regimen_laboral",
-      "presupuesto_2023",
-      "medio_ambiente",
-      "obra_publica",
-      "denominacion_calle",
-      "declaracion"
     ]
   },
   {
@@ -16043,10 +14568,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "tarifaria_2023",
-      "transporte"
     ]
   },
   {
@@ -16098,13 +14619,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "tarifaria_2023",
-      "transporte",
-      "tarifa_diurna",
-      "servicio_publico",
-      "modificacion_ordenanza"
     ]
   },
   {
@@ -16149,8 +14663,7 @@
       3,
       4,
       5
-    ],
-    "etiquetas": []
+    ]
   },
   {
     "nombre_archivo": "ordenanza_8015.pdf",
@@ -16224,16 +14737,6 @@
       21,
       22,
       23
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "medio_ambiente",
-      "habilitacion_comercial",
-      "convenio",
-      "cooperativa",
-      "ratificacion",
-      "servicios_publicos",
-      "2023"
     ]
   },
   {
@@ -16288,15 +14791,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2023",
-      "obra_publica",
-      "ente_autarquico",
-      "gastos",
-      "educacion",
-      "granja_los_amigos"
     ]
   },
   {
@@ -16384,13 +14878,6 @@
       39,
       40,
       41
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024",
-      "obra_publica",
-      "vivienda",
-      "gastos_municipales"
     ]
   },
   {
@@ -16475,10 +14962,6 @@
       35,
       36,
       37
-    ],
-    "etiquetas": [
-      "presupuesto",
-      "presupuesto_2024"
     ]
   },
   {
@@ -16524,15 +15007,6 @@
       2,
       3,
       4
-    ],
-    "etiquetas": [
-      "obra_publica",
-      "regimen_laboral",
-      "contratos",
-      "guardacostas",
-      "río_ctalamochita",
-      "playas",
-      "servicios_municipales"
     ]
   },
   {
@@ -16586,11 +15060,6 @@
       6,
       7,
       8
-    ],
-    "etiquetas": [
-      "declaracion",
-      "ciudadano_notable",
-      "reconocimiento"
     ]
   },
   {
@@ -16650,11 +15119,6 @@
       20,
       21,
       22
-    ],
-    "etiquetas": [
-      "desafectacion_bienes_muebles",
-      "dominio_publico",
-      "ordenanza_municipal"
     ]
   },
   {
@@ -16709,12 +15173,6 @@
       1,
       2,
       3
-    ],
-    "etiquetas": [
-      "declaracion",
-      "homenaje",
-      "donacion",
-      "reconocimiento"
     ]
   },
   {
@@ -16783,16 +15241,6 @@
       15,
       16,
       17
-    ],
-    "etiquetas": [
-      "declaracion",
-      "convenio",
-      "ratificacion",
-      "municipalidad",
-      "aadi_capif",
-      "representacion",
-      "anexo",
-      "octubre_2023"
     ]
   },
   {
@@ -16846,9 +15294,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "denominacion_calle"
     ]
   },
   {
@@ -16897,11 +15342,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "declaracion",
-      "sindicatura",
-      "empleados_municipales"
     ]
   },
   {
@@ -16950,12 +15390,6 @@
       4,
       5,
       6
-    ],
-    "etiquetas": [
-      "tarifaria_2023",
-      "tasa_propiedad",
-      "servicios_municipales",
-      "mantenimiento_planta_depuradora"
     ]
   },
   {
@@ -17095,12 +15529,6 @@
       92,
       93,
       94
-    ],
-    "etiquetas": [
-      "declaracion",
-      "obra_publica",
-      "medio_ambiente",
-      "tarifaria_2022"
     ]
   },
   {
@@ -17153,10 +15581,6 @@
     "chunk_indices": [
       0,
       1
-    ],
-    "etiquetas": [
-      "denominacion_calle",
-      "declaracion"
     ]
   }
 ]

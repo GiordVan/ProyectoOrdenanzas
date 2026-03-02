@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Sparkles, FileText } from "lucide-react";
 
 let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -25,6 +25,11 @@ function BuscadorIA() {
   const [cargando, setCargando] = useState(false);
   const [cargandoRespuesta, setCargandoRespuesta] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const conversationIdRef = useRef<string>(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `conv-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 
   const abrirPDF = (nombrePDF: string) => {
     if (!nombrePDF) return;
@@ -48,13 +53,17 @@ function BuscadorIA() {
       const res = await fetch(`${API_URL}/ask-stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pregunta: busqueda }),
+        body: JSON.stringify({
+          pregunta: busqueda,
+          conversation_id: conversationIdRef.current,
+        }),
       });
 
       if (!res.ok) throw new Error("Error al obtener respuesta");
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
+      let respuestaAcumulada = "";
 
       if (!reader) throw new Error("No se pudo leer la respuesta");
 
@@ -80,8 +89,9 @@ function BuscadorIA() {
               if (parsed.tipo === "documentos") {
                 setDocumentos(parsed.documentos);
                 setCargando(false);
-              } else if (parsed.tipo === "respuesta") {
-                setRespuesta(parsed.respuesta);
+              } else if (parsed.tipo === "chunk") {
+                respuestaAcumulada += parsed.texto ?? "";
+                setRespuesta(respuestaAcumulada);
                 setCargandoRespuesta(false);
               }
             } catch {

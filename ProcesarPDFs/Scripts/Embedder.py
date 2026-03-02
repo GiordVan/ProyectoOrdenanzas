@@ -97,6 +97,102 @@ def inferir_categoria_y_temas(texto_art1):
     return "Z", CATEGORIAS_DIGESTO_COMPLETO["Z"], ["uso del espacio público"]
 
 
+def clasificar_ordenanza_con_gpt(texto_completo: str, art1: str, fecha: str) -> list:
+    """
+    Usa GPT-4o-mini para generar etiquetas semánticas precisas.
+    Costo: ~0.001 USD por ordenanza.
+
+    Returns:
+        Lista de etiquetas (ej: ["tarifaria_2025", "tasa_propiedad", "servicios_municipales"])
+    """
+    # Extraer año de la fecha (DD/MM/YYYY)
+    anio = ""
+    if fecha and fecha != "desconocida":
+        import re as _re
+
+        m = _re.search(r"(\d{4})", fecha)
+        if m:
+            anio = m.group(1)
+
+    fragmento = texto_completo[:2000] if texto_completo else ""
+
+    prompt = f"""Sos un clasificador de ordenanzas municipales de Villa María, Córdoba, Argentina.
+
+Dado el Artículo 1° y un fragmento del texto de una ordenanza, generá una lista de etiquetas semánticas (tags) que describan de qué trata.
+
+REGLAS:
+1. Las etiquetas deben ser en snake_case y en español
+2. Si la ordenanza es una ordenanza tarifaria/impositiva/fiscal, incluí "tarifaria" y "tarifaria_{anio}" (ej: "tarifaria_2025")
+3. Si es de presupuesto municipal, incluí "presupuesto" y "presupuesto_{anio}"
+4. Si trata sobre tasa de servicios a la propiedad/inmuebles, incluí "tasa_propiedad"
+5. Si trata sobre cementerio, incluí "cementerio"
+6. Si trata sobre transporte, incluí "transporte"
+7. Si es una declaración de interés, homenaje, o reconocimiento, incluí "declaracion"
+8. Si denomina/renombra calles o espacios, incluí "denominacion_calle"
+9. Si trata sobre medio ambiente, incluí "medio_ambiente"
+10. Si trata sobre habilitaciones comerciales, incluí "habilitacion_comercial"
+11. Si trata sobre obras públicas, incluí "obra_publica"
+12. Si trata sobre régimen laboral/empleados municipales, incluí "regimen_laboral"
+13. Agregá cualquier otra etiqueta relevante y específica
+14. Máximo 8 etiquetas
+15. Si tiene año, agregá la etiqueta principal con sufijo de año (ej: "presupuesto_2025")
+
+Fecha de sanción: {fecha}
+Año: {anio}
+
+Artículo 1°:
+{art1[:500] if art1 else "(no disponible)"}
+
+Fragmento del texto:
+{fragmento[:1000]}
+
+Respondé SOLO con un JSON array de strings, sin texto adicional. Ejemplo:
+["tarifaria_2025", "tasa_propiedad", "servicios_municipales", "alicuotas"]"""
+
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.0,
+            max_tokens=150,
+            response_format={"type": "json_object"},
+        )
+        content = response.choices[0].message.content.strip()
+        import json as _json
+
+        parsed = _json.loads(content)
+
+        # Aceptar tanto {"etiquetas": [...]} como [...]
+        if isinstance(parsed, list):
+            etiquetas = parsed
+        elif isinstance(parsed, dict):
+            etiquetas = parsed.get(
+                "etiquetas",
+                parsed.get("tags", list(parsed.values())[0] if parsed else []),
+            )
+        else:
+            etiquetas = []
+
+        # Asegurar que sean strings limpios
+        etiquetas = [str(e).strip().lower().replace(" ", "_") for e in etiquetas if e][
+            :8
+        ]
+
+        print(f"    🏷️  Etiquetas GPT: {etiquetas}")
+        return etiquetas
+
+    except Exception as e:
+        print(f"    ⚠️ Error al clasificar con GPT: {e}")
+        # Fallback: inferir desde la categoría básica
+        _, _, temas = inferir_categoria_y_temas(art1)
+        etiquetas_fallback = [t.lower().replace(" ", "_") for t in temas]
+        if anio:
+            etiquetas_fallback = [
+                f"{e}_{anio}" if "genérico" not in e else e for e in etiquetas_fallback
+            ]
+        return etiquetas_fallback
+
+
 def limpiar_texto(texto):
     return re.sub(r"\s+", " ", str(texto)).strip() if texto else ""
 
@@ -683,6 +779,11 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
         f"    🔑 Palabras clave: {', '.join(palabras_clave[:5])}{'...' if len(palabras_clave) > 5 else ''}"
     )
 
+    # ⚡ NUEVO: Clasificar con GPT para etiquetas semánticas
+    etiquetas = clasificar_ordenanza_con_gpt(
+        texto_base, metadatos_base["Art N°1"], metadatos_base["fecha_sancion"]
+    )
+
     fecha_iso = "desconocida"
     if metadatos_base["fecha_sancion"] != "desconocida":
         try:
@@ -711,7 +812,8 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
                 "categoria": cat_letra,
                 "descripcion_categoria": cat_desc,
                 "temas": temas,
-                "palabras_clave": palabras_clave,  # ⚡ NUEVO CAMPO
+                "palabras_clave": palabras_clave,
+                "etiquetas": etiquetas,  # ⚡ NUEVO: Etiquetas semánticas GPT
                 "autoridad_emisora": "Concejo Deliberante de Villa María",
                 "municipio": "Villa María",
                 "provincia": "Córdoba",
