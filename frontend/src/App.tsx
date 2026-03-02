@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Sparkles } from "lucide-react";
 import pattern from "./assets/pattern.webp";
 import consejo from "./assets/Consejo.webp";
@@ -6,8 +6,39 @@ import consejo from "./assets/Consejo.webp";
 const BuscadorManual = lazy(() => import("./components/BuscadorManual"));
 const ChatIA = lazy(() => import("./components/ChatIA"));
 
+let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+if (API_URL && !API_URL.startsWith("http")) {
+  API_URL = `https://${API_URL}`;
+}
+if (API_URL.endsWith("/")) {
+  API_URL = API_URL.slice(0, -1);
+}
+
 function App() {
   const [chatAbierto, setChatAbierto] = useState(false);
+  const [ultimaFecha, setUltimaFecha] = useState<string>("");
+
+  useEffect(() => {
+    fetch(`${API_URL}/metadatos`)
+      .then((res) => res.json())
+      .then((data: Array<{ fecha_sancion?: string }>) => {
+        let maxDate: Date | null = null;
+        let maxFecha = "";
+        for (const item of data) {
+          const f = item.fecha_sancion;
+          if (!f) continue;
+          const parts = f.split("/");
+          if (parts.length !== 3) continue;
+          const d = new Date(+parts[2], +parts[1] - 1, +parts[0]);
+          if (!maxDate || d > maxDate) {
+            maxDate = d;
+            maxFecha = f;
+          }
+        }
+        if (maxFecha) setUltimaFecha(maxFecha);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div 
@@ -49,8 +80,12 @@ function App() {
                 </p>
               </div>
             </div>
-            
-            
+
+            {ultimaFecha && (
+              <span className="text-xs text-gray-400 whitespace-nowrap">
+                Fecha última actualización {ultimaFecha}
+              </span>
+            )}
           </div>
         </div>
       </header>

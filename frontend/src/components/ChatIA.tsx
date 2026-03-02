@@ -228,6 +228,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                     "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
                     "¿Cuánto cuesta que saquen mi auto del depósito municipal?",
                     "¿Califico para la tarifa social si tengo bajos ingresos?",
+                    "¿Cuánto cuesta el servicio de ambulancia (SAMU) si no soy de Villa María?",
                   ].map((sugerencia) => (
                     <button
                       key={sugerencia}
