@@ -47,13 +47,15 @@ def _l2_to_cosine(l2_score: float) -> float:
     """Convierte distancia L2 de FAISS a similitud coseno para vectores unitarios.
     Para vectores unitarios: L2² = 2(1 - cos_sim), entonces cos_sim = 1 - L2²/2.
     """
-    return max(0.0, min(1.0, 1.0 - (l2_score ** 2) / 2.0))
+    return max(0.0, min(1.0, 1.0 - (l2_score**2) / 2.0))
 
 
 # Variables globales
 index = None
 metadatos = []
 chunks = []
+chunks_normalized = []  # Pre-computado: normalizar_texto_para_busqueda(chunk)
+chunks_stemmed = []  # Pre-computado: aplicar_stemming(chunk)
 _index_loaded = False
 _index_lock = threading.Lock()
 CONSULTA_MONTO_KEYWORDS = {
@@ -141,8 +143,10 @@ def obtener_chunk_y_meta_seguro(idx: int):
 
 
 def cargar_indice_y_metadatos():
-    """Carga el índice FAISS y metadatos livianos en RAM."""
-    global index, metadatos, chunks
+    """Carga el índice FAISS y metadatos livianos en RAM.
+    Pre-computa texto normalizado y stemmed para búsqueda rápida.
+    """
+    global index, metadatos, chunks, chunks_normalized, chunks_stemmed
 
     if not os.path.exists(INDEX_FILE):
         raise FileNotFoundError(f"No se encontró el archivo {INDEX_FILE}")
@@ -187,6 +191,33 @@ def cargar_indice_y_metadatos():
         print(
             f"ADVERTENCIA: Desajuste chunks ({len(chunks)}) vs metadatos ({len(metadatos)})"
         )
+
+    # ⚡ Pre-computar texto normalizado y stemmed (evita re-calcular en cada búsqueda)
+    print("Pre-computando índices de texto para búsqueda rápida...")
+    chunks_normalized = [normalizar_texto_para_busqueda(c) for c in chunks]
+    if stemmer:
+        chunks_stemmed = [aplicar_stemming(c) for c in chunks]
+    else:
+        chunks_stemmed = chunks_normalized[:]
+
+    # Pre-computar Art N°1 normalizado y stemmed en metadatos
+    for meta in metadatos:
+        art1 = meta.get("Art N°1", "")
+        if art1:
+            meta["_art1_normalized"] = normalizar_texto_para_busqueda(art1)
+            meta["_art1_stemmed"] = (
+                aplicar_stemming(art1) if stemmer else meta["_art1_normalized"]
+            )
+        else:
+            meta["_art1_normalized"] = ""
+            meta["_art1_stemmed"] = ""
+        # Pre-computar palabras clave normalizadas
+        palabras_clave = meta.get("palabras_clave", [])
+        meta["_keywords_normalized"] = (
+            " ".join(palabras_clave).lower() if palabras_clave else ""
+        )
+
+    print(f"Índices de texto pre-computados ({len(chunks)} chunks)")
 
 
 # ⚡ Cache LRU para embeddings - evita recalcular para consultas repetidas
@@ -532,6 +563,38 @@ def resolver_tarifaria_intenciones(
     """
     texto = normalizar_texto_para_busqueda(pregunta or "")
     if not texto:
+        return None
+
+    # Guard rápido: solo proceder si la pregunta contiene al menos un keyword tarifario
+    keywords_tarifarios = {
+        "tarifa",
+        "social",
+        "cementerio",
+        "panteon",
+        "nicho",
+        "agua",
+        "cloaca",
+        "comercio",
+        "comercial",
+        "camion",
+        "utilitario",
+        "anfiteatro",
+        "evento",
+        "hexagonal",
+        "teatro",
+        "deposito",
+        "vehiculo",
+        "aeropuerto",
+        "aterrizar",
+        "aeronave",
+        "ambulancia",
+        "samu",
+        "107",
+        "descuento",
+        "benefico",
+        "cultural",
+    }
+    if not any(kw in texto for kw in keywords_tarifarios):
         return None
 
     ensure_index_loaded()
@@ -1004,46 +1067,69 @@ def aplicar_stemming(texto: str) -> str:
 
 def busqueda_textual_directa(terminos: list, top_k=10, usar_stemming=True):
     """
-    Búsqueda textual con stemming y palabras clave.
+    Búsqueda textual con matching de frases (n-gramas) usando arrays pre-computados.
     Busca en: chunks + palabras_clave + Art N°1 de metadatos.
+    Bonifica fuertemente cuando los términos aparecen juntos como frase.
     """
     resultados = []
 
     if usar_stemming and stemmer:
-        terminos_stem = [aplicar_stemming(t) for t in terminos]
+        terminos_proc = [aplicar_stemming(t) for t in terminos]
+        chunk_texts = chunks_stemmed
+        art1_key = "_art1_stemmed"
     else:
-        terminos_stem = [normalizar_texto_para_busqueda(t) for t in terminos]
+        terminos_proc = [normalizar_texto_para_busqueda(t) for t in terminos]
+        chunk_texts = chunks_normalized
+        art1_key = "_art1_normalized"
 
-    # Usar zip para iterar de forma segura sobre chunks y metadatos
-    # Esto evita IndexError si tienen diferente longitud
-    for chunk, meta in zip(chunks, metadatos):
-        if usar_stemming and stemmer:
-            chunk_stem = aplicar_stemming(chunk)
-        else:
-            chunk_stem = normalizar_texto_para_busqueda(chunk)
+    # Generar n-gramas para bonificar coincidencias de frases
+    bigrams = [
+        f"{terminos_proc[i]} {terminos_proc[i+1]}"
+        for i in range(len(terminos_proc) - 1)
+    ]
+    trigrams = [
+        f"{terminos_proc[i]} {terminos_proc[i+1]} {terminos_proc[i+2]}"
+        for i in range(len(terminos_proc) - 2)
+    ]
 
-        # Buscar en el chunk
-        coincidencias = sum(1 for t in terminos_stem if t in chunk_stem)
+    # Usar arrays pre-computados (sin re-calcular stemming/normalización)
+    for idx, (chunk_proc, meta) in enumerate(zip(chunk_texts, metadatos)):
+        coincidencias = 0
 
-        # ⚡ Buscar en palabras_clave de metadatos
-        palabras_clave = meta.get("palabras_clave", [])
-        if palabras_clave:
-            palabras_clave_norm = " ".join(palabras_clave).lower()
+        # Bonificación por frases completas (n-gramas)
+        for trigram in trigrams:
+            if trigram in chunk_proc:
+                coincidencias += 6
+        for bigram in bigrams:
+            if bigram in chunk_proc:
+                coincidencias += 3
+
+        # Coincidencias individuales de términos
+        coincidencias += sum(1 for t in terminos_proc if t in chunk_proc)
+
+        # Buscar en palabras_clave pre-normalizadas
+        kw_norm = meta.get("_keywords_normalized", "")
+        if kw_norm:
             for termino_original in terminos:
-                if termino_original.lower() in palabras_clave_norm:
-                    coincidencias += 2  # Más peso a coincidencias en palabras clave
+                if termino_original.lower() in kw_norm:
+                    coincidencias += 2
 
-        # ⚡ NUEVO: Buscar en Art N°1 (campo importante que contiene nombres de empresas, etc.)
-        art1 = meta.get("Art N°1", "")
-        if art1:
-            art1_lower = art1.lower()
+        # Buscar en Art N°1 pre-computado
+        art1_proc = meta.get(art1_key, "")
+        if art1_proc:
+            for trigram in trigrams:
+                if trigram in art1_proc:
+                    coincidencias += 8
+            for bigram in bigrams:
+                if bigram in art1_proc:
+                    coincidencias += 4
             for termino_original in terminos:
-                if termino_original.lower() in art1_lower:
-                    coincidencias += 3  # ⚡ Alto peso a coincidencias en Art N°1
+                if termino_original.lower() in art1_proc:
+                    coincidencias += 3
 
         if coincidencias > 0:
             meta_copy = dict(meta)
-            meta_copy["chunk_texto"] = chunk
+            meta_copy["chunk_texto"] = chunks[idx]
             meta_copy["coincidencias_textuales"] = coincidencias
             resultados.append(meta_copy)
 
@@ -1052,16 +1138,32 @@ def busqueda_textual_directa(terminos: list, top_k=10, usar_stemming=True):
 
 
 def expandir_consulta(pregunta: str) -> str:
-    """Expande la consulta con variaciones y sinónimos."""
+    """Expande la consulta con variaciones y sinónimos.
+    No expande si la consulta ya contiene frases legales específicas.
+    """
     pregunta_lower = pregunta.lower()
+
+    # Frases legales específicas: si la consulta ya es precisa, no diluir
+    frases_especificas = [
+        "acuerdo transaccional",
+        "acuerdos transaccionales",
+        "acta acuerdo",
+        "convenio colectivo",
+        "convenio marco",
+        "acuerdo paritario",
+    ]
+    for frase in frases_especificas:
+        if frase in pregunta_lower:
+            return pregunta  # Ya es suficientemente precisa
+
     expansion = pregunta
 
     # Diccionario de expansiones
     expansiones = {
         "acta": ["convenio", "acuerdo"],
         "acuerdo": ["convenio", "pacto"],
-        "transaccional": ["acuerdo transaccional", "acuerdo"],
-        "transaccionales": ["acuerdo transaccional", "ratificacion"],
+        "transaccional": ["acuerdo transaccional"],
+        "transaccionales": ["acuerdo transaccional"],
         "suoem": ["sindicato", "gremio", "empleados municipales"],
         "salarial": ["salario", "remuneración", "sueldo"],
         "aumento": ["incremento", "ajuste", "recomposición"],
@@ -1073,7 +1175,7 @@ def expandir_consulta(pregunta: str) -> str:
     terminos_agregados = []
     for termino_base, sinonimos in expansiones.items():
         if termino_base in pregunta_lower:
-            terminos_agregados.extend(sinonimos[:2])
+            terminos_agregados.extend(sinonimos[:1])
 
     if terminos_agregados:
         expansion = f"{pregunta} {' '.join(terminos_agregados)}"
@@ -1124,11 +1226,31 @@ def detectar_tipo_pregunta(pregunta: str) -> str:
 
     # Detectar frases imperativas: "pasame X", "listame Y", "busca Z"
     verbos_imperativos = {
-        "pasame", "pasá", "pásame", "listame", "listá",
-        "dame", "dáme", "muestra", "mostrá", "mostrame",
-        "busca", "buscá", "buscame", "decime", "decí",
-        "contame", "contá", "traeme", "traé", "enviame",
-        "mandame", "mandá", "encontrame", "necesito", "quiero",
+        "pasame",
+        "pasá",
+        "pásame",
+        "listame",
+        "listá",
+        "dame",
+        "dáme",
+        "muestra",
+        "mostrá",
+        "mostrame",
+        "busca",
+        "buscá",
+        "buscame",
+        "decime",
+        "decí",
+        "contame",
+        "contá",
+        "traeme",
+        "traé",
+        "enviame",
+        "mandame",
+        "mandá",
+        "encontrame",
+        "necesito",
+        "quiero",
     }
     primera_palabra = palabras[0].lower().rstrip(",.:;") if palabras else ""
     if primera_palabra in verbos_imperativos:
@@ -1196,61 +1318,127 @@ def buscar_ordenanzas_que_mencionan(numero_ordenanza: str, top_k=10):
     return resultados[:top_k]
 
 
-def extraer_terminos_clave(pregunta: str) -> list:
-    terminos = []
-    stopwords = {
-        "el",
-        "la",
-        "de",
-        "del",
-        "en",
-        "y",
-        "a",
-        "que",
-        "es",
-        "por",
-        "para",
-        "con",
-        "un",
-        "una",
-        "los",
-        "las",
-        "se",
-        "sobre",
-        "esta",
-        "este",
-        "esto",
-        "este",
-        "aquella",
-        "aquel",
-        "aquello",
-        "estos",
-        "estas",
-        "aquellos",
-        "aquellas",
-        "villa",
-        "maria",
-        "municipalidad",
-        "ordenanza",
-        "ciudad",
-        "intendente",
-        "concejo",
-        "deliberante",
-        "villa",
-        "maria",
-        "cordoba",
-        "artículo",
-        "articulo",
-        "provincia",
-    }
+STOPWORDS_BUSQUEDA = {
+    # Artículos y preposiciones
+    "el",
+    "la",
+    "de",
+    "del",
+    "en",
+    "y",
+    "a",
+    "que",
+    "es",
+    "por",
+    "para",
+    "con",
+    "un",
+    "una",
+    "los",
+    "las",
+    "se",
+    "sobre",
+    "al",
+    "ante",
+    "sin",
+    "entre",
+    "desde",
+    "hasta",
+    "hacia",
+    "tras",
+    # Demostrativos
+    "esta",
+    "este",
+    "esto",
+    "estos",
+    "estas",
+    "aquel",
+    "aquella",
+    "aquello",
+    "aquellos",
+    "aquellas",
+    # Interrogativos y relativos
+    "que",
+    "cual",
+    "cuales",
+    "quien",
+    "quienes",
+    "como",
+    "cuando",
+    "donde",
+    "porque",
+    "cuantos",
+    "cuantas",
+    # Verbos comunes (no aportan al contenido)
+    "son",
+    "hay",
+    "tiene",
+    "tienen",
+    "fue",
+    "fueron",
+    "sido",
+    "ser",
+    "estar",
+    "haber",
+    "hacer",
+    "puede",
+    "pueden",
+    "debe",
+    "deben",
+    "era",
+    "eran",
+    # Cuantificadores
+    "todos",
+    "todas",
+    "todo",
+    "toda",
+    "otro",
+    "otra",
+    "otros",
+    "otras",
+    "cada",
+    "mismo",
+    "misma",
+    "algun",
+    "alguno",
+    "alguna",
+    "algunos",
+    "algunas",
+    "mas",
+    "menos",
+    "muy",
+    "tan",
+    # Contexto municipal (demasiado genéricos)
+    "villa",
+    "maria",
+    "municipalidad",
+    "ordenanza",
+    "ciudad",
+    "intendente",
+    "concejo",
+    "deliberante",
+    "cordoba",
+    "articulo",
+    "artículo",
+    "provincia",
+}
 
+
+def extraer_terminos_clave(pregunta: str) -> list:
     palabras = re.findall(r"\b\w{3,}\b", pregunta.lower())
-    terminos = [p for p in palabras if p not in stopwords]
+    terminos = [p for p in palabras if p not in STOPWORDS_BUSQUEDA]
 
     siglas = re.findall(r"\b[A-ZÁÉÍÓÚ]{2,}\b", pregunta)
     terminos.extend([s.lower() for s in siglas])
 
-    return list(set(terminos))
+    # Preservar orden (importante para n-gramas) con dedup
+    seen = set()
+    result = []
+    for t in terminos:
+        if t not in seen:
+            seen.add(t)
+            result.append(t)
+    return result
 
 
 def agrupar_por_ordenanza(resultados):
@@ -1264,6 +1452,43 @@ def agrupar_por_ordenanza(resultados):
             ordenanzas[num_ord] = r
 
     return list(ordenanzas.values())
+
+
+def reranquear_resultados(resultados: list, pregunta: str) -> list:
+    """
+    Re-ranking post-retrieval: bonifica resultados donde la frase de la consulta
+    aparece como unidad contigua en el chunk. Sin costo de API.
+    """
+    # Extraer solo palabras de contenido (sin stopwords)
+    palabras = re.findall(r"\b\w{3,}\b", pregunta.lower())
+    content_words = [p for p in palabras if p not in STOPWORDS_BUSQUEDA]
+
+    if len(content_words) < 2:
+        return resultados
+
+    frase_completa = normalizar_texto_para_busqueda(" ".join(content_words))
+    bigrams = [
+        normalizar_texto_para_busqueda(f"{content_words[i]} {content_words[i+1]}")
+        for i in range(len(content_words) - 1)
+    ]
+
+    for r in resultados:
+        chunk_norm = normalizar_texto_para_busqueda(r.get("chunk_texto", ""))
+        art1_norm = normalizar_texto_para_busqueda(r.get("Art N°1", ""))
+        texto_completo = f"{chunk_norm} {art1_norm}"
+        bonus = 0.0
+
+        if frase_completa in texto_completo:
+            bonus += 0.5
+
+        for bg in bigrams:
+            if bg in texto_completo:
+                bonus += 0.15
+
+        r["score_combinado"] = r.get("score_combinado", 0) + bonus
+
+    resultados.sort(key=lambda x: x.get("score_combinado", 0), reverse=True)
+    return resultados
 
 
 def buscar_similares(pregunta: str, top_k=None):
@@ -1434,6 +1659,9 @@ def buscar_similares(pregunta: str, top_k=None):
 
     # Ordenar por score combinado descendente
     resultados_finales.sort(key=lambda x: x.get("score_combinado", 0), reverse=True)
+
+    # Re-ranking: bonificar resultados con coincidencia de frase completa
+    resultados_finales = reranquear_resultados(resultados_finales, pregunta)
 
     limite = top_k * 2 if (tipo_pregunta in ("generica", "directa")) else top_k
     return resultados_finales[:limite]
@@ -1778,7 +2006,11 @@ Responde SOLO con JSON en este formato exacto:
             ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
         )
 
-        prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
+        prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
+
+IMPORTANTE: El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes. Si ninguna ordenanza del contexto responde directamente a la pregunta, indicalo.
+
+Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
@@ -1792,7 +2024,7 @@ En ordenanzas_citadas incluye ÚNICAMENTE los números de ordenanza que realment
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
             max_tokens=300 if tipo_pregunta == "palabra_clave" else 400,

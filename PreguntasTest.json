@@ -1,0 +1,783 @@
+{
+    "metadata": {
+        "rango_ordenanzas": "8000-8248",
+        "total_preguntas": 70,
+        "objetivo": "Evaluar precisión RAG, grounding por chunk, detección de ambigüedad y control de alucinaciones"
+    },
+    "preguntas": [
+        {
+            "id": 1,
+            "pregunta": "¿Cuál es el objeto principal de la Ordenanza 8241?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 2,
+            "pregunta": "¿La Ordenanza 8240 se encuentra vigente y desde qué fecha rige?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 3,
+            "pregunta": "¿Qué artículos modifica la Ordenanza 8243?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8243"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 4,
+            "pregunta": "¿Qué institución resulta designada en la Ordenanza 8239?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8239"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 5,
+            "pregunta": "¿Qué ordenanza crea el ENTE DE MOVILIDAD URBANA (ENDEMUR)?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision"
+        },
+        {
+            "id": 6,
+            "pregunta": "¿Qué bienes se transfieren al ENDEMUR según la Ordenanza 8241?",
+            "categoria": "Obras y patrimonio",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 7,
+            "pregunta": "¿Qué funciones tiene la Sindicatura del ENDEMUR?",
+            "categoria": "Control y fiscalización",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 8,
+            "pregunta": "¿Qué servicios incluye el cuadro tarifario aprobado en la Ordenanza 8240?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 9,
+            "pregunta": "¿Qué destino deben tener las utilidades netas del ENDEMUR?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 10,
+            "pregunta": "¿Qué competencias tiene el ENDEMUR en materia aeroportuaria?",
+            "categoria": "Obras y transporte",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 11,
+            "pregunta": "¿Qué cooperativa solicitó la revisión tarifaria mencionada en la Ordenanza 8240?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 12,
+            "pregunta": "¿Qué recursos integran el patrimonio del ENDEMUR?",
+            "categoria": "Tasas y patrimonio",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 13,
+            "pregunta": "¿Qué rol cumple el Directorio del ENDEMUR?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 14,
+            "pregunta": "¿Quién puede remover a los miembros del Directorio?",
+            "categoria": "Control institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 15,
+            "pregunta": "¿Qué incompatibilidades se aplican a los miembros del Directorio?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 16,
+            "pregunta": "¿Cuánto cuesta la tasa municipal?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "No se especifica qué tasa ni ejercicio fiscal",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 17,
+            "pregunta": "¿Cuál es el monto actualizado de la multa municipal?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "No se especifica infracción ni ordenanza",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 18,
+            "pregunta": "¿Qué necesito para habilitar un comercio en la ciudad?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "No se especifica tipo de actividad comercial",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 19,
+            "pregunta": "¿Se puede instalar un local gastronómico en cualquier zona?",
+            "categoria": "Urbanismo",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de zonificación específica",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 20,
+            "pregunta": "¿Cuál es el límite de altura permitido para construir?",
+            "categoria": "Urbanismo",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de zona y normativa aplicable",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 21,
+            "pregunta": "Paviotti",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Nombre sin contexto",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 22,
+            "pregunta": "Martin Gill",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Nombre sin contexto",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 23,
+            "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 24,
+            "pregunta": "¿Qué departamento es responsable de ejecutar el presupuesto 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 25,
+            "pregunta": "¿Puede el municipio modificar el presupuesto durante el año?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 26,
+            "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de valuación y categoría",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 27,
+            "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "No se especifica tributo",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 28,
+            "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de requisitos normativos específicos",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 29,
+            "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de tipo de sepultura",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 30,
+            "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 31,
+            "pregunta": "¿Hay tributos adicionales en el servicio de agua?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 32,
+            "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 33,
+            "pregunta": "¿Cuánto cuesta el servicio de ambulancia si no soy residente?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de cobertura y normativa",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 34,
+            "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de transporte",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 35,
+            "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro municipal?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de evento",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 36,
+            "pregunta": "¿Hay descuentos si el evento es cultural o benéfico?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 37,
+            "pregunta": "¿Cuánto cuesta retirar un auto del depósito municipal?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de infracción y días de guarda",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 38,
+            "pregunta": "¿Qué significa MT en las ordenanzas?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Sigla sin contexto específico",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 39,
+            "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de aeronave",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 40,
+            "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 41,
+            "pregunta": "¿Qué plazo tiene la Sindicatura para emitir dictamen sobre el balance anual del ENDEMUR?",
+            "categoria": "Control institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 42,
+            "pregunta": "¿Cuál es la duración del mandato de los miembros del Directorio del ENDEMUR?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 43,
+            "pregunta": "¿Qué mayoría se requiere para que el Directorio tome decisiones válidas?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 44,
+            "pregunta": "¿El ENDEMUR puede contraer empréstitos o financiamiento externo?",
+            "categoria": "Régimen financiero",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 45,
+            "pregunta": "¿Qué ordenanza ratifica convenios con entidades de gestión de derechos musicales?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision"
+        },
+        {
+            "id": 46,
+            "pregunta": "¿Qué ordenanza aprueba actualizaciones tarifarias de servicios públicos durante 2025?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision"
+        },
+        {
+            "id": 47,
+            "pregunta": "¿Qué destino se asigna a los bienes del aeropuerto transferidos al ENDEMUR?",
+            "categoria": "Patrimonio y obras",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 48,
+            "pregunta": "¿Qué atribuciones tiene el ENDEMUR sobre el estacionamiento medido?",
+            "categoria": "Movilidad y transporte",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 49,
+            "pregunta": "¿Qué ocurre si el ejercicio económico del ENDEMUR arroja déficit?",
+            "categoria": "Régimen financiero",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 50,
+            "pregunta": "¿Qué ordenanza acepta donaciones destinadas a obras públicas?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8245"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision"
+        },
+        {
+            "id": 51,
+            "pregunta": "Paviotti",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Nombre propio sin contexto",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 52,
+            "pregunta": "Martin Gill",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Nombre propio sin contexto",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 53,
+            "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 54,
+            "pregunta": "¿Qué secretaría es responsable de ejecutar el presupuesto 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 55,
+            "pregunta": "¿Puede el municipio modificar el presupuesto durante el año o está fijo?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 56,
+            "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de valuación fiscal y categoría",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 57,
+            "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "No se especifica tributo",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 58,
+            "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de requisitos normativos específicos",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 59,
+            "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de sepultura y período",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 60,
+            "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+            "categoria": "Faltas y sanciones",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 61,
+            "pregunta": "¿Hay algún tributo adicional en mis servicios de agua?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 62,
+            "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 63,
+            "pregunta": "¿Cuánto cuesta el servicio de ambulancia (SAMU) si no soy de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de cobertura o convenio",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 64,
+            "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de transporte",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 65,
+            "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro o espacios municipales para un evento?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de evento",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 66,
+            "pregunta": "¿Me hacen descuento si es un evento cultural o benéfico?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 67,
+            "pregunta": "¿Cuánto cuesta que saquen mi auto del depósito municipal?",
+            "categoria": "Faltas y sanciones",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende de infracción y días de guarda",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 68,
+            "pregunta": "¿Qué sería MT en las ordenanzas?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Sigla sin contexto",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 69,
+            "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "motivo_ambiguedad": "Depende del tipo de aeronave",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 70,
+            "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        }
+    ]
+}

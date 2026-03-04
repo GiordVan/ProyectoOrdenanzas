@@ -371,7 +371,11 @@ Contexto:
 
 Responde directamente en Markdown limpio. NO uses formato JSON."""
         else:
-            prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
+            prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
+
+IMPORTANTE: El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes. Si ninguna ordenanza del contexto responde directamente a la pregunta, indicalo.
+
+Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}

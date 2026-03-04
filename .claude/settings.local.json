@@ -6,7 +6,9 @@
       "Bash(python -c \":*)",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''backend/chat_engine.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''chat_engine.py OK''\\)\")",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''backend/api.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''api.py OK''\\)\")",
-      "Bash(python -c \"import ast; ast.parse\\(open\\(''ProcesarPDFs/Scripts/Embedder.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''Embedder.py OK''\\)\")"
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''ProcesarPDFs/Scripts/Embedder.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''Embedder.py OK''\\)\")",
+      "Bash(python -c \"import py_compile; py_compile.compile\\(''chat_engine.py'', doraise=True\\); print\\(''OK''\\)\")",
+      "Bash(python -c \"import py_compile; py_compile.compile\\(''api.py'', doraise=True\\); print\\(''OK''\\)\")"
     ]
   }
 }
