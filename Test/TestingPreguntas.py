@@ -1,0 +1,151 @@
+import json
+import requests
+import uuid
+import time
+
+# ==========================
+# CONFIG
+# ==========================
+
+API_URL = "http://127.0.0.1:8000/ask"
+INPUT_FILE = "PreguntasTest.json"
+OUTPUT_FILE = "RespuestasTest.json"
+
+TIMEOUT = 60
+
+
+# ==========================
+# FUNCIONES
+# ==========================
+
+
+def cargar_preguntas():
+    with open(INPUT_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def hacer_pregunta(pregunta, conversation_id):
+    """
+    Realiza la request al endpoint /ask.
+    """
+
+    payload = {"pregunta": pregunta, "conversation_id": conversation_id}
+
+    try:
+        response = requests.post(API_URL, json=payload, timeout=TIMEOUT)
+        respuesta_completa = ""
+
+        if response.status_code == 200:
+            data = response.json()
+            respuesta_completa = data.get("respuesta", "")
+        else:
+            respuesta_completa = f"ERROR {response.status_code}: {response.text}"
+
+        return respuesta_completa.strip()
+
+    except Exception as e:
+        return f"ERROR EXCEPCION: {str(e)}"
+
+
+def detecta_repregunta(respuesta):
+    """
+    Heurística simple para detectar si el modelo repregunta.
+    Luego yo haré el análisis fino.
+    """
+
+    signos_interrogacion = respuesta.count("?")
+
+    frases_clave = [
+        "podrías especificar",
+        "podria especificar",
+        "a qué",
+        "cuál específicamente",
+        "necesito más información",
+        "podrías aclarar",
+        "puede indicar",
+    ]
+
+    repregunta_detectada = False
+    texto_repregunta = None
+
+    if signos_interrogacion > 0:
+        for frase in frases_clave:
+            if frase.lower() in respuesta.lower():
+                repregunta_detectada = True
+                texto_repregunta = respuesta
+                break
+
+    return repregunta_detectada, texto_repregunta
+
+
+def evaluar_placeholder(respuesta):
+    """
+    Score preliminar automático MUY BÁSICO.
+    Luego yo haré evaluación real sobre grounding.
+    """
+
+    if respuesta.startswith("ERROR"):
+        return 0
+
+    if len(respuesta) < 20:
+        return 20
+
+    if "no tengo información" in respuesta.lower():
+        return 30
+
+    return 60  # Score base neutro que luego ajustaremos manualmente
+
+
+# ==========================
+# MAIN
+# ==========================
+
+
+def main():
+    data = cargar_preguntas()
+    preguntas = data["preguntas"]
+
+    resultados = []
+
+    for item in preguntas:
+
+        print(f"Procesando pregunta {item['id']}...")
+
+        conversation_id = str(uuid.uuid4())
+
+        respuesta = hacer_pregunta(item["pregunta"], conversation_id)
+
+        repregunto, texto_repregunta = detecta_repregunta(respuesta)
+
+        resultado = {
+            "id": item["id"],
+            "pregunta": item["pregunta"],
+            "categoria": item["categoria"],
+            "ordenanzas_referenciadas": item["ordenanzas_referenciadas"],
+            "dificultad": item["dificultad"],
+            "requiere_repregunta_según_test": item["requiere_repregunta"],
+            "motivo_ambiguedad": item["motivo_ambiguedad"],
+            "tipo_test": item["tipo_test"],
+            "respuesta_modelo": respuesta,
+            "repregunto": repregunto,
+            "texto_repregunta": texto_repregunta,
+            # Placeholder – luego lo ajustamos manualmente
+            "calidad_respuesta": evaluar_placeholder(respuesta),
+        }
+
+        resultados.append(resultado)
+
+        # pequeña pausa para no saturar el endpoint
+        time.sleep(1)
+
+    output = {"metadata_test": data["metadata"], "resultados": resultados}
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(output, f, indent=4, ensure_ascii=False)
+
+    print("\nEvaluación terminada.")
+    print(f"Archivo generado: {OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    main()

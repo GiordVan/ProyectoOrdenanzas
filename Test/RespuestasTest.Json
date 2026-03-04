@@ -1,0 +1,1063 @@
+{
+    "metadata_test": {
+        "rango_ordenanzas": "8000-8248",
+        "total_preguntas": 70,
+        "objetivo": "Evaluar precisión RAG, grounding por chunk, detección de ambigüedad y control de alucinaciones"
+    },
+    "resultados": [
+        {
+            "id": 1,
+            "pregunta": "¿Cuál es el objeto principal de la Ordenanza 8241?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 2,
+            "pregunta": "¿La Ordenanza 8240 se encuentra vigente y desde qué fecha rige?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 3,
+            "pregunta": "¿Qué artículos modifica la Ordenanza 8243?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8243"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 4,
+            "pregunta": "¿Qué institución resulta designada en la Ordenanza 8239?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8239"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 5,
+            "pregunta": "¿Qué ordenanza crea el ENTE DE MOVILIDAD URBANA (ENDEMUR)?",
+            "categoria": "Identificación y vigencia",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision",
+            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué ordenanza crea el ENTE DE MOVILIDAD URBANA (ENDEMUR)?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 6,
+            "pregunta": "¿Qué bienes se transfieren al ENDEMUR según la Ordenanza 8241?",
+            "categoria": "Obras y patrimonio",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 7,
+            "pregunta": "¿Qué funciones tiene la Sindicatura del ENDEMUR?",
+            "categoria": "Control y fiscalización",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 4 ordenanzas relacionadas con '¿Qué funciones tiene la Sindicatura del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 8,
+            "pregunta": "¿Qué servicios incluye el cuadro tarifario aprobado en la Ordenanza 8240?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 9,
+            "pregunta": "¿Qué destino deben tener las utilidades netas del ENDEMUR?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué destino deben tener las utilidades netas del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 10,
+            "pregunta": "¿Qué competencias tiene el ENDEMUR en materia aeroportuaria?",
+            "categoria": "Obras y transporte",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué competencias tiene el ENDEMUR en materia aeroportuaria?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 11,
+            "pregunta": "¿Qué cooperativa solicitó la revisión tarifaria mencionada en la Ordenanza 8240?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 12,
+            "pregunta": "¿Qué recursos integran el patrimonio del ENDEMUR?",
+            "categoria": "Tasas y patrimonio",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué recursos integran el patrimonio del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 13,
+            "pregunta": "¿Qué rol cumple el Directorio del ENDEMUR?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué rol cumple el Directorio del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 14,
+            "pregunta": "¿Quién puede remover a los miembros del Directorio?",
+            "categoria": "Control institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Quién puede remover a los miembros del Directorio?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 15,
+            "pregunta": "¿Qué incompatibilidades se aplican a los miembros del Directorio?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué incompatibilidades se aplican a los miembros del Directorio?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 16,
+            "pregunta": "¿Cuánto cuesta la tasa municipal?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "No se especifica qué tasa ni ejercicio fiscal",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2025 o 2024?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 17,
+            "pregunta": "¿Cuál es el monto actualizado de la multa municipal?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "No se especifica infracción ni ordenanza",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2023 o 2025?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 18,
+            "pregunta": "¿Qué necesito para habilitar un comercio en la ciudad?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "No se especifica tipo de actividad comercial",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Qué necesito para habilitar un comercio en la ciudad?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 19,
+            "pregunta": "¿Se puede instalar un local gastronómico en cualquier zona?",
+            "categoria": "Urbanismo",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de zonificación específica",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Se puede instalar un local gastronómico en cualquier zona?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 20,
+            "pregunta": "¿Cuál es el límite de altura permitido para construir?",
+            "categoria": "Urbanismo",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de zona y normativa aplicable",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Cuál es el límite de altura permitido para construir?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 21,
+            "pregunta": "Paviotti",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Nombre sin contexto",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "El término \"Paviotti\" aparece en la Ordenanza N° 8151. Fragmento relevante: de noviembre de 2002 y siguientes, entre la Municipalidad de Villa María, Casa Paviotti  S.R.L. y Cochería Itatí y que son de propiedad municipal, se cobrarán los mismos valores fijados precedentes para dicho convenio. Cuarta y primera fila $ 42.950,00 Segunda y tercera fila $ 53.800,00  EXTRAORDIN",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 22,
+            "pregunta": "Martin Gill",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Nombre sin contexto",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 1 ordenanzas relacionadas con 'Martin Gill'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 23,
+            "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma",
+            "respuesta_modelo": "El presupuesto total del Municipio para 2025 es de $74.908.214.520,00.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 24,
+            "pregunta": "¿Qué departamento es responsable de ejecutar el presupuesto 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma",
+            "respuesta_modelo": "El seguimiento de la ejecución del presupuesto está a cargo de la Secretaria de Gobierno Cultura y Relaciones Institucionales.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 25,
+            "pregunta": "¿Puede el municipio modificar el presupuesto durante el año?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí, puede modificarse durante el año: el Art. 4° lo define como previsión estimativa y el Art. 5° autoriza reasignaciones y modificaciones presupuestarias.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 26,
+            "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de valuación y categoría",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "El monto depende de la zona y del valor fiscal (VRF) de tu propiedad. Como referencia, las alícuotas van de 8,00 por mil en Zona 1 a 0,00 por mil en Zona 7 (Tarifa Social); los mínimos anuales incluyen Zona 1 = $78.050,00 y Zona 2 = $64.000,00. ¿En qué zona está tu propiedad?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 27,
+            "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "No se especifica tributo",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí, podés elegir pagar al contado o en 12 cuotas mensuales y consecutivas, a opción del contribuyente. Para Zona 7 (Tarifa Social General), la modalidad es en 6 cuotas bimestrales. Además, el D.E.M. puede ajustar fechas de vencimiento y establecer facilidades de pago.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 28,
+            "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de requisitos normativos específicos",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí. Existe Tarifa Social para contribuyentes en situación socioeconómica vulnerable, con evaluación mediante estudio socioeconómico. Incluye Tarifa Social General (mínimo anual $30.000,00) y Tarifa Social Diferencial (reducción de hasta 50%).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 29,
+            "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de tipo de sepultura",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2024 o 2025?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 30,
+            "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Si no se paga la contribución del cementerio, la deuda queda en mora y se aplican recargos/intereses conforme la normativa municipal, además de habilitarse gestión de cobro administrativo o judicial.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 31,
+            "pregunta": "¿Hay tributos adicionales en el servicio de agua?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí. Se aplica una Contribución Especial con alícuota del 2% sobre el valor del servicio de agua potable y cloacas (Título XIII BIS de la O.G.I.V.).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 32,
+            "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Además de la contribución principal, se prevén adicionales: 20% para financiamiento de servicios de salud municipal y 15% para los conceptos definidos en el Art. 119 (incluye actividad comercial, industrial y de servicios).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 33,
+            "pregunta": "¿Cuánto cuesta el servicio de ambulancia si no soy residente?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de cobertura y normativa",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Según el Art. 118° de la Ordenanza Tarifaria, los aranceles del servicio 107 SAMU son:\n\n**Servicios de Ambulancia:**\n- Ambulancia con chofer y paramédico por evento: **$307.100,00**\n- Ambulancia con chofer, paramédico y médico por hora: **$61.500,00**\n- Servicio de médico por hora: **$41.000,00**\n\nEstos valores aplican cuando el servicio es requerido por personas o entidades no cubiertas por el sistema municipal.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 34,
+            "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de transporte",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí. Para actividades con camiones/utilitarios afectados al establecimiento que circulen en la ciudad o accesos, el tributo es $350,00 por tonelada, con mínimo mensual por camión de $30.000,00. Las empresas de transporte de pasajeros están exceptuadas por ese inciso.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 35,
+            "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro municipal?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de evento",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o $100.000,00 por medio día.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 36,
+            "pregunta": "¿Hay descuentos si el evento es cultural o benéfico?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí. El D.E.M. está facultado para reducir total o parcialmente los valores cuando el evento tenga auspicio municipal u otras entidades con fin benéfico o cultural.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 37,
+            "pregunta": "¿Cuánto cuesta retirar un auto del depósito municipal?",
+            "categoria": "Faltas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de infracción y días de guarda",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Por vehículos en depósito municipal, la estadía es: Automóvil/jeep 20 MT por día, Camiones/acoplados/ómnibus 30 MT por día, Motocicletas 11 MT por día. Si regularizás dentro de las primeras 2 horas, no se cobra estadía.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 38,
+            "pregunta": "¿Qué significa MT en las ordenanzas?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Sigla sin contexto específico",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué significa MT en las ordenanzas?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 39,
+            "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de aeronave",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de estacionamiento por hora es: 2-5T $57,00; 6-10T $77,00; 11-16T $103,00; 17T o más $128,00. Operación nocturna: +30%.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 40,
+            "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Cuáles son los acuerdos transaccionales ratificados?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 41,
+            "pregunta": "¿Qué plazo tiene la Sindicatura para emitir dictamen sobre el balance anual del ENDEMUR?",
+            "categoria": "Control institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué plazo tiene la Sindicatura para emitir dictamen sobre el balance anual del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 42,
+            "pregunta": "¿Cuál es la duración del mandato de los miembros del Directorio del ENDEMUR?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 5 ordenanzas relacionadas con '¿Cuál es la duración del mandato de los miembros del Directorio del ENDEMUR?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 43,
+            "pregunta": "¿Qué mayoría se requiere para que el Directorio tome decisiones válidas?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Qué mayoría se requiere para que el Directorio tome decisiones válidas?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 44,
+            "pregunta": "¿El ENDEMUR puede contraer empréstitos o financiamiento externo?",
+            "categoria": "Régimen financiero",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 8 ordenanzas relacionadas con '¿El ENDEMUR puede contraer empréstitos o financiamiento externo?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 45,
+            "pregunta": "¿Qué ordenanza ratifica convenios con entidades de gestión de derechos musicales?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision",
+            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué ordenanza ratifica convenios con entidades de gestión de derechos musicales?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 46,
+            "pregunta": "¿Qué ordenanza aprueba actualizaciones tarifarias de servicios públicos durante 2025?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision",
+            "respuesta_modelo": "Encontradas 13 ordenanzas relacionadas con '¿Qué ordenanza aprueba actualizaciones tarifarias de servicios públicos durante 2025?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 47,
+            "pregunta": "¿Qué destino se asigna a los bienes del aeropuerto transferidos al ENDEMUR?",
+            "categoria": "Patrimonio y obras",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de estacionamiento por hora es: 2-5T $57,00; 6-10T $77,00; 11-16T $103,00; 17T o más $128,00. Operación nocturna: +30%.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 48,
+            "pregunta": "¿Qué atribuciones tiene el ENDEMUR sobre el estacionamiento medido?",
+            "categoria": "Movilidad y transporte",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 8 ordenanzas relacionadas con '¿Qué atribuciones tiene el ENDEMUR sobre el estacionamiento medido?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 49,
+            "pregunta": "¿Qué ocurre si el ejercicio económico del ENDEMUR arroja déficit?",
+            "categoria": "Régimen financiero",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué ocurre si el ejercicio económico del ENDEMUR arroja déficit?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 50,
+            "pregunta": "¿Qué ordenanza acepta donaciones destinadas a obras públicas?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8245"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision",
+            "respuesta_modelo": "Encontradas 13 ordenanzas relacionadas con '¿Qué ordenanza acepta donaciones destinadas a obras públicas?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 51,
+            "pregunta": "Paviotti",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Nombre propio sin contexto",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "El término \"Paviotti\" aparece en la Ordenanza N° 8151. Fragmento relevante: de noviembre de 2002 y siguientes, entre la Municipalidad de Villa María, Casa Paviotti  S.R.L. y Cochería Itatí y que son de propiedad municipal, se cobrarán los mismos valores fijados precedentes para dicho convenio. Cuarta y primera fila $ 42.950,00 Segunda y tercera fila $ 53.800,00  EXTRAORDIN",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 52,
+            "pregunta": "Martin Gill",
+            "categoria": "Identificación",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Nombre propio sin contexto",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 1 ordenanzas relacionadas con 'Martin Gill'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 53,
+            "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma",
+            "respuesta_modelo": "El presupuesto total del Municipio para 2025 es de $74.908.214.520,00.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 54,
+            "pregunta": "¿Qué secretaría es responsable de ejecutar el presupuesto 2025?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma",
+            "respuesta_modelo": "El seguimiento de la ejecución del presupuesto está a cargo de la Secretaria de Gobierno Cultura y Relaciones Institucionales.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 55,
+            "pregunta": "¿Puede el municipio modificar el presupuesto durante el año o está fijo?",
+            "categoria": "Presupuesto",
+            "ordenanzas_referenciadas": [
+                "Presupuesto 2025"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí, puede modificarse durante el año: el Art. 4° lo define como previsión estimativa y el Art. 5° autoriza reasignaciones y modificaciones presupuestarias.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 56,
+            "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de valuación fiscal y categoría",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "El monto depende de la zona y del valor fiscal (VRF) de tu propiedad. Como referencia, las alícuotas van de 8,00 por mil en Zona 1 a 0,00 por mil en Zona 7 (Tarifa Social); los mínimos anuales incluyen Zona 1 = $78.050,00 y Zona 2 = $64.000,00. ¿En qué zona está tu propiedad?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 57,
+            "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "No se especifica tributo",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí, podés elegir pagar al contado o en 12 cuotas mensuales y consecutivas, a opción del contribuyente. Para Zona 7 (Tarifa Social General), la modalidad es en 6 cuotas bimestrales. Además, el D.E.M. puede ajustar fechas de vencimiento y establecer facilidades de pago.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 58,
+            "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de requisitos normativos específicos",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí. Existe Tarifa Social para contribuyentes en situación socioeconómica vulnerable, con evaluación mediante estudio socioeconómico. Incluye Tarifa Social General (mínimo anual $30.000,00) y Tarifa Social Diferencial (reducción de hasta 50%).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 59,
+            "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de sepultura y período",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2024 o 2025?",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 60,
+            "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+            "categoria": "Faltas y sanciones",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Si no se paga la contribución del cementerio, la deuda queda en mora y se aplican recargos/intereses conforme la normativa municipal, además de habilitarse gestión de cobro administrativo o judicial.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 61,
+            "pregunta": "¿Hay algún tributo adicional en mis servicios de agua?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8240"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí. Se aplica una Contribución Especial con alícuota del 2% sobre el valor del servicio de agua potable y cloacas (Título XIII BIS de la O.G.I.V.).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 62,
+            "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+            "categoria": "Comercio",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Además de la contribución principal, se prevén adicionales: 20% para financiamiento de servicios de salud municipal y 15% para los conceptos definidos en el Art. 119 (incluye actividad comercial, industrial y de servicios).",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 63,
+            "pregunta": "¿Cuánto cuesta el servicio de ambulancia (SAMU) si no soy de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de cobertura o convenio",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Según el Art. 118° de la Ordenanza Tarifaria, los aranceles del servicio 107 SAMU son:\n\n**Servicios de Ambulancia:**\n- Ambulancia con chofer y paramédico por evento: **$307.100,00**\n- Ambulancia con chofer, paramédico y médico por hora: **$61.500,00**\n- Servicio de médico por hora: **$41.000,00**\n\nEstos valores aplican cuando el servicio es requerido por personas o entidades no cubiertas por el sistema municipal.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 64,
+            "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de transporte",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Sí. Para actividades con camiones/utilitarios afectados al establecimiento que circulen en la ciudad o accesos, el tributo es $350,00 por tonelada, con mínimo mensual por camión de $30.000,00. Las empresas de transporte de pasajeros están exceptuadas por ese inciso.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 65,
+            "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro o espacios municipales para un evento?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de evento",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o $100.000,00 por medio día.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 66,
+            "pregunta": "¿Me hacen descuento si es un evento cultural o benéfico?",
+            "categoria": "Espacios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Sí. El D.E.M. está facultado para reducir total o parcialmente los valores cuando el evento tenga auspicio municipal u otras entidades con fin benéfico o cultural.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 67,
+            "pregunta": "¿Cuánto cuesta que saquen mi auto del depósito municipal?",
+            "categoria": "Faltas y sanciones",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende de infracción y días de guarda",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Por vehículos en depósito municipal, la estadía es: Automóvil/jeep 20 MT por día, Camiones/acoplados/ómnibus 30 MT por día, Motocicletas 11 MT por día. Si regularizás dentro de las primeras 2 horas, no se cobra estadía.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 68,
+            "pregunta": "¿Qué sería MT en las ordenanzas?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Sigla sin contexto",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "Encontradas 4 ordenanzas relacionadas con '¿Qué sería MT en las ordenanzas?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 69,
+            "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta_según_test": true,
+            "motivo_ambiguedad": "Depende del tipo de aeronave",
+            "tipo_test": "ambiguedad",
+            "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de estacionamiento por hora es: 2-5T $57,00; 6-10T $77,00; 11-16T $103,00; 17T o más $128,00. Operación nocturna: +30%.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        },
+        {
+            "id": 70,
+            "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8248"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta_según_test": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Cuáles son los acuerdos transaccionales ratificados?'. Ver documentos para detalles.",
+            "repregunto": false,
+            "texto_repregunta": null,
+            "calidad_respuesta": 60
+        }
+    ]
+}
