@@ -38,8 +38,17 @@ INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
 TOP_K = 10  # ⚡ Aumentado de 3 a 10 para mejor contexto
-SIMILARITY_THRESHOLD = 0.60  # ⚡ Umbral mínimo de similitud coseno (0.0-1.0)
+SIMILARITY_THRESHOLD = 0.40  # Umbral mínimo de similitud coseno (0.0-1.0)
 MAX_DOCS_MOSTRADOS = 5  # Máximo de documentos únicos a mostrar al usuario
+MAX_CHUNKS_POR_ORD = 3  # Máximo de chunks por ordenanza en búsqueda híbrida
+
+
+def _l2_to_cosine(l2_score: float) -> float:
+    """Convierte distancia L2 de FAISS a similitud coseno para vectores unitarios.
+    Para vectores unitarios: L2² = 2(1 - cos_sim), entonces cos_sim = 1 - L2²/2.
+    """
+    return max(0.0, min(1.0, 1.0 - (l2_score ** 2) / 2.0))
+
 
 # Variables globales
 index = None
@@ -1051,6 +1060,8 @@ def expandir_consulta(pregunta: str) -> str:
     expansiones = {
         "acta": ["convenio", "acuerdo"],
         "acuerdo": ["convenio", "pacto"],
+        "transaccional": ["acuerdo transaccional", "acuerdo"],
+        "transaccionales": ["acuerdo transaccional", "ratificacion"],
         "suoem": ["sindicato", "gremio", "empleados municipales"],
         "salarial": ["salario", "remuneración", "sueldo"],
         "aumento": ["incremento", "ajuste", "recomposición"],
@@ -1110,6 +1121,18 @@ def detectar_tipo_pregunta(pregunta: str) -> str:
     tiene_interrogativa = any(
         palabra.lower() in palabras_interrogativas for palabra in palabras
     )
+
+    # Detectar frases imperativas: "pasame X", "listame Y", "busca Z"
+    verbos_imperativos = {
+        "pasame", "pasá", "pásame", "listame", "listá",
+        "dame", "dáme", "muestra", "mostrá", "mostrame",
+        "busca", "buscá", "buscame", "decime", "decí",
+        "contame", "contá", "traeme", "traé", "enviame",
+        "mandame", "mandá", "encontrame", "necesito", "quiero",
+    }
+    primera_palabra = palabras[0].lower().rstrip(",.:;") if palabras else ""
+    if primera_palabra in verbos_imperativos:
+        return "directa"
 
     if len(palabras) <= 4 and not tiene_interrogativa:
         return "generica"
@@ -1216,9 +1239,6 @@ def extraer_terminos_clave(pregunta: str) -> list:
         "villa",
         "maria",
         "cordoba",
-        "ratifica",
-        "ratificase",
-        "ratificanse",
         "artículo",
         "articulo",
         "provincia",
@@ -1291,12 +1311,13 @@ def buscar_similares(pregunta: str, top_k=None):
         dist, idxs = index.search(emb, 10)
         resultados_semanticos = []
         for score, i in zip(dist[0], idxs[0]):
-            if score < SIMILARITY_THRESHOLD:
-                continue  # ⚡ Descartar resultados poco relevantes
+            cos_sim = _l2_to_cosine(score)
+            if cos_sim < SIMILARITY_THRESHOLD:
+                continue  # Descartar resultados con baja similitud coseno
             chunk, meta = obtener_chunk_y_meta_seguro(i)
             if chunk and meta:
                 resultados_semanticos.append(
-                    {"chunk_texto": chunk, "score_semantico": float(score), **meta}
+                    {"chunk_texto": chunk, "score_semantico": cos_sim, **meta}
                 )
 
         # Combinar y agrupar por ordenanza
@@ -1365,12 +1386,13 @@ def buscar_similares(pregunta: str, top_k=None):
     dist, idxs = index.search(emb, top_k * 2)
     resultados_semanticos = []
     for score, i in zip(dist[0], idxs[0]):
-        if score < SIMILARITY_THRESHOLD:
-            continue  # ⚡ Filtrar semánticos debajo del umbral de relevancia
+        cos_sim = _l2_to_cosine(score)
+        if cos_sim < SIMILARITY_THRESHOLD:
+            continue  # Filtrar semánticos debajo del umbral de relevancia
         chunk, meta = obtener_chunk_y_meta_seguro(i)
         if chunk and meta:
             resultados_semanticos.append(
-                {"chunk_texto": chunk, "score_semantico": float(score), **meta}
+                {"chunk_texto": chunk, "score_semantico": cos_sim, **meta}
             )
 
     # Combinar: textuales primero (más precisos), luego semánticos
@@ -1386,13 +1408,18 @@ def buscar_similares(pregunta: str, top_k=None):
         )
         or 1
     )
+    # Permitir hasta MAX_CHUNKS_POR_ORD chunks por ordenanza para capturar
+    # artículos múltiples (ej: 3 acuerdos transaccionales en ordenanza 8248)
+    chunks_por_archivo = {}
     for r in resultados_textuales:
         nombre = r.get("nombre_archivo", "")
-        if nombre not in nombres_incluidos:
+        count = chunks_por_archivo.get(nombre, 0)
+        if count < MAX_CHUNKS_POR_ORD:
             r["score_combinado"] = (
                 r.get("coincidencias_textuales", 0) / max_coincidencias
             )
             resultados_finales.append(r)
+            chunks_por_archivo[nombre] = count + 1
             nombres_incluidos.add(nombre)
 
     for r in resultados_semanticos:
@@ -1412,25 +1439,30 @@ def buscar_similares(pregunta: str, top_k=None):
     return resultados_finales[:limite]
 
 
-def armar_contexto(resultados, max_chars=5000, incluir_metadatos=True):
+def armar_contexto(resultados, max_chars=8000, incluir_metadatos=True):
     """Arma contexto truncado con metadatos completos."""
     contexto = ""
 
     if incluir_metadatos:
-        # Formato con metadatos completos
+        # Formato con metadatos completos; agrupar chunks del mismo documento
+        num_anterior = None
         for r in resultados:
             num = r.get("numero_ordenanza", "N/A")
             fecha = r.get("fecha_sancion", "desconocida")
-            fragmento = r["chunk_texto"][:500]  # ⚡ Un poco más de texto por fragmento
+            fragmento = r["chunk_texto"][:600]
 
-            contexto += f"\n[Ordenanza N° {num} - {fecha}]\n{fragmento}\n"
+            # Encabezado solo si cambia de ordenanza
+            if num != num_anterior:
+                contexto += f"\n[Ordenanza N° {num} - {fecha}]\n"
+                num_anterior = num
+            contexto += f"{fragmento}\n"
 
             if len(contexto) > max_chars:
                 break
     else:
         # Formato simple (legacy)
         for r in resultados:
-            fragmento = r["chunk_texto"][:400]
+            fragmento = r["chunk_texto"][:500]
             contexto += f"\n[Ord. {r.get('numero_ordenanza', 'N/A')}] {fragmento}\n"
             if len(contexto) > max_chars:
                 break
@@ -1746,7 +1778,7 @@ Responde SOLO con JSON en este formato exacto:
             ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
         )
 
-        prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde en máximo 2 oraciones usando SOLO la información del contexto.
+        prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
@@ -1763,7 +1795,7 @@ En ordenanzas_citadas incluye ÚNICAMENTE los números de ordenanza que realment
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=300 if tipo_pregunta == "palabra_clave" else 200,
+            max_tokens=300 if tipo_pregunta == "palabra_clave" else 400,
             timeout=10,
             response_format={"type": "json_object"},
         )

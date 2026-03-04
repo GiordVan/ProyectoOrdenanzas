@@ -23,6 +23,7 @@ CARPETA_DATA = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "..", "backend", "Data"
 )
 MAX_CHUNK_LEN = 500
+MIN_CHUNK_LEN = 50  # Mínimo para evitar embeddings ruidosos
 NUM_THREADS = 8
 
 # --- Categorías del Digesto ---
@@ -598,6 +599,7 @@ def dividir_en_chunks_mejorado(texto, max_len=MAX_CHUNK_LEN):
                             buffer = linea.strip()
                     if buffer:
                         chunks.append(buffer.strip())
+        chunks = [c for c in chunks if len(c) >= MIN_CHUNK_LEN]
         if chunks:
             return chunks
     lineas = texto.split("\n")
@@ -611,7 +613,7 @@ def dividir_en_chunks_mejorado(texto, max_len=MAX_CHUNK_LEN):
             buffer = linea.strip()
     if buffer:
         chunks.append(buffer.strip())
-    return [c for c in chunks if c]
+    return [c for c in chunks if c and len(c) >= MIN_CHUNK_LEN]
 
 
 # --- Agrupamiento y combinación MEJORADA ---

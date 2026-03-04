@@ -7,10 +7,9 @@
     "fecha_sancion_iso": "2025-09-25",
     "estado_vigencia": "vigente",
     "categoria": "Z",
-    "descripcion_categoria": "Acuerdos transaccionales - Acciones posesorias",
+    "descripcion_categoria": "Uso del espacio público",
     "temas": [
-      "acuerdos transaccionales",
-      "acciones posesorias/reales"
+      "uso del espacio público"
     ],
     "palabras_clave": [
       "Acuerdo Transaccional",
@@ -52,8 +51,8 @@
       6
     ],
     "etiquetas": [
-      "acuerdo_transaccional",
-      "ratificacion"
+      "declaracion",
+      "tarifaria_2025"
     ]
   },
   {
@@ -1976,6 +1975,7 @@
     ],
     "etiquetas": [
       "obra_publica",
+      "tarifaria_2025",
       "presupuesto_2025",
       "denominacion_calle",
       "servicios_municipales"
@@ -2031,7 +2031,8 @@
     "etiquetas": [
       "medio_ambiente",
       "obra_publica",
-      "declaracion"
+      "declaracion",
+      "tarifaria_2025"
     ]
   },
   {
@@ -4209,7 +4210,8 @@
     ],
     "etiquetas": [
       "habilitacion_comercial",
-      "obra_publica"
+      "obra_publica",
+      "tarifaria_2025"
     ]
   },
   {
@@ -4489,7 +4491,8 @@
       1
     ],
     "etiquetas": [
-      "declaracion"
+      "declaracion",
+      "tarifaria_2025"
     ]
   },
   {
@@ -11962,6 +11965,7 @@
     ],
     "etiquetas": [
       "obra_publica",
+      "tarifaria_2025",
       "regimen_laboral",
       "denominacion_calle",
       "medio_ambiente"

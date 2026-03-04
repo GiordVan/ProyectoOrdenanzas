@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(ls -1 /c/Users/clona/Desktop/ProyectoOrdenanzas/frontend/public/PDFs/*.pdf)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''backend/chat_engine.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''chat_engine.py OK''\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''backend/api.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''api.py OK''\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''ProcesarPDFs/Scripts/Embedder.py'', encoding=''utf-8''\\).read\\(\\)\\); print\\(''Embedder.py OK''\\)\")"
+    ]
+  }
+}

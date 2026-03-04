@@ -161,6 +161,26 @@ def _actualizar_memoria(
         state.pop("pending_topic", None)
 
 
+NO_RESULT_MESSAGE = (
+    "No encontré información relevante en el Digesto Digital para tu consulta. "
+    "Intentá reformular la pregunta con términos más específicos, "
+    "o indicar el número de ordenanza si lo conocés."
+)
+MIN_COSINE_FOR_GPT = 0.45
+
+
+def _resultados_son_relevantes(resultados: list) -> bool:
+    """Verifica si los resultados tienen calidad suficiente para enviar a GPT."""
+    if not resultados:
+        return False
+    for r in resultados:
+        if r.get("score_semantico", 0) >= MIN_COSINE_FOR_GPT:
+            return True
+        if r.get("coincidencias_textuales", 0) >= 2:
+            return True
+    return False
+
+
 def _intentar_resolver_deterministico(pregunta: str, resultados: list) -> dict | None:
     """
     Ejecuta todos los resolvers determinísticos en orden de prioridad.
@@ -228,7 +248,11 @@ async def ask_question(q: Question):
     loop = asyncio.get_event_loop()
     resultados = await loop.run_in_executor(None, buscar_similares, pregunta_efectiva)
 
-    # ⚡ Intentar resolvers determinísticos primero (Consistencia con streaming)
+    if not _resultados_son_relevantes(resultados):
+        _actualizar_memoria(conversation_id, q.pregunta, NO_RESULT_MESSAGE)
+        return Answer(respuesta=NO_RESULT_MESSAGE, documentos=[])
+
+    # Intentar resolvers determinísticos primero (Consistencia con streaming)
     resultado_resolver = await loop.run_in_executor(
         None, _intentar_resolver_deterministico, pregunta_efectiva, resultados
     )
@@ -273,6 +297,18 @@ async def ask_question_stream(q: Question):
         resultados = await loop.run_in_executor(
             None, buscar_similares, pregunta_efectiva
         )
+
+        if not _resultados_son_relevantes(resultados):
+            yield f"data: {json.dumps({'tipo': 'documentos', 'documentos': []})}\n\n"
+            msg = NO_RESULT_MESSAGE
+            paso = 8
+            for i in range(0, len(msg), paso):
+                yield f"data: {json.dumps({'tipo': 'chunk', 'texto': msg[i:i+paso]})}\n\n"
+                await asyncio.sleep(0.02)
+            _actualizar_memoria(conversation_id, q.pregunta, msg)
+            yield "data: [DONE]\n\n"
+            return
+
         documentos_info = construir_documentos_info(resultados)
 
         # 1. Enviar documentos al frontend
@@ -335,14 +371,14 @@ Contexto:
 
 Responde directamente en Markdown limpio. NO uses formato JSON."""
         else:
-            prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de manera clara y concisa usando SOLO la información del contexto.
+            prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
 
 Pregunta: {pregunta_efectiva}
 
-Responde directamente en Markdown limpio. NO uses formato JSON. Máximo 3 oraciones."""
+Responde directamente en Markdown limpio. NO uses formato JSON."""
 
         respuesta_acumulada = ""
         citas_extraidas = []
@@ -352,7 +388,7 @@ Responde directamente en Markdown limpio. NO uses formato JSON. Máximo 3 oracio
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0,
-                max_tokens=400,
+                max_tokens=600,
                 stream=True,
             )
 
