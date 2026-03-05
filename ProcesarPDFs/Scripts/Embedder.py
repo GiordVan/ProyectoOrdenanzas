@@ -194,6 +194,39 @@ Respondé SOLO con un JSON array de strings, sin texto adicional. Ejemplo:
         return etiquetas_fallback
 
 
+def generar_resumen_con_gpt(texto_fragmento: str, art1: str, fecha: str, num_ord: str) -> str:
+    """
+    Genera un resumen breve (2-3 oraciones) de una ordenanza usando GPT-4o-mini.
+    Costo: ~0.001 USD por ordenanza.
+    """
+    prompt = f"""Sos un asistente legal municipal. Generá un resumen breve (2-3 oraciones) de la siguiente ordenanza municipal de Villa María, Córdoba.
+
+El resumen debe explicar de forma clara y concisa qué establece la ordenanza, para que un ciudadano común pueda entenderlo rápidamente. No uses lenguaje técnico innecesario.
+
+Ordenanza N°: {num_ord}
+Fecha de sanción: {fecha}
+Artículo 1°: {art1[:500] if art1 else "(no disponible)"}
+Fragmento del texto: {texto_fragmento[:1500]}
+
+Respondé SOLO con el texto del resumen, sin comillas ni formato adicional."""
+
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=200,
+        )
+        resumen = response.choices[0].message.content.strip()
+        if resumen.startswith('"') and resumen.endswith('"'):
+            resumen = resumen[1:-1]
+        print(f"    📝 Resumen generado ({len(resumen)} chars)")
+        return resumen
+    except Exception as e:
+        print(f"    ⚠️ Error al generar resumen con GPT: {e}")
+        return ""
+
+
 def limpiar_texto(texto):
     return re.sub(r"\s+", " ", str(texto)).strip() if texto else ""
 
@@ -786,6 +819,12 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
         texto_base, metadatos_base["Art N°1"], metadatos_base["fecha_sancion"]
     )
 
+    # Generar resumen breve con GPT
+    resumen = generar_resumen_con_gpt(
+        texto_base, metadatos_base["Art N°1"],
+        metadatos_base["fecha_sancion"], metadatos_base["numero_ordenanza"]
+    )
+
     fecha_iso = "desconocida"
     if metadatos_base["fecha_sancion"] != "desconocida":
         try:
@@ -826,6 +865,7 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
                 "texto_consolidado": False,
                 "referencia_digesto": f"{cat_letra}-{metadatos_base['numero_ordenanza']}",
                 "Art N°1": metadatos_base["Art N°1"],
+                "resumen": resumen,
                 "chunk_id": i,
                 "total_chunks": total_chunks,
                 "pagina_inicial": 1,

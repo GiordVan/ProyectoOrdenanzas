@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Sparkles, FileText, ChevronDown, ChevronUp, Bot, User } from "lucide-react";
+import { X, Send, Sparkles, FileText, ChevronDown, ChevronUp, Bot, User, RotateCcw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 let API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -10,12 +10,15 @@ if (API_URL.endsWith("/")) {
   API_URL = API_URL.slice(0, -1);
 }
 
+const MAX_MENSAJES = 50;
+
 interface Documento {
   nombre: string;
   numero_ordenanza: string;
   fecha_sancion: string;
   fragmento: string;
   pdf: string;
+  resumen?: string;
 }
 
 interface Mensaje {
@@ -71,8 +74,11 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
     setInput("");
     setEnviando(true);
 
-    // Agregar mensaje del usuario
-    setMensajes((prev) => [...prev, { rol: "usuario", texto: pregunta }]);
+    // Agregar mensaje del usuario (con limite de historial)
+    setMensajes((prev) => {
+      const updated = [...prev, { rol: "usuario", texto: pregunta }];
+      return updated.length > MAX_MENSAJES ? updated.slice(-MAX_MENSAJES) : updated;
+    });
 
     // Agregar placeholder de carga para el asistente
     const idxAsistente = mensajes.length + 1;
@@ -201,13 +207,32 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                 <p className="text-xs text-gray-400">Ordenanzas municipales</p>
               </div>
             </div>
-            <button
-              onClick={onCerrar}
-              className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition"
-              aria-label="Cerrar chat"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1">
+              {mensajes.length > 0 && (
+                <button
+                  onClick={() => {
+                    setMensajes([]);
+                    setDocsExpandidos({});
+                    conversationIdRef.current =
+                      typeof crypto !== "undefined" && "randomUUID" in crypto
+                        ? crypto.randomUUID()
+                        : `conv-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+                  }}
+                  className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition"
+                  aria-label="Nuevo chat"
+                  title="Nuevo chat"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              )}
+              <button
+                onClick={onCerrar}
+                className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition"
+                aria-label="Cerrar chat"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           {/* Mensajes */}
@@ -320,7 +345,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                                     </p>
                                   )}
                                   <p className="text-xs text-gray-400 line-clamp-2">
-                                    {doc.fragmento}
+                                    {doc.resumen || doc.fragmento}
                                   </p>
                                 </div>
                               ))}

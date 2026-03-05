@@ -16,7 +16,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "El objeto principal de la Ordenanza 8241 es la creación del Ente de Movilidad Urbana (ENDMUR), que se encargará de administrar bienes municipales, planificar, gestionar y ejecutar obras de infraestructura, así como prestar servicios relacionados con la movilidad urbana en la ciudad.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -32,7 +32,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "La Ordenanza 8240 se encuentra vigente y rige desde el 18 de septiembre de 2025.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -48,7 +48,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "La Ordenanza 8243 modifica los siguientes artículos: Art. 33°, Art. 34°, Art. 36°, Art. 37°, Art. 38°.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -64,7 +64,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "La institución designada en la Ordenanza 8239 es el Centro Integral Municipal para Personas Mayores \"PAPA FRANCISCO\".",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -80,7 +80,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "precision",
-            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué ordenanza crea el ENTE DE MOVILIDAD URBANA (ENDEMUR)?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La ordenanza que crea el ENTE DE MOVILIDAD URBANA (ENDEMUR) es la N° 8241.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -96,7 +96,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "Se transfieren al ENDEMUR los siguientes bienes: \n- Terminal de Ómnibus \n- Centro de Transferencias y Playa de Estacionamiento",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -112,7 +112,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 4 ordenanzas relacionadas con '¿Qué funciones tiene la Sindicatura del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Las funciones de la Sindicatura del ENDEMUR son: a) Organizar y reglamentar su propio funcionamiento interno. b) Mantener un eficiente y eficaz sistema de control interno de las dependencias del Directorio del Ente. c) Fiscalizar las actividades financieras patrimoniales mediante los procedimientos normales de auditoría y las técnicas usuales de control, con arreglo a las disposiciones legales en vigencia. d) Controlar la organización, regularidad y exactitud de las operaciones contables.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -128,7 +128,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "El cuadro tarifario aprobado en la Ordenanza 8240 incluye los servicios públicos de provisión de agua potable, desagües cloacales y mantenimiento de desagües pluviales.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -144,7 +144,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué destino deben tener las utilidades netas del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Las utilidades netas que el ENDEMUR obtenga al cierre de cada ejercicio económico anual deberán ser destinadas prioritariamente a la constitución de un fondo de reserva, cuyo objetivo es el financiamiento de la extensión, mejora y modernización de los servicios que presta el Ente, así como la realización de inversiones estratégicas para el cumplimiento de sus objetivos fundacionales.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -160,7 +160,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué competencias tiene el ENDEMUR en materia aeroportuaria?'. Ver documentos para detalles.",
+            "respuesta_modelo": "El ENDEMUR tiene competencias en materia aeroportuaria que incluyen: administrar y operar el Aeropuerto Regional Villa María, ofrecer trabajo y transporte aéreo de personas, cargas y correspondencia de carácter nacional e internacional, fomentar el uso del aeropuerto y atraer nuevas aerolíneas y rutas, ofrecer servicios de taxis y otros coches de alquiler, y asegurar el cumplimiento con las regulaciones y normas nacionales e internacionales que rigen la operación de aeropuertos.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -176,7 +176,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+            "respuesta_modelo": "La cooperativa que solicitó la revisión tarifaria mencionada en la Ordenanza 8240 es la Cooperativa de Trabajo 15 de Mayo Ltda.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -192,7 +192,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué recursos integran el patrimonio del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "El patrimonio del ENDEMUR incluye la tenencia, administración y control de bienes inmuebles, así como de todos los bienes muebles, accesorios, instalaciones, equipos, instrumental y demás elementos vinculados a dichos inmuebles y a su funcionamiento.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -208,7 +208,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué rol cumple el Directorio del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "El Directorio del ENDEMUR es responsable de la dirección y administración del ente, integrado por un presidente, un vicepresidente y un vocal. Tiene atribuciones para dictar el estatuto del ENDEMUR, establecer normas internas de funcionamiento y designar al personal necesario para su operación. Además, los miembros del Directorio son responsables de las decisiones que tomen y pueden ser removidos por el Departamento Ejecutivo bajo ciertas causas.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -224,7 +224,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Quién puede remover a los miembros del Directorio?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Los miembros del Directorio pueden ser removidos por el Departamento Ejecutivo Municipal.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -240,7 +240,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué incompatibilidades se aplican a los miembros del Directorio?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Los miembros del Directorio del ENDEMUR están sujetos a las incompatibilidades fijadas por la Carta Orgánica Municipal para el cargo de secretario del Departamento Ejecutivo, y no podrán ser titulares los agentes y funcionarios municipales y sus cónyuges, ni personas inhabilitadas para el servicio.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -282,7 +282,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "No se especifica tipo de actividad comercial",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Qué necesito para habilitar un comercio en la ciudad?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Para habilitar un comercio en la ciudad, es necesario realizar el trámite de empadronamiento e inscripción en la Contribución que incide sobre la Actividad Comercial, Industrial y de Servicios, y cumplir con los requisitos establecidos por la Dirección de Habilitaciones Únicas.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -296,7 +296,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Depende de zonificación específica",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Se puede instalar un local gastronómico en cualquier zona?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La instalación de un local gastronómico debe realizarse en áreas públicas de la jurisdicción que estén habilitadas para tal fin, según lo establecido en la ordenanza correspondiente.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -310,7 +310,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Depende de zona y normativa aplicable",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Cuál es el límite de altura permitido para construir?'. Ver documentos para detalles.",
+            "respuesta_modelo": "No se encuentra información específica sobre el límite de altura permitido para construir en las ordenanzas disponibles.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -338,7 +338,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Nombre sin contexto",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 1 ordenanzas relacionadas con 'Martin Gill'. Ver documentos para detalles.",
+            "respuesta_modelo": "El Intendente Municipal actual de Villa María es Eduardo Luis Accastello. La mención de Martín Rodrigo Gill se refiere a una gestión anterior y no es relevante para la actualidad.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -570,7 +570,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Sigla sin contexto específico",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué significa MT en las ordenanzas?'. Ver documentos para detalles.",
+            "respuesta_modelo": "MT significa Módulo Tributario, que es una unidad de medida de valor homogénea utilizada para determinar importes fijos, tributos mínimos y escalas en la Ordenanza General Impositiva.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -602,7 +602,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Cuáles son los acuerdos transaccionales ratificados?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Se ratifican los siguientes acuerdos transaccionales: 1. Acuerdo con AHYMSSA S.A. 2. Acuerdo con María Fernanda Castellano. 3. Acuerdo con Gabriel Hernán Falchetto y Marcos Castro Allegro.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -618,7 +618,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 6 ordenanzas relacionadas con '¿Qué plazo tiene la Sindicatura para emitir dictamen sobre el balance anual del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La Sindicatura del ENDEMUR tiene un plazo de 30 días corridos para emitir dictamen sobre el balance general y estado de situación patrimonial de cada ejercicio anual.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -634,7 +634,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 5 ordenanzas relacionadas con '¿Cuál es la duración del mandato de los miembros del Directorio del ENDEMUR?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Los miembros del Directorio del ENDEMUR durarán dos (2) años en sus funciones, pudiendo ser ratificados por períodos sucesivos.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -650,7 +650,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 12 ordenanzas relacionadas con '¿Qué mayoría se requiere para que el Directorio tome decisiones válidas?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La información sobre la mayoría requerida para que el Directorio tome decisiones válidas no se encuentra en el contexto proporcionado.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -666,7 +666,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 8 ordenanzas relacionadas con '¿El ENDEMUR puede contraer empréstitos o financiamiento externo?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Sí, el ENDEMUR puede contraer empréstitos o financiamiento externo, ya que se le faculta al Departamento Ejecutivo a la toma de créditos de organismos financieros nacionales o internacionales, públicos o privados, para atender la deuda consolidada o la obra pública futura.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -682,7 +682,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "precision",
-            "respuesta_modelo": "Encontradas 10 ordenanzas relacionadas con '¿Qué ordenanza ratifica convenios con entidades de gestión de derechos musicales?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La ordenanza que ratifica convenios con entidades de gestión de derechos musicales es la N° 8074, que establece un convenio con la Sociedad Argentina de Autores y Compositores de Música (SADAIC).",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -698,7 +698,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "precision",
-            "respuesta_modelo": "Encontradas 13 ordenanzas relacionadas con '¿Qué ordenanza aprueba actualizaciones tarifarias de servicios públicos durante 2025?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La ordenanza que aprueba actualizaciones tarifarias de servicios públicos durante 2025 es la N° 8240, que establece un aumento escalonado en la tarifa de provisión de agua potable, desagües cloacales y mantenimiento de desagües pluviales.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -714,7 +714,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de estacionamiento por hora es: 2-5T $57,00; 6-10T $77,00; 11-16T $103,00; 17T o más $128,00. Operación nocturna: +30%.",
+            "respuesta_modelo": "Los bienes del aeropuerto transferidos al ENDEMUR se destinarán a la administración y operación del Aeropuerto Regional Villa María, así como a ofrecer trabajo y transporte aéreo de personas, cargas y correspondencia de carácter nacional e internacional, incluyendo actividades auxiliares y complementarias del ramo.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -730,7 +730,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 8 ordenanzas relacionadas con '¿Qué atribuciones tiene el ENDEMUR sobre el estacionamiento medido?'. Ver documentos para detalles.",
+            "respuesta_modelo": "El ENDEMUR tiene la atribución de desarrollar y gestionar sistemas de pago para el estacionamiento medido, facilitando la recaudación de tarifas y la gestión de ingresos mediante el uso de medios inteligentes. Además, puede otorgar concesiones a empresas privadas para la operación y gestión de estacionamientos públicos, estableciendo los términos y condiciones para la prestación del servicio.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -746,7 +746,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 3 ordenanzas relacionadas con '¿Qué ocurre si el ejercicio económico del ENDEMUR arroja déficit?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Si el ejercicio económico del ENDEMUR arroja déficit, el mismo será cubierto por la Municipalidad de Villa María, previéndose un mecanismo de reintegro a cargo del ENDEMUR, el cual deberá ser determinado por vía reglamentaria.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -762,7 +762,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "precision",
-            "respuesta_modelo": "Encontradas 13 ordenanzas relacionadas con '¿Qué ordenanza acepta donaciones destinadas a obras públicas?'. Ver documentos para detalles.",
+            "respuesta_modelo": "La ordenanza que acepta donaciones destinadas a obras públicas es la Ordenanza N° 8245, que ratifica un convenio de donación entre LA MARCHESINA S.R.L. y la MUNICIPALIDAD DE VILLA MARÍA.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -790,7 +790,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Nombre propio sin contexto",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 1 ordenanzas relacionadas con 'Martin Gill'. Ver documentos para detalles.",
+            "respuesta_modelo": "El Intendente Municipal actual de Villa María es Eduardo Luis Accastello. La información sobre Martín Rodrigo Gill se encuentra en el contexto, pero no es relevante para la actualidad.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -1022,7 +1022,7 @@
             "requiere_repregunta_según_test": true,
             "motivo_ambiguedad": "Sigla sin contexto",
             "tipo_test": "ambiguedad",
-            "respuesta_modelo": "Encontradas 4 ordenanzas relacionadas con '¿Qué sería MT en las ordenanzas?'. Ver documentos para detalles.",
+            "respuesta_modelo": "El Módulo Tributario (MT) es una unidad de medida de valor homogénea que se utiliza para determinar importes fijos, tributos mínimos, escalas y otros parámetros monetarios en la Ordenanza General Impositiva. Equivale al cuarenta por ciento (40%) del precio de venta al público.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60
@@ -1054,7 +1054,7 @@
             "requiere_repregunta_según_test": false,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding",
-            "respuesta_modelo": "Encontradas 9 ordenanzas relacionadas con '¿Cuáles son los acuerdos transaccionales ratificados?'. Ver documentos para detalles.",
+            "respuesta_modelo": "Se ratifican los siguientes acuerdos transaccionales: 1. Acuerdo con AHYMSSA S.A. 2. Acuerdo con María Fernanda Castellano. 3. Acuerdo con Gabriel Hernán Falchetto y Marcos Castro Allegro.",
             "repregunto": false,
             "texto_repregunta": null,
             "calidad_respuesta": 60

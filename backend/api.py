@@ -3,6 +3,7 @@ import json
 import os
 import re
 import threading
+import time
 from pathlib import Path
 from uuid import uuid4
 
@@ -31,14 +32,21 @@ from chat_engine import (
 
 app = FastAPI(title="Chat Legal IA API")
 
+_DEFAULT_ORIGINS = [
+    "https://demo-digestodigital.netlify.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+]
+CORS_ORIGINS = (
+    [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
+    if os.getenv("CORS_ORIGINS")
+    else _DEFAULT_ORIGINS
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://demo-digestodigital.netlify.app",
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,6 +56,19 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "Data"
 CONVERSATION_MEMORY = {}
 CONVERSATION_LOCK = threading.Lock()
+CONVERSATION_TTL = 3600  # 1 hora
+
+
+def _cleanup_stale_conversations():
+    """Elimina conversaciones inactivas por mas de CONVERSATION_TTL segundos."""
+    now = time.time()
+    with CONVERSATION_LOCK:
+        stale = [
+            k for k, v in CONVERSATION_MEMORY.items()
+            if now - v.get("_last_access", 0) > CONVERSATION_TTL
+        ]
+        for k in stale:
+            del CONVERSATION_MEMORY[k]
 
 
 @app.on_event("startup")
@@ -91,6 +112,7 @@ def construir_documentos_info(resultados: list, ordenanzas_citadas: set | None =
                 "fecha_sancion": r.get("fecha_sancion"),
                 "fragmento": r["chunk_texto"][:250] + "...",
                 "pdf": r.get("nombre_archivo"),
+                "resumen": r.get("resumen", ""),
             }
         )
         if len(documentos_info) >= MAX_DOCS_MOSTRADOS:
@@ -107,7 +129,9 @@ def _get_or_create_conversation_id(conversation_id: str | None) -> str:
 
 def _get_memory_state(conversation_id: str) -> dict:
     with CONVERSATION_LOCK:
-        return CONVERSATION_MEMORY.setdefault(conversation_id, {})
+        state = CONVERSATION_MEMORY.setdefault(conversation_id, {})
+        state["_last_access"] = time.time()
+        return state
 
 
 def _aplicar_memoria_pregunta(pregunta: str, state: dict) -> str:
@@ -166,7 +190,7 @@ NO_RESULT_MESSAGE = (
     "Intentá reformular la pregunta con términos más específicos, "
     "o indicar el número de ordenanza si lo conocés."
 )
-MIN_COSINE_FOR_GPT = 0.45
+MIN_COSINE_FOR_GPT = 0.38
 
 
 def _resultados_son_relevantes(resultados: list) -> bool:
@@ -177,6 +201,10 @@ def _resultados_son_relevantes(resultados: list) -> bool:
         if r.get("score_semantico", 0) >= MIN_COSINE_FOR_GPT:
             return True
         if r.get("coincidencias_textuales", 0) >= 2:
+            return True
+        # Resultados de CASO 1 (búsqueda directa por número de ordenanza)
+        # no tienen scores pero son coincidencias exactas → siempre relevantes
+        if r.get("numero_ordenanza") and "score_semantico" not in r and "coincidencias_textuales" not in r:
             return True
     return False
 
@@ -238,6 +266,7 @@ async def get_metadatos():
 
 @app.post("/ask", response_model=Answer)
 async def ask_question(q: Question):
+    _cleanup_stale_conversations()
     if not q.pregunta.strip():
         raise HTTPException(status_code=400, detail="La pregunta no puede estar vacia.")
 
@@ -285,6 +314,7 @@ async def ask_question_stream(q: Question):
     3a) Si un resolver responde → streaming simulado char-a-char (rápido)
     3b) Si no → streaming real de OpenAI token a token
     """
+    _cleanup_stale_conversations()
     if not q.pregunta.strip():
         raise HTTPException(status_code=400, detail="La pregunta no puede estar vacia.")
 
@@ -373,9 +403,11 @@ Responde directamente en Markdown limpio. NO uses formato JSON."""
         else:
             prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
 
-IMPORTANTE: El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes. Si ninguna ordenanza del contexto responde directamente a la pregunta, indicalo.
-
-Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
+REGLAS ESTRICTAS:
+1. El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes.
+2. NUNCA inventes números de ordenanza. Solo podés citar estas ordenanzas: {lista_nums}. Si la respuesta no está en el contexto, decilo claramente.
+3. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
+4. El Intendente Municipal actual (2025) es Eduardo Luis Accastello. No menciones intendentes de gestiones anteriores como actuales.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}

@@ -33,6 +33,8 @@ interface Metadato {
   provincia: string;
   pais: string;
   "Art N°1": string;
+  resumen?: string;
+  etiquetas?: string[];
   total_chunks?: number;
   chunk_indices?: number[];
 }
@@ -206,10 +208,12 @@ function BuscadorManual() {
         const temas = ord.temas.join(" ").toLowerCase();
         const palabras = ord.palabras_clave.join(" ").toLowerCase();
         const art1 = ord["Art N°1"]?.toLowerCase() || "";
+        const resumen = ord.resumen?.toLowerCase() || "";
         return (
           temas.includes(palabraLower) ||
           palabras.includes(palabraLower) ||
-          art1.includes(palabraLower)
+          art1.includes(palabraLower) ||
+          resumen.includes(palabraLower)
         );
       });
     }
@@ -510,17 +514,42 @@ function BuscadorManual() {
                         </div>
 
                         <div className={`mb-3 overflow-hidden transition-all duration-300 ${expandida === ord.numero_ordenanza ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 lg:max-h-[1000px] lg:opacity-100'}`}>
-                          <p className="text-sm font-semibold text-gray-700 mb-1">
-                            Artículo 1°:
-                          </p>
-                          <p className="text-sm text-gray-600 leading-relaxed">
-                            {ord["Art N°1"] || "No disponible"}
-                          </p>
+                          {ord.resumen ? (
+                            <>
+                              <p className="text-sm font-semibold text-gray-700 mb-1">
+                                Resumen:
+                              </p>
+                              <p className="text-sm text-gray-600 leading-relaxed">
+                                {ord.resumen}
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-sm font-semibold text-gray-700 mb-1">
+                                Artículo 1°:
+                              </p>
+                              <p className="text-sm text-gray-600 leading-relaxed">
+                                {ord["Art N°1"] || "No disponible"}
+                              </p>
+                            </>
+                          )}
                         </div>
 
                         <div className={`transition-all duration-300 ${expandida === ord.numero_ordenanza ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 lg:max-h-[500px] lg:opacity-100 overflow-hidden'}`}>
+                          {ord.etiquetas && ord.etiquetas.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mb-2">
+                              {ord.etiquetas.slice(0, 4).map((etiq: string, i: number) => (
+                                <span
+                                  key={i}
+                                  className="px-2 py-0.5 bg-purple-50 text-purple-600 rounded text-xs"
+                                >
+                                  {etiq.replace(/_/g, " ")}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                           {ord.temas && ord.temas.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-3">
+                            <div className="flex flex-wrap gap-2 mt-1">
                               {ord.temas.slice(0, 3).map((tema: string, i: number) => (
                                 <span
                                   key={i}

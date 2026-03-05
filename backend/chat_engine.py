@@ -815,8 +815,11 @@ def resolver_tarifaria_intenciones(
                 "ordenanzas_citadas": [num_citado],
             }
 
-    # 9) Tasas de aeropuerto (aterrizaje)
-    if "aeropuerto" in texto or "aterrizar" in texto or "aeronave" in texto:
+    # 9) Tasas de aeropuerto (aterrizaje) — solo si hay intención tarifaria
+    tiene_intencion_tarifaria_aero = any(
+        t in texto for t in ("tasa", "tarifa", "costo", "cuanto", "pagar", "aterrizaje", "estacionamiento de aeronave")
+    )
+    if ("aeropuerto" in texto or "aterrizar" in texto or "aeronave" in texto) and tiene_intencion_tarifaria_aero:
         if (
             "1 litro de combustible 100ll" in big_norm
             and "peso maximo de despegue" in big_norm
@@ -901,11 +904,21 @@ def construir_pregunta_aclaratoria(
     requiere_anio_monto = es_consulta_de_monto_o_tarifa(
         pregunta
     ) or es_consulta_presupuesto_de_monto(pregunta)
+    # No pedir año si la pregunta ya menciona un número de ordenanza específico
+    # (ej: "¿Qué cooperativa solicitó la revisión tarifaria de la Ordenanza 8240?")
+    tiene_ord_especifica = bool(extraer_numero_ordenanza_de_pregunta(pregunta))
+    # No pedir año si la pregunta es factual (quién, qué, cuál) y no pide un monto
+    palabras_factuales = {"quien", "quién", "cual", "cuál", "qué", "que", "cooperativa", "empresa", "entidad"}
+    es_factual = any(p in pregunta.lower() for p in palabras_factuales) and not any(
+        p in pregunta.lower() for p in ("cuánto", "cuanto", "monto", "pagar", "cuesta", "precio", "valor")
+    )
     if (
         requiere_anio_monto
         and not es_consulta_presupuesto_institucional(pregunta)
         and not es_consulta_tasa_propiedad(pregunta)
         and not anios_en_pregunta
+        and not tiene_ord_especifica
+        and not es_factual
     ):
         sugeridos = anios_en_resultados or obtener_anios_disponibles(top_n=2)
         if len(sugeridos) >= 2:
@@ -1514,6 +1527,20 @@ def buscar_similares(pregunta: str, top_k=None):
                     resultados_exactos.append({"chunk_texto": chunk, **meta})
 
         if resultados_exactos:
+            # Si hay muchos chunks y la pregunta es específica, rankear semánticamente
+            # para devolver los más relevantes (ej: Art 18 de una ordenanza de 82 chunks)
+            if len(resultados_exactos) > top_k * 2 and len(pregunta.strip().split()) > 3:
+                try:
+                    emb_q = generar_embedding_local(pregunta).reshape(1, -1)
+                    for r in resultados_exactos:
+                        emb_c = generar_embedding_local(r["chunk_texto"]).reshape(1, -1)
+                        sim = float(np.dot(emb_q, emb_c.T)[0][0])
+                        r["_relevancia_interna"] = sim
+                    resultados_exactos.sort(
+                        key=lambda x: x.get("_relevancia_interna", 0), reverse=True
+                    )
+                except Exception:
+                    pass  # Si falla embedding, devolver en orden original
             return resultados_exactos[: top_k * 2]
 
     # 🔥 CASO 2: Búsqueda por PALABRA CLAVE (nueva lógica)
@@ -1599,6 +1626,46 @@ def buscar_similares(pregunta: str, top_k=None):
             return resultados[: top_k * 2]
 
     # CASO 5: Búsqueda híbrida general
+
+    # Boost por entidad: si la pregunta menciona una entidad conocida,
+    # inyectar chunks relevantes de la ordenanza que la define
+    _ENTIDADES_A_ORDENANZA = {
+        "endemur": "8241",
+        "ente de movilidad urbana": "8241",
+        "ente de movilidad": "8241",
+    }
+    pregunta_lower = pregunta.lower()
+    entidad_ord = None
+    for entidad, ord_num in _ENTIDADES_A_ORDENANZA.items():
+        if entidad in pregunta_lower:
+            entidad_ord = ord_num
+            break
+
+    resultados_entidad = []
+    if entidad_ord and not num_ord:
+        # Buscar chunks de esa ordenanza y rankear semánticamente
+        num_norm_ent = normalizar_numero(entidad_ord)
+        todos_chunks_entidad = []
+        for i, meta in enumerate(metadatos):
+            if normalizar_numero(meta.get("numero_ordenanza", "")) == num_norm_ent:
+                chunk, _ = obtener_chunk_y_meta_seguro(i)
+                if chunk:
+                    todos_chunks_entidad.append({"chunk_texto": chunk, **meta})
+        if todos_chunks_entidad:
+            try:
+                emb_q = generar_embedding_local(pregunta).reshape(1, -1)
+                for r in todos_chunks_entidad:
+                    emb_c = generar_embedding_local(r["chunk_texto"]).reshape(1, -1)
+                    sim = float(np.dot(emb_q, emb_c.T)[0][0])
+                    r["score_semantico"] = sim
+                    r["coincidencias_textuales"] = 3  # Garantizar que pase filtro de relevancia
+                todos_chunks_entidad.sort(
+                    key=lambda x: x.get("score_semantico", 0), reverse=True
+                )
+                resultados_entidad = todos_chunks_entidad[: MAX_CHUNKS_POR_ORD + 2]
+            except Exception:
+                pass
+
     terminos_clave = extraer_terminos_clave(pregunta)
     resultados_textuales = []
     if terminos_clave:
@@ -1620,10 +1687,15 @@ def buscar_similares(pregunta: str, top_k=None):
                 {"chunk_texto": chunk, "score_semantico": cos_sim, **meta}
             )
 
-    # Combinar: textuales primero (más precisos), luego semánticos
-    # Los textuales ya tienen coincidencias_textuales como score
+    # Combinar: entidad primero, textuales segundo, semánticos tercero
     resultados_finales = []
     nombres_incluidos = set()
+
+    # Inyectar resultados de entidad con prioridad alta
+    for r in resultados_entidad:
+        r["score_combinado"] = 1.0 + r.get("score_semantico", 0)
+        resultados_finales.append(r)
+        # No agregar a nombres_incluidos para permitir más chunks del mismo archivo
 
     # Calcular score combinado para los textuales (normalizar coincidencias)
     max_coincidencias = (
@@ -2008,9 +2080,11 @@ Responde SOLO con JSON en este formato exacto:
 
         prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
 
-IMPORTANTE: El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes. Si ninguna ordenanza del contexto responde directamente a la pregunta, indicalo.
-
-Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
+REGLAS ESTRICTAS:
+1. El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes.
+2. NUNCA inventes números de ordenanza. Solo podés citar estas ordenanzas: {lista_nums}. Si la respuesta no está en el contexto, decilo claramente.
+3. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
+4. El Intendente Municipal actual (2025) es Eduardo Luis Accastello. No menciones intendentes de gestiones anteriores como actuales.
 
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
@@ -2020,11 +2094,11 @@ Pregunta: {pregunta}
 Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin bloques de código):
 {{"respuesta": "...", "ordenanzas_citadas": ["XXXX"]}}
 
-En ordenanzas_citadas incluye ÚNICAMENTE los números de ordenanza que realmente usaste para responder."""
+En ordenanzas_citadas incluye ÚNICAMENTE números de la lista [{lista_nums}] que realmente usaste para responder."""
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-5-mini",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
             max_tokens=300 if tipo_pregunta == "palabra_clave" else 400,
