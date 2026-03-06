@@ -1,0 +1,2347 @@
+{
+  "metadata_evaluacion": {
+    "fecha_evaluacion": "2026-03-06",
+    "modelo_evaluador": "gpt-4o-mini",
+    "version": "v2_post_fixes"
+  },
+  "resumen": {
+    "total_preguntas": 100,
+    "score_promedio": 70.8,
+    "score_mediana": 80,
+    "score_min": 0,
+    "score_max": 100,
+    "score_repregunta_promedio": 51.8,
+    "n_con_repregunta": 30,
+    "n_fallback": 13,
+    "n_timeout": 1,
+    "n_directa": 86,
+    "distribucion_calidad": {
+      "muy_malos_0_29": 10,
+      "malos_30_49": 11,
+      "moderados_50_69": 16,
+      "buenos_70_89": 48,
+      "muy_buenos_90_100": 15
+    },
+    "penalizaciones_frecuentes": {
+      "DATOS_IGNORADOS": 6,
+      "VAGUEDAD": 6,
+      "INCOMPRENSION_REPREGUNTA": 6,
+      "NOMBRE": 1,
+      "ALUCINACION": 1
+    }
+  },
+  "evaluaciones": [
+    {
+      "id": 1,
+      "pregunta": "¿Cuál es el objeto principal de la Ordenanza 8241?",
+      "categoria": "Identificación y vigencia",
+      "dificultad": "baja",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "ERROR EXCEPCION: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=60)",
+      "es_fallback": false,
+      "es_timeout": true,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 0,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 0,
+        "claridad_completitud": 0,
+        "penalizaciones": [],
+        "score_total": 0,
+        "score_repregunta": null,
+        "notas": "El modelo no pudo proporcionar una respuesta debido a un error técnico de timeout."
+      }
+    },
+    {
+      "id": 2,
+      "pregunta": "¿La Ordenanza 8240 se encuentra vigente y desde qué fecha rige?",
+      "categoria": "Identificación y vigencia",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8240** (18/09/2025): La Ordenanza N° 8240 aprueba la revisión y actualización del Cuadro Tarifario para...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información relevante sobre la vigencia de la Ordenanza 8240, aunque no citó la fecha de inicio de vigencia de manera específica. La respuesta es clara y no contiene alucinaciones ni contradicciones."
+      }
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué artículos modifica la Ordenanza 8243?",
+      "categoria": "Identificación y vigencia",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Ordenanza N° 8243 modifica el Art. 33° y el Art. 34° del Anexo I de la Ordenanza N° 8.124.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo fue clara, completa y correcta, citando específicamente los artículos modificados por la Ordenanza N° 8243."
+      }
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué institución resulta designada en la Ordenanza 8239?",
+      "categoria": "Identificación y vigencia",
+      "dificultad": "baja",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "El actual Hogar de Día 81 (ubicado en bulevar Marcelo T. de Alvear 1136, barrio Rivadavia) es designado con el nombre de Centro Integral Municipal para Personas Mayores “PAPA FRANCISCO” (Art. 1º, Orde...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "El modelo entendió perfectamente la pregunta, proporcionó una respuesta correcta y completa, citando el artículo específico de la ordenanza. No hubo alucinaciones ni errores en la información presentada."
+      }
+    },
+    {
+      "id": 5,
+      "pregunta": "¿Qué ordenanza crea el ENTE DE MOVILIDAD URBANA (ENDEMUR)?",
+      "categoria": "Identificación y vigencia",
+      "dificultad": "baja",
+      "tipo_test": "precision",
+      "respuesta_modelo": "La Ordenanza N° 8241, de fecha 18/09/2025 (Art. 1º), crea el ENTE DE MOVILIDAD URBANA (ENDEMUR).",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo es precisa, clara y utiliza correctamente el contexto de la ordenanza, citando el artículo específico que crea el ENDEMUR."
+      }
+    },
+    {
+      "id": 6,
+      "pregunta": "¿Qué bienes se transfieren al ENDEMUR según la Ordenanza 8241?",
+      "categoria": "Obras y patrimonio",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8241** (18/09/2025): La Ordenanza N° 8241 crea el Ente de Movilidad Urbana (ENDMUR) como un organismo d...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 10,
+        "no_alucinacion": 20,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 66,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero no proporcionó información específica sobre los bienes que se transfieren al ENDEMUR según la Ordenanza 8241. La respuesta fue vaga y no citó artículos relevantes que detallen los bienes transferidos."
+      }
+    },
+    {
+      "id": 7,
+      "pregunta": "¿Qué funciones tiene la Sindicatura del ENDEMUR?",
+      "categoria": "Control y fiscalización",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Según el contexto proporcionado:\n\nMisión (Art. 14º): velar por la correcta aplicación de las normas y procedimientos que rigen la materia contable y contractual, y ejercer el control interno, incluyen...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "La respuesta entendió correctamente la pregunta y proporcionó información relevante, aunque no citó todos los artículos específicos de las funciones de la Sindicatura. La claridad fue buena, pero podría haber sido más completa."
+      }
+    },
+    {
+      "id": 8,
+      "pregunta": "¿Qué servicios incluye el cuadro tarifario aprobado en la Ordenanza 8240?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Incluye los siguientes servicios (Art. 1):\n- Provisión de agua potable\n- Desagües cloacales\n- Mantenimiento de desagües pluviales",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "El modelo entendió perfectamente la pregunta y proporcionó una respuesta completa y precisa, citando correctamente los servicios incluidos en la Ordenanza 8240."
+      }
+    },
+    {
+      "id": 9,
+      "pregunta": "¿Qué destino deben tener las utilidades netas del ENDEMUR?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Deben destinarse prioritariamente a la constitución de un fondo de reserva, destinado exclusivamente a financiar la extensión, mejora y modernización de los servicios que presta el ENDEMUR y a la real...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa sobre el destino de las utilidades netas del ENDEMUR. Sin embargo, no citó específicamente el artículo correspondiente de la ordenanza, lo que afectó el uso del contexto. La respuesta fue clara y bien estructurada."
+      }
+    },
+    {
+      "id": 10,
+      "pregunta": "¿Qué competencias tiene el ENDEMUR en materia aeroportuaria?",
+      "categoria": "Obras y transporte",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Según el contexto proporcionado, el ENDEMUR tiene las siguientes competencias en materia aeroportuaria:\n\n- Administrar y operar el Aeropuerto Regional Villa María.  \n- Ofrecer transporte aéreo de pers...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información relevante sobre las competencias del ENDEMUR en materia aeroportuaria. Sin embargo, no citó específicamente los artículos de la ordenanza, lo que afectó el uso del contexto. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 11,
+      "pregunta": "¿Qué cooperativa solicitó la revisión tarifaria mencionada en la Ordenanza 8240?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Cooperativa de Trabajo 15 de Mayo Ltda.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta es correcta, clara y utiliza adecuadamente el contexto de la ordenanza, citando específicamente a la cooperativa solicitante."
+      }
+    },
+    {
+      "id": 12,
+      "pregunta": "¿Qué recursos integran el patrimonio del ENDEMUR?",
+      "categoria": "Tasas y patrimonio",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "El patrimonio del ENDEMUR lo integran la tenencia, administración y control de los bienes inmuebles transferidos (p. ej. la Terminal de Ómnibus) y todos los bienes muebles, accesorios, instalaciones, ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa sobre el patrimonio del ENDEMUR, aunque no citó específicamente los artículos de la ordenanza. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 13,
+      "pregunta": "¿Qué rol cumple el Directorio del ENDEMUR?",
+      "categoria": "Organización institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "El Directorio tiene a su cargo la dirección y administración del ENDEMUR. Está integrado por un presidente, un vicepresidente y un vocal (designados por el Departamento Ejecutivo Municipal). Sus princ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa, aunque le faltó citar artículos específicos del contexto. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 14,
+      "pregunta": "¿Quién puede remover a los miembros del Directorio?",
+      "categoria": "Control institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "El Departamento Ejecutivo Municipal puede remover a los miembros del Directorio. Según la Ordenanza N° 8241, podrán ser removidos en cualquier momento por el Departamento Ejecutivo Municipal; además, ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo fue clara, completa y se basó en el contexto de la ordenanza, citando correctamente los artículos relevantes. No hubo errores ni alucinaciones."
+      }
+    },
+    {
+      "id": 15,
+      "pregunta": "¿Qué incompatibilidades se aplican a los miembros del Directorio?",
+      "categoria": "Organización institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8241** (18/09/2025): La Ordenanza N° 8241 crea el Ente de Movilidad Urbana (ENDMUR) como un organismo d...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 5,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 3,
+        "penalizaciones": [
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "Ignoró la pregunta específica sobre incompatibilidades."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta es vaga y no aborda la consulta."
+          }
+        ],
+        "score_total": 8,
+        "score_repregunta": null,
+        "notas": "La respuesta no aborda la pregunta sobre incompatibilidades de los miembros del Directorio y se centra en información irrelevante sobre el Ente de Movilidad Urbana."
+      }
+    },
+    {
+      "id": 16,
+      "pregunta": "¿Cuánto cuesta la tasa municipal?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2025 o 2024?",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": 90,
+        "notas": "El modelo entendió correctamente la pregunta inicial y la repregunta. La respuesta a la repregunta fue precisa y relevante, aunque no citó artículos específicos de la ordenanza. La claridad fue buena, pero podría mejorarse en la estructura."
+      }
+    },
+    {
+      "id": 17,
+      "pregunta": "¿Cuál es el monto actualizado de la multa municipal?",
+      "categoria": "Faltas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Para darte un monto exacto necesito el año de la ordenanza. ¿Querés 2023 o 2024?",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": 85,
+        "notas": "El modelo entendió correctamente la pregunta inicial y la repregunta. La respuesta a la repregunta fue precisa y citó la ordenanza correspondiente, aunque no se proporcionaron detalles sobre montos máximos. La claridad fue buena, pero podría mejorarse en la estructura."
+      }
+    },
+    {
+      "id": 18,
+      "pregunta": "¿Qué necesito para habilitar un comercio en la ciudad?",
+      "categoria": "Comercio",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8013** (desconocida): La Ordenanza N° 8013 establece el presupuesto del Instituto Municipal de la Vivie...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 5,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 3,
+        "penalizaciones": [
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No entendió que se trataba de un local gastronómico."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta fue muy vaga y no proporcionó información específica."
+          }
+        ],
+        "score_total": 3,
+        "score_repregunta": null,
+        "notas": "La respuesta no abordó adecuadamente la pregunta inicial sobre la habilitación de un comercio, y no entendió la repregunta sobre el tipo de local. La falta de información específica y la vaguedad en la respuesta afectaron significativamente el puntaje."
+      }
+    },
+    {
+      "id": 19,
+      "pregunta": "¿Se puede instalar un local gastronómico en cualquier zona?",
+      "categoria": "Urbanismo",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No puede determinarse con la información del contexto: en las ordenanzas disponibles no hay disposiciones sobre zonificación ni sobre autorización para instalar locales gastronómicos, por lo que no se...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 56,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no proporcionó información específica sobre la zonificación en Villa María. La respuesta a la repregunta no fue adecuada, ya que no se encontró información relevante sobre la zona céntrica, lo que indica una falta de contexto. La claridad fue aceptable, pero la falta de uso de contexto afectó significativamente la puntuación."
+      }
+    },
+    {
+      "id": 20,
+      "pregunta": "¿Cuál es el límite de altura permitido para construir?",
+      "categoria": "Urbanismo",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No se encuentra en el contexto información sobre un límite de altura permitido para construir.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 5,
+        "penalizaciones": [],
+        "score_total": 35,
+        "score_repregunta": 0,
+        "notas": "El modelo no comprendió correctamente la pregunta inicial sobre el límite de altura y no proporcionó información relevante. La respuesta a la repregunta fue incorrecta, ya que no se abordó la zona residencial solicitada."
+      }
+    },
+    {
+      "id": 21,
+      "pregunta": "Paviotti",
+      "categoria": "Identificación",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 78,
+        "score_repregunta": 60,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero la respuesta a la repregunta fue un poco genérica y no aportó información nueva. La exactitud de los datos fue buena, pero la claridad y el uso del contexto podrían mejorar."
+      }
+    },
+    {
+      "id": 22,
+      "pregunta": "Martin Gill",
+      "categoria": "Identificación",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Según el contexto proporcionado, Martín Rodrigo Gill (Ab. Martín Rodrigo GILL) es el Intendente Municipal de Villa María y figura como representante de la Municipalidad en las ordenanzas citadas (Orde...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 5,
+        "penalizaciones": [
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No entendió la repregunta sobre las ordenanzas."
+          },
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "Ignoró que la repregunta solicitaba información específica sobre las ordenanzas."
+          }
+        ],
+        "score_total": 5,
+        "score_repregunta": null,
+        "notas": "El modelo no comprendió la repregunta y no proporcionó información relevante sobre las ordenanzas mencionadas, resultando en una puntuación baja."
+      }
+    },
+    {
+      "id": 23,
+      "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+      "categoria": "Presupuesto",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "El presupuesto total del Municipio para 2025 es de $74.908.214.520,00.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "No se proporcionó contexto de referencia para validar la cifra."
+          },
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No se puede evaluar repregunta ya que no se proporcionó contexto."
+          }
+        ],
+        "score_total": 13,
+        "score_repregunta": null,
+        "notas": "La respuesta muestra comprensión de la pregunta, pero la falta de contexto hace que la exactitud y el uso de contexto sean nulos. La respuesta es clara, pero no se puede validar la cifra proporcionada."
+      }
+    },
+    {
+      "id": 24,
+      "pregunta": "¿Qué departamento es responsable de ejecutar el presupuesto 2025?",
+      "categoria": "Presupuesto",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "El seguimiento de la ejecución del presupuesto está a cargo de la Secretaria de Gobierno Cultura y Relaciones Institucionales.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente, pero la respuesta no es factualmente precisa y no se basa en un contexto específico de ordenanzas. No se citaron artículos ni se proporcionó información detallada, lo que afectó la puntuación en uso de contexto."
+      }
+    },
+    {
+      "id": 25,
+      "pregunta": "¿Puede el municipio modificar el presupuesto durante el año?",
+      "categoria": "Presupuesto",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Sí, puede modificarse durante el año: el Art. 4° lo define como previsión estimativa y el Art. 5° autoriza reasignaciones y modificaciones presupuestarias.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa, aunque no citó los artículos de forma específica. La respuesta es clara y completa, pero podría mejorar en la referencia a los artículos mencionados."
+      }
+    },
+    {
+      "id": 26,
+      "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "El monto depende de la zona y del valor fiscal (VRF) de tu propiedad. Como referencia, las alícuotas van de 8,00 por mil en Zona 1 a 0,00 por mil en Zona 7 (Tarifa Social); los mínimos anuales incluye...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No entendió que la repregunta se refería a la zona específica."
+          }
+        ],
+        "score_total": 37,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta inicial, pero no pudo proporcionar información sobre la Zona 5, lo que afectó su capacidad de respuesta. La falta de contexto específico sobre la Zona 5 y la incomprensión de la repregunta resultaron en una penalización significativa."
+      }
+    },
+    {
+      "id": 27,
+      "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+      "categoria": "Tasas",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí, podés elegir pagar al contado o en 12 cuotas mensuales y consecutivas, a opción del contribuyente. Para Zona 7 (Tarifa Social General), la modalidad es en 6 cuotas bimestrales. Además, el D.E.M. p...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 73,
+        "score_repregunta": 80,
+        "notas": "La respuesta inicial comprendió bien la pregunta y fue clara, pero no utilizó contexto específico de ordenanzas. La repregunta fue relevante y la respuesta fue adecuada, aunque podría haber sido más específica."
+      }
+    },
+    {
+      "id": 28,
+      "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí. Existe Tarifa Social para contribuyentes en situación socioeconómica vulnerable, con evaluación mediante estudio socioeconómico. Incluye Tarifa Social General (mínimo anual $30.000,00) y Tarifa So...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": 70,
+        "notas": "El modelo entendió parcialmente la pregunta inicial, pero no utilizó contexto específico de las ordenanzas. La respuesta a la repregunta fue clara y relevante, aunque no se mencionaron detalles específicos de las ordenanzas."
+      }
+    },
+    {
+      "id": 29,
+      "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No está en el contexto proporcionado el monto específico para \"mantener\" una tumba o panteón.\n\nLo que sí figura en el texto suministrado:\n- Art. 7 (Ordenanza N° 8154): \"Los propietarios ... abonarán a...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 78,
+        "score_repregunta": 60,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no proporcionó información específica sobre el costo de mantenimiento. En la repregunta, la respuesta fue correcta pero no completa, ya que no se mencionaron tarifas específicas para tumbas individuales."
+      }
+    },
+    {
+      "id": 30,
+      "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+      "categoria": "Faltas",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Si no se paga la contribución del cementerio, la deuda queda en mora y se aplican recargos/intereses conforme la normativa municipal, además de habilitarse gestión de cobro administrativo o judicial.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 68,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta y proporcionó una respuesta clara y correcta en términos generales, pero no citó ninguna ordenanza específica, lo que afectó el uso del contexto. No hubo alucinaciones ni contradicciones."
+      }
+    },
+    {
+      "id": 31,
+      "pregunta": "¿Hay tributos adicionales en el servicio de agua?",
+      "categoria": "Tasas",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Sí. Se aplica una Contribución Especial con alícuota del 2% sobre el valor del servicio de agua potable y cloacas (Título XIII BIS de la O.G.I.V.).",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa, aunque no citó el artículo específico que menciona la Contribución Especial. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 32,
+      "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+      "categoria": "Comercio",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8151** (21/11/2024): La Ordenanza N.º 8151 establece la ordenanza tarifaria del municipio de Villa Marí...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 10,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 72,
+        "score_repregunta": 50,
+        "notas": "La respuesta inicial muestra comprensión parcial de la pregunta, pero carece de detalles específicos sobre tributos adicionales para comercios. La repregunta se aborda de manera adecuada, aunque no se proporciona información específica sobre el comercio gastronómico."
+      }
+    },
+    {
+      "id": 33,
+      "pregunta": "¿Cuánto cuesta el servicio de ambulancia si no soy residente?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Según el Art. 118° de la Ordenanza Tarifaria, los aranceles del servicio 107 SAMU son:\n\n**Servicios de Ambulancia:**\n- Ambulancia con chofer y paramédico por evento: **$307.100,00**\n- Ambulancia con c...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": 100,
+        "notas": "La respuesta inicial y la repregunta fueron claras y precisas, citando correctamente los aranceles según la ordenanza. No se encontraron errores ni alucinaciones."
+      }
+    },
+    {
+      "id": 34,
+      "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí. Para actividades con camiones/utilitarios afectados al establecimiento que circulen en la ciudad o accesos, el tributo es $350,00 por tonelada, con mínimo mensual por camión de $30.000,00. Las emp...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": 20,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no utilizó contexto relevante para responder a la repregunta, lo que afectó negativamente el uso del contexto. La respuesta fue clara y no alucinó, pero careció de citas específicas de ordenanzas."
+      }
+    },
+    {
+      "id": 35,
+      "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro municipal?",
+      "categoria": "Espacios públicos",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 68,
+        "score_repregunta": 25,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no utilizó contexto específico de ordenanzas. La respuesta a la repregunta fue repetitiva y no aportó nueva información, lo que afectó su puntuación."
+      }
+    },
+    {
+      "id": 36,
+      "pregunta": "¿Hay descuentos si el evento es cultural o benéfico?",
+      "categoria": "Espacios públicos",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 51,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero no proporcionó información sobre descuentos para eventos culturales o benéficos. La respuesta fue confusa y no citó ordenanzas específicas, lo que afectó la exactitud y el uso del contexto."
+      }
+    },
+    {
+      "id": 37,
+      "pregunta": "¿Cuánto cuesta retirar un auto del depósito municipal?",
+      "categoria": "Faltas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Por vehículos en depósito municipal, la estadía es: Automóvil/jeep 20 MT por día, Camiones/acoplados/ómnibus 30 MT por día, Motocicletas 11 MT por día. Si regularizás dentro de las primeras 2 horas, n...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No entendió la repregunta sobre el tiempo de estadía del auto."
+          }
+        ],
+        "score_total": 43,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta inicial, pero no comprendió la repregunta, lo que afectó negativamente el score. La respuesta inicial fue correcta en cuanto a los costos, pero no utilizó el contexto de manera efectiva."
+      }
+    },
+    {
+      "id": 38,
+      "pregunta": "¿Qué significa MT en las ordenanzas?",
+      "categoria": "Interpretación normativa",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "MT significa \"Módulo Tributario\". Según el Artículo 127º de la Ordenanza N° 8151 (21/11/2024): se crea el Módulo Tributario (MT) como unidad de medida de valor homogénea para determinar importes fijos...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "La respuesta inicial fue clara y precisa, aunque la referencia a la ordenanza no fue completamente detallada. La repregunta no fue respondida, por lo que no se evaluó un score para esta parte."
+      }
+    },
+    {
+      "id": 39,
+      "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de est...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 78,
+        "score_repregunta": 0,
+        "notas": "El modelo entendió parcialmente la pregunta original, proporcionando información sobre tasas de aterrizaje y estacionamiento, pero no abordó adecuadamente la repregunta sobre la avioneta privada monomotor, indicando que no había información relevante cuando sí podría haberla inferido del contexto."
+      }
+    },
+    {
+      "id": 40,
+      "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+      "categoria": "Identificación",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Fueron ratificados tres Acuerdos Transaccionales, todos suscriptos el 15 de agosto de 2025 en el marco del Expediente Nº 350499 (“MUNICIPALIDAD DE VILLA MARÍA C/ MARTINOTTI, JOSÉ NATALIO Y OTROS - ACC...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo fue clara y precisa, citando correctamente los acuerdos transaccionales ratificados y sus detalles específicos, cumpliendo con todos los criterios de evaluación."
+      }
+    },
+    {
+      "id": 41,
+      "pregunta": "¿Qué plazo tiene la Sindicatura para emitir dictamen sobre el balance anual del ENDEMUR?",
+      "categoria": "Control institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Sindicatura tiene 30 días corridos desde la puesta a consideración del balance anual para emitir el dictamen.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 48,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente, pero no proporcionó información precisa sobre el plazo de la Sindicatura para emitir el dictamen, ya que no se encuentra en el contexto proporcionado. No se citaron artículos relevantes, lo que afecta la exactitud y el uso del contexto."
+      }
+    },
+    {
+      "id": 42,
+      "pregunta": "¿Cuál es la duración del mandato de los miembros del Directorio del ENDEMUR?",
+      "categoria": "Organización institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La duración del mandato es de dos (2) años en sus funciones, pudiendo ser ratificados por períodos sucesivos.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa. Sin embargo, no citó el artículo específico de la ordenanza que menciona la duración del mandato, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 43,
+      "pregunta": "¿Qué mayoría se requiere para que el Directorio tome decisiones válidas?",
+      "categoria": "Organización institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "No se especifica en las ordenanzas disponibles cuál mayoría se requiere para que el Directorio tome decisiones válidas.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 48,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente, pero no proporcionó información precisa sobre la mayoría requerida para las decisiones del Directorio, ya que no se menciona en el contexto. La respuesta es clara, pero carece de datos específicos y citas de las ordenanzas."
+      }
+    },
+    {
+      "id": 44,
+      "pregunta": "¿El ENDEMUR puede contraer empréstitos o financiamiento externo?",
+      "categoria": "Régimen financiero",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La información no está en el contexto proporcionado. En los artículos incluidos no se establece expresamente si el ENDEMUR puede contraer empréstitos o financiamiento externo. (El texto señala que tie...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa, aunque no citó artículos específicos del contexto. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 45,
+      "pregunta": "¿Qué ordenanza ratifica convenios con entidades de gestión de derechos musicales?",
+      "categoria": "Identificación normativa",
+      "dificultad": "media",
+      "tipo_test": "precision",
+      "respuesta_modelo": "Ninguna. En el contexto proporcionado no hay ninguna ordenanza (entre las disponibles: 8177 y 8068) que ratifique convenios con entidades de gestión de derechos musicales.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "Ignoró que la Ordenanza 8248 ratifica acuerdos relacionados con derechos musicales."
+          }
+        ],
+        "score_total": 33,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente, pero su respuesta fue incorrecta al no identificar que la Ordenanza 8248 ratifica convenios relacionados con derechos musicales. La claridad fue aceptable, pero la falta de precisión en la respuesta afectó significativamente el score."
+      }
+    },
+    {
+      "id": 46,
+      "pregunta": "¿Qué ordenanza aprueba actualizaciones tarifarias de servicios públicos durante 2025?",
+      "categoria": "Identificación normativa",
+      "dificultad": "media",
+      "tipo_test": "precision",
+      "respuesta_modelo": "La Ordenanza N° 8240 (18/09/2025) aprueba la revisión y actualización del Cuadro Tarifario para los servicios públicos de provisión de agua potable, desagües cloacales y mantenimiento de desagües pluv...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo es precisa y completa, citando correctamente la ordenanza y los aumentos tarifarios específicos. No presenta alucinaciones ni omisiones, y está bien estructurada."
+      }
+    },
+    {
+      "id": 47,
+      "pregunta": "¿Qué destino se asigna a los bienes del aeropuerto transferidos al ENDEMUR?",
+      "categoria": "Patrimonio y obras",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Se transfieren al ENDEMUR para su tenencia, administración y control, destinándose a que el ENDEMUR administre y opere el Aeropuerto Regional Villa María y desarrolle las actividades relacionadas (tra...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo entendió perfectamente la pregunta, es factualmente correcta y utiliza el contexto de manera adecuada, citando los artículos relevantes de la ordenanza. Además, la respuesta es clara y completa."
+      }
+    },
+    {
+      "id": 48,
+      "pregunta": "¿Qué atribuciones tiene el ENDEMUR sobre el estacionamiento medido?",
+      "categoria": "Movilidad y transporte",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8241** (18/09/2025): La Ordenanza N° 8241 crea el Ente de Movilidad Urbana (ENDMUR) como un organismo d...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 5,
+        "uso_contexto": 8,
+        "no_alucinacion": 18,
+        "claridad_completitud": 4,
+        "penalizaciones": [],
+        "score_total": 45,
+        "score_repregunta": null,
+        "notas": "El modelo no entendió correctamente la pregunta sobre las atribuciones del ENDEMUR respecto al estacionamiento medido. La respuesta se centró en la creación del ente y sus funciones generales, sin abordar específicamente el tema del estacionamiento. La información proporcionada fue incompleta y no se citaron artículos relevantes sobre el estacionamiento medido."
+      }
+    },
+    {
+      "id": 49,
+      "pregunta": "¿Qué ocurre si el ejercicio económico del ENDEMUR arroja déficit?",
+      "categoria": "Régimen financiero",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Si el ejercicio económico del ENDEMUR arroja déficit, éste será cubierto por la Municipalidad de Villa María. Se prevé un mecanismo de reintegro a cargo del ENDEMUR, que deberá ser determinado por vía...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa. Sin embargo, no citó el artículo específico de la ordenanza que menciona el mecanismo de reintegro, lo que afectó el uso del contexto. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 50,
+      "pregunta": "¿Qué ordenanza acepta donaciones destinadas a obras públicas?",
+      "categoria": "Identificación normativa",
+      "dificultad": "media",
+      "tipo_test": "precision",
+      "respuesta_modelo": "La Ordenanza N° 8123 acepta donaciones destinadas a obras públicas (Art. 2º: incorpórase al dominio público municipal lo donado destinado a calle pública).",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa, aunque la referencia a la ordenanza no fue la correcta. La respuesta fue clara y no incluyó información inventada."
+      }
+    },
+    {
+      "id": 51,
+      "pregunta": "Paviotti",
+      "categoria": "Identificación",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No encontré información relevante en el Digesto Digital para tu consulta. Intentá reformular la pregunta con términos más específicos, o indicar el número de ordenanza si lo conocés.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 83,
+        "score_repregunta": 90,
+        "notas": "El modelo entendió parcialmente la pregunta inicial y respondió correctamente a la repregunta, citando ordenanzas específicas. Sin embargo, la respuesta inicial podría haber sido más clara y precisa en la comprensión de la consulta original."
+      }
+    },
+    {
+      "id": 52,
+      "pregunta": "Martin Gill",
+      "categoria": "Identificación",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "En el contexto provisto, Martín Rodrigo Gill (Ab. Martín Rodrigo GILL) es el Intendente Municipal de Villa María y figura como representante de la Municipalidad en los convenios y addendas mencionados...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 83,
+        "score_repregunta": 80,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero la respuesta a la repregunta fue clara y específica, aunque no se proporcionaron detalles adicionales sobre las ordenanzas mencionadas."
+      }
+    },
+    {
+      "id": 53,
+      "pregunta": "¿Cuál es el presupuesto total para Villa María en 2025?",
+      "categoria": "Presupuesto",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "El presupuesto total del Municipio para 2025 es de $74.908.214.520,00.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 73,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta y proporcionó una respuesta clara y precisa. Sin embargo, no se presentó contexto de referencia, lo que impidió citar ordenanzas o artículos específicos. No se detectaron alucinaciones ni contradicciones."
+      }
+    },
+    {
+      "id": 54,
+      "pregunta": "¿Qué secretaría es responsable de ejecutar el presupuesto 2025?",
+      "categoria": "Presupuesto",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "El seguimiento de la ejecución del presupuesto está a cargo de la Secretaria de Gobierno Cultura y Relaciones Institucionales.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [
+          {
+            "tipo": "NOMBRE",
+            "puntos": -30,
+            "motivo": "La respuesta es incorrecta y contradice el contenido real de la ordenanza."
+          }
+        ],
+        "score_total": 18,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta, pero la respuesta es incorrecta y no se basa en el contexto de referencia, lo que resulta en una contradicción con la normativa."
+      }
+    },
+    {
+      "id": 55,
+      "pregunta": "¿Puede el municipio modificar el presupuesto durante el año o está fijo?",
+      "categoria": "Presupuesto",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Sí, puede modificarse durante el año: el Art. 4° lo define como previsión estimativa y el Art. 5° autoriza reasignaciones y modificaciones presupuestarias.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa, aunque no citó los artículos específicos de manera detallada. La respuesta es clara y no presenta alucinaciones."
+      }
+    },
+    {
+      "id": 56,
+      "pregunta": "¿Cuánto tengo que pagar de tasa anual por mi propiedad?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "El monto depende de la zona y del valor fiscal (VRF) de tu propiedad. Como referencia, las alícuotas van de 8,00 por mil en Zona 1 a 0,00 por mil en Zona 7 (Tarifa Social); los mínimos anuales incluye...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta inicial, pero no utilizó el contexto adecuado para responder sobre la Zona 7. La respuesta fue clara y no alucinó, pero careció de información específica sobre la zona mencionada."
+      }
+    },
+    {
+      "id": 57,
+      "pregunta": "¿Puedo pagar en cuotas o solo al contado?",
+      "categoria": "Tasas",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí, podés elegir pagar al contado o en 12 cuotas mensuales y consecutivas, a opción del contribuyente. Para Zona 7 (Tarifa Social General), la modalidad es en 6 cuotas bimestrales. Además, el D.E.M. p...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 73,
+        "score_repregunta": 80,
+        "notas": "La respuesta inicial comprendió bien la pregunta y fue clara, pero no citó el contexto de las ordenanzas. La repregunta fue respondida correctamente, aunque podría haber incluido más detalles específicos."
+      }
+    },
+    {
+      "id": 58,
+      "pregunta": "¿Califico para la tarifa social si tengo bajos ingresos?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí. Existe Tarifa Social para contribuyentes en situación socioeconómica vulnerable, con evaluación mediante estudio socioeconómico. Incluye Tarifa Social General (mínimo anual $30.000,00) y Tarifa So...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 8,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 81,
+        "score_repregunta": 20,
+        "notas": "La respuesta inicial comprendió bien la pregunta y fue mayormente correcta, aunque no citó ordenanzas específicas. La repregunta fue un fallback genérico, lo que afectó su puntuación."
+      }
+    },
+    {
+      "id": 59,
+      "pregunta": "¿Cuánto cuesta mantener una tumba o panteón en el cementerio?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "No está especificado en el contexto el costo de mantenimiento anual de una tumba o panteón. \n\nEn el material proporcionado sí figuran otros montos relacionados:\n- Derecho de inhumación en panteones o ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 83,
+        "score_repregunta": 90,
+        "notas": "El modelo entendió parcialmente la pregunta original, ya que no proporcionó el costo de mantenimiento, pero sí respondió correctamente a la repregunta sobre el derecho de inhumación. La respuesta fue clara y bien estructurada, aunque faltó información específica sobre el mantenimiento. No se encontraron alucinaciones ni contradicciones."
+      }
+    },
+    {
+      "id": 60,
+      "pregunta": "¿Qué pasa si no pago la tasa del cementerio?",
+      "categoria": "Faltas y sanciones",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Si no se paga la contribución del cementerio, la deuda queda en mora y se aplican recargos/intereses conforme la normativa municipal, además de habilitarse gestión de cobro administrativo o judicial.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente y no inventó datos, pero la respuesta carece de citas específicas de las ordenanzas y es incompleta en cuanto a detalles sobre recargos o procesos de cobro."
+      }
+    },
+    {
+      "id": 61,
+      "pregunta": "¿Hay algún tributo adicional en mis servicios de agua?",
+      "categoria": "Tasas",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Sí. Se aplica una Contribución Especial con alícuota del 2% sobre el valor del servicio de agua potable y cloacas (Título XIII BIS de la O.G.I.V.).",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta mayormente precisa, aunque no citó el artículo específico que menciona la Contribución Especial. La respuesta es clara y no presenta alucinaciones."
+      }
+    },
+    {
+      "id": 62,
+      "pregunta": "¿Qué tributos adicionales pago si tengo un comercio?",
+      "categoria": "Comercio",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8151** (21/11/2024): La Ordenanza N.º 8151 establece la ordenanza tarifaria del municipio de Villa Marí...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 10,
+        "no_alucinacion": 18,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 64,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero la respuesta fue incompleta y no proporcionó información específica sobre los tributos adicionales para un comercio. La falta de contexto y detalles específicos afectó la claridad y completitud de la respuesta."
+      }
+    },
+    {
+      "id": 63,
+      "pregunta": "¿Cuánto cuesta el servicio de ambulancia (SAMU) si no soy de Villa María?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Según el Art. 118° de la Ordenanza Tarifaria, los aranceles del servicio 107 SAMU son:\n\n**Servicios de Ambulancia:**\n- Ambulancia con chofer y paramédico por evento: **$307.100,00**\n- Ambulancia con c...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": 100,
+        "notas": "La respuesta inicial comprendió perfectamente la pregunta y proporcionó información precisa y completa, citando correctamente la ordenanza. La respuesta a la repregunta mantuvo el contexto y fue clara y específica, sin repetir información innecesaria."
+      }
+    },
+    {
+      "id": 64,
+      "pregunta": "¿Debo pagar tributo especial si tengo camiones de transporte?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Sí. Para actividades con camiones/utilitarios afectados al establecimiento que circulen en la ciudad o accesos, el tributo es $350,00 por tonelada, con mínimo mensual por camión de $30.000,00. Las emp...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 68,
+        "score_repregunta": 0,
+        "notas": "El modelo entendió parcialmente la pregunta, pero no utilizó contexto específico de las ordenanzas. La respuesta fue clara y no alucinó, pero no se citó información relevante. La repregunta no fue respondida adecuadamente, ya que no se encontró información sobre el transporte interurbano de pasajeros."
+      }
+    },
+    {
+      "id": 65,
+      "pregunta": "¿Cuánto cuesta alquilar el Anfiteatro o espacios municipales para un evento?",
+      "categoria": "Espacios públicos",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 73,
+        "score_repregunta": 80,
+        "notas": "El modelo entendió correctamente la pregunta inicial y proporcionó información precisa sobre los costos de alquiler. Sin embargo, no citó ninguna ordenanza específica, lo que afectó el uso del contexto. La respuesta a la repregunta fue clara y relevante, aunque podría haber sido más específica en cuanto a la reducción de costos."
+      }
+    },
+    {
+      "id": 66,
+      "pregunta": "¿Me hacen descuento si es un evento cultural o benéfico?",
+      "categoria": "Espacios públicos",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Los eventos en el Anfiteatro Municipal abonan 3% de la recaudación por entradas con mínimo de $3.000.000,00 por evento. El Teatro del Anfiteatro: $2.000.000,00. Salón Hexagonal: $250.000,00 por día o ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, ya que no abordó el tema de descuentos para eventos culturales o benéficos. La respuesta fue clara y precisa en cuanto a los costos, pero no citó ninguna ordenanza específica ni abordó la pregunta sobre descuentos, lo que afectó el uso del contexto. No hubo alucinaciones ni datos inventados."
+      }
+    },
+    {
+      "id": 67,
+      "pregunta": "¿Cuánto cuesta que saquen mi auto del depósito municipal?",
+      "categoria": "Faltas y sanciones",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Por vehículos en depósito municipal, la estadía es: Automóvil/jeep 20 MT por día, Camiones/acoplados/ómnibus 30 MT por día, Motocicletas 11 MT por día. Si regularizás dentro de las primeras 2 horas, n...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 80,
+        "score_repregunta": 100,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre los costos. Sin embargo, no citó ninguna ordenanza específica, lo que afecta el uso del contexto. La respuesta a la repregunta fue clara y mantuvo el contexto de la conversación."
+      }
+    },
+    {
+      "id": 68,
+      "pregunta": "¿Qué sería MT en las ordenanzas?",
+      "categoria": "Interpretación normativa",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "MT es el \"Módulo Tributario\" (MT): una unidad de medida de valor homogénea para determinar importes fijos, tributos mínimos, escalas y demás parámetros monetarios de la Ordenanza General Impositiva. S...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 63,
+        "score_repregunta": 0,
+        "notas": "El modelo entendió parcialmente la pregunta y proporcionó información correcta sobre el Módulo Tributario, pero no utilizó contexto específico de las ordenanzas. La respuesta a la repregunta no fue adecuada, ya que no se aclaró el año de la ordenanza, lo que indica incomprensión."
+      }
+    },
+    {
+      "id": 69,
+      "pregunta": "¿Cuánto cuesta aterrizar en el Aeropuerto de Villa María?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "La tasa de aterrizaje es equivalente a 1 litro de combustible 100LL por cada tonelada de MTOW (peso máximo de despegue), tomando como referencia YPF San Fernando (Buenos Aires). Además, la tasa de est...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 78,
+        "score_repregunta": 0,
+        "notas": "El modelo entendió parcialmente la pregunta original, proporcionando información relevante sobre tasas, pero no abordó adecuadamente la repregunta sobre un avión comercial pequeño, indicando que no había información específica al respecto."
+      }
+    },
+    {
+      "id": 70,
+      "pregunta": "¿Cuáles son los acuerdos transaccionales ratificados?",
+      "categoria": "Identificación normativa",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8248** (25/09/2025): La Ordenanza N° 8248 de Villa María, sancionada el 25 de septiembre de 2025, ratif...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 95,
+        "score_repregunta": null,
+        "notas": "La respuesta comprendió correctamente la pregunta y proporcionó información precisa sobre los acuerdos transaccionales ratificados, citando adecuadamente las ordenanzas y artículos relevantes. No se encontraron errores ni alucinaciones, y la respuesta fue clara y completa."
+      }
+    },
+    {
+      "id": 71,
+      "pregunta": "¿Me dirías de manera breve de qué trata la ordenanza 8177?",
+      "categoria": "Identificación normativa",
+      "dificultad": "baja",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Ordenanza Nº 8177 regula programas municipales de vivienda: principalmente la regularización dominial de inmuebles ocupados por familias de escasos recursos (facilitando escrituras); la \"Adquisició...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "La respuesta entendió correctamente la pregunta y proporcionó información relevante sobre la ordenanza 8177, aunque no citó artículos específicos del contexto. La información es mayormente precisa y no presenta alucinaciones."
+      }
+    },
+    {
+      "id": 72,
+      "pregunta": "Dame acuerdos donde se encuentra Marcos Bovo",
+      "categoria": "Búsqueda por persona",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Marcos Bovo aparece en los siguientes acuerdos del contexto proporcionado:\n\n- Ordenanza N° 8236 (11/09/2025): Ratifica el Acta Acuerdo celebrada el 28/08/2025; Marcos BOVO figura como Secretario de Go...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 82,
+        "score_repregunta": 0,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no proporcionó información precisa en la repregunta. La respuesta a la repregunta fue incorrecta al mencionar una ordenanza que no estaba relacionada con Marcos Bovo."
+      }
+    },
+    {
+      "id": 73,
+      "pregunta": "Hola, necesito todos los convenios del año 2024",
+      "categoria": "Búsqueda temporal",
+      "dificultad": "media",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "En el contexto proporcionado no figura un listado de \"todos los convenios del año 2024\". Sólo se mencionan dos rubros de ingresos por convenios:\n- INGRESOS POR CONVENIOS CASOS P.A.C.: $ 2.772.742,00\n-...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 57,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero no proporcionó información relevante sobre los convenios del año 2024. La respuesta fue incompleta y no citó ningún contexto específico, aunque no inventó datos. La claridad fue aceptable, pero faltó información crucial."
+      }
+    },
+    {
+      "id": 74,
+      "pregunta": "¿Qué finalidad tiene el convenio de la ordenanza 8058?",
+      "categoria": "Interpretación normativa",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Ratificar y formalizar el Convenio de Donación celebrado entre el Sr. Hugo Alfredo TELLO y la Municipalidad de Villa María, incluyendo la aceptación y cumplimiento por parte de la Municipalidad; estab...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "La respuesta entendió correctamente la pregunta y fue mayormente precisa, aunque no citó artículos específicos de la ordenanza. La claridad fue buena, pero podría haber sido más completa en detalles."
+      }
+    },
+    {
+      "id": 75,
+      "pregunta": "Dame ordenanzas que posean convenios que a la fecha estén vencidos",
+      "categoria": "Búsqueda normativa",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8213** (14/04/2025): La ordenanza municipal ratifica un convenio de colaboración entre la Municipalidad...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 10,
+        "uso_contexto": 8,
+        "no_alucinacion": 15,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 49,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero la información proporcionada no se relaciona con convenios vencidos. La respuesta carece de precisión y contexto adecuado sobre las ordenanzas mencionadas."
+      }
+    },
+    {
+      "id": 76,
+      "pregunta": "Ordenanza donde una de las partes es Toranzo",
+      "categoria": "Búsqueda por persona",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Ordenanza N° 8246 (25/09/2025). Ratifica el Convenio de Cooperación – Protocolo Específico de Trabajo celebrado entre la Municipalidad de Villa María (representada por el Intendente Municipal Sr. Edua...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 83,
+        "score_repregunta": 50,
+        "notas": "El modelo entendió parcialmente la pregunta original, proporcionando una respuesta correcta pero incompleta. La respuesta a la repregunta fue relevante, aunque no abordó completamente la falta de información sobre la vigencia de la ordenanza."
+      }
+    },
+    {
+      "id": 77,
+      "pregunta": "¿Cuál es la última ordenanza subida?",
+      "categoria": "Identificación normativa",
+      "dificultad": "media",
+      "tipo_test": "precision",
+      "respuesta_modelo": "La última ordenanza subida es la Ordenanza Nº 8225, dada en la Sala de Sesiones del Concejo Deliberante de la ciudad de Villa María el 21 de agosto de 2025.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 0,
+        "claridad_completitud": 5,
+        "penalizaciones": [
+          {
+            "tipo": "ALUCINACION",
+            "puntos": -25,
+            "motivo": "La ordenanza mencionada no tiene respaldo en el contexto disponible."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta es vaga y no proporciona información verificable."
+          }
+        ],
+        "score_total": 0,
+        "score_repregunta": null,
+        "notas": "La respuesta no es correcta ni está respaldada por el contexto, lo que resulta en una penalización significativa por alucinación."
+      }
+    },
+    {
+      "id": 78,
+      "pregunta": "Ordenanza con fecha 25 de junio de 2025",
+      "categoria": "Búsqueda por fecha",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "No se encontró ninguna ordenanza con fecha 25 de junio de 2025 en el contexto proporcionado. Las ordenanzas disponibles en el contexto son: - Ordenanza N° 8213: fecha 14/04/2025. - Ordenanza N° 8102: ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 95,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa y clara, aunque no citó las ordenanzas específicas en detalle. No hubo alucinaciones ni datos inventados."
+      }
+    },
+    {
+      "id": 79,
+      "pregunta": "Información sobre Pablo Roque Agolanti",
+      "categoria": "Búsqueda por persona",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Según el contexto proporcionado: Pablo Roque Agolanti figura como Presidente de la FUNDACIÓN ISITRANS y fue quien la representó en el Convenio Marco de Cooperación celebrado con la Municipalidad de Vi...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 10,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 72,
+        "score_repregunta": 25,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no proporcionó información suficiente sobre Pablo Roque Agolanti. La respuesta a la repregunta fue un fallback genérico, lo que afectó su puntuación."
+      }
+    },
+    {
+      "id": 80,
+      "pregunta": "¿Qué modificación introduce la Ordenanza 8097 respecto al tratamiento de residuos sólidos urbanos?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Introduce una reducción del 40% en la tarifa prevista en el Art. 105º para aquellos residuos sólidos urbanos (RSU) y residuos voluminosos que se presenten separados, promoviendo así la separación en o...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre la reducción de tarifas y la definición de residuos. Sin embargo, no citó artículos específicos de la ordenanza, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y bien estructurada."
+      }
+    },
+    {
+      "id": 81,
+      "pregunta": "¿Qué incentivo económico establece la Ordenanza 8097 para los residuos que ingresan correctamente separados al Centro de Gestión Ambiental?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Reducción del 40% de la tarifa para los RSU y residuos voluminosos que ingresen correctamente separados al Centro de Gestión Ambiental; aplicado sobre la tarifa indicada de $4.000 por tonelada para re...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa sobre el incentivo económico de la Ordenanza 8097. Sin embargo, no citó el artículo específico de la ordenanza, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y completa, sin alucinaciones."
+      }
+    },
+    {
+      "id": 82,
+      "pregunta": "¿Qué dependencia municipal debe informar periódicamente sobre los ingresos de residuos según la Ordenanza 8097?",
+      "categoria": "Gestión ambiental",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Sub Secretaría de Gestión Ambiental debe brindar a la Sub Secretaría de Ingresos Públicos un informe quincenal sobre la cantidad de ingresos de cada empresa, con su respectivo remito.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 5,
+        "penalizaciones": [
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "No se menciona la dependencia correcta según la ordenanza."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta es vaga y no se basa en el contexto proporcionado."
+          }
+        ],
+        "score_total": 25,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta, pero la respuesta es incorrecta y no se basa en el contexto de la ordenanza, lo que resulta en una baja puntuación en exactitud y uso de contexto."
+      }
+    },
+    {
+      "id": 83,
+      "pregunta": "¿Qué tipo de modificación introduce la Ordenanza 8096 sobre la Ordenanza Tarifaria Nº 8.011?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Modifica la redacción del Art. 122º de la Ordenanza Tarifaria Nº 8.011, estableciendo: \n- Canon por utilización de plataforma en la Estación Terminal de Ómnibus: hasta ocho (8) Módulos tributarios (MT...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "El modelo entendió perfectamente la pregunta y proporcionó una respuesta completa y precisa, citando correctamente la Ordenanza 8096 y los cambios específicos en la Ordenanza Tarifaria Nº 8.011."
+      }
+    },
+    {
+      "id": 84,
+      "pregunta": "¿Qué valores se establecen para la reserva de espacios de estacionamiento en la vía pública según la Ordenanza 8096?",
+      "categoria": "Espacio público",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Ordenanza N° 8096, según el texto provisto en el contexto, no establece valores para la reserva de espacios de estacionamiento en la vía pública; esa información no figura en la ordenanza incluida.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 80,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta y respondió correctamente, pero no utilizó el contexto de la ordenanza, ya que no se proporcionó información específica sobre los valores de reserva de estacionamiento. La respuesta fue clara y no incluyó datos inventados."
+      }
+    },
+    {
+      "id": 85,
+      "pregunta": "¿Desde qué fecha comienza a regir la Ordenanza Tarifaria correspondiente al año 2025?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "baja",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "A partir del 1º de enero de 2025.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 48,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta correctamente, pero no proporcionó información precisa ni relevante del contexto de las ordenanzas. La respuesta fue clara, pero careció de datos específicos y citas necesarias para ser considerada exacta."
+      }
+    },
+    {
+      "id": 86,
+      "pregunta": "¿Qué regula la Ordenanza 8080 respecto al trabajo de una cooperativa vinculada a la gestión de residuos?",
+      "categoria": "Servicios públicos",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Ordenanza 8080 regula el trabajo de la cooperativa en varios aspectos concretos:\n\n- Obligaciones operativas y de gestión: aumentar la cantidad de residuos reciclables que ingresan al sistema (traba...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "La respuesta comprendió bien la pregunta y proporcionó información precisa sobre las obligaciones de la cooperativa según la Ordenanza 8080. Sin embargo, no citó artículos específicos de la ordenanza, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y bien estructurada."
+      }
+    },
+    {
+      "id": 87,
+      "pregunta": "¿Qué mecanismo de control establece la Ordenanza 8082 para supervisar las tareas de la cooperativa?",
+      "categoria": "Control y fiscalización",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "La Ordenanza 8082 establece que la Municipalidad, a través de la Subsecretaría de Servicios Públicos (o quien la sustituya o designe), está facultada para controlar las tareas de la Cooperativa; cualq...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó una respuesta precisa sobre el mecanismo de control establecido en la Ordenanza 8082. Sin embargo, no citó específicamente el artículo correspondiente, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y completa, sin alucinaciones ni errores factuales."
+      }
+    },
+    {
+      "id": 88,
+      "pregunta": "¿Qué sucede si una cooperativa incumple las obligaciones establecidas en la Ordenanza 8082?",
+      "categoria": "Control y fiscalización",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Según la Ordenanza N° 8082 (SEXTA - INCUMPLIMIENTO):\n\n- El incumplimiento por parte de la cooperativa la constituye en mora automática, sin necesidad de interpelación judicial o extrajudicial previa. ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre las consecuencias del incumplimiento según la Ordenanza 8082. Sin embargo, la respuesta no citó el artículo específico, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y bien estructurada."
+      }
+    },
+    {
+      "id": 89,
+      "pregunta": "¿Qué convenio se ratifica mediante la Ordenanza 8081?",
+      "categoria": "Convenios",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8081** (28/02/2025): La Ordenanza N° 8081 de Villa María ratifica un convenio entre la Municipalidad y ...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre el convenio ratificado en la Ordenanza 8081. Sin embargo, no citó artículos específicos del contexto, lo que afectó ligeramente el uso del contexto. La respuesta fue clara y bien estructurada."
+      }
+    },
+    {
+      "id": 90,
+      "pregunta": "¿Qué tipo de instituciones participan en el Consejo Consultivo que puede conformar el ENDEMUR?",
+      "categoria": "Organización institucional",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Artículo 23º: El Consejo Consultivo “Ad Honorem” podrá estar integrado por representantes de: universidades; sectores empresariales; gremios (sectores gremiales); y organizaciones no gubernamentales (...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 30,
+        "uso_contexto": 20,
+        "no_alucinacion": 20,
+        "claridad_completitud": 10,
+        "penalizaciones": [],
+        "score_total": 100,
+        "score_repregunta": null,
+        "notas": "La respuesta del modelo es clara, completa y se basa en el contexto de la ordenanza, citando correctamente el artículo correspondiente sobre el Consejo Consultivo del ENDEMUR."
+      }
+    },
+    {
+      "id": 91,
+      "pregunta": "¿Qué normativa debe aplicarse supletoriamente para el funcionamiento del ENDEMUR cuando la ordenanza no lo prevea expresamente?",
+      "categoria": "Interpretación normativa",
+      "dificultad": "alta",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "No se establece. En el texto de la Ordenanza N° 8241 provisto no figura una disposición que indique qué normativa debe aplicarse supletoriamente para el funcionamiento del ENDEMUR cuando la ordenanza ...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 5,
+        "penalizaciones": [
+          {
+            "tipo": "DATOS_IGNORADOS",
+            "puntos": -15,
+            "motivo": "Ignoró que la ordenanza no menciona normativa supletoria."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta es vaga al no ofrecer alternativas."
+          }
+        ],
+        "score_total": 25,
+        "score_repregunta": null,
+        "notas": "El modelo entendió la pregunta, pero no proporcionó información relevante sobre normativa supletoria, resultando en una respuesta incorrecta y vaga."
+      }
+    },
+    {
+      "id": 92,
+      "pregunta": "¿Cuánto cuesta ingresar residuos al Centro de Gestión Ambiental?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8150** (01/01/2025): La Ordenanza Nº 8.150 aprueba el Presupuesto General de la Municipalidad de Villa ...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": 90,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información relevante sobre las tarifas. La respuesta a la repregunta fue clara y específica, manteniendo el contexto de la conversación previa. Sin embargo, la cita de las ordenanzas podría haber sido más detallada para mejorar el uso del contexto."
+      }
+    },
+    {
+      "id": 93,
+      "pregunta": "¿Qué cooperativa presta servicios vinculados a la gestión de residuos en el municipio?",
+      "categoria": "Servicios públicos",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Los textos consultados se refieren genéricamente como “La Cooperativa” a la entidad que presta servicios vinculados a la gestión de residuos, pero no especifican su nombre.",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 5,
+        "uso_contexto": 0,
+        "no_alucinacion": 18,
+        "claridad_completitud": 4,
+        "penalizaciones": [],
+        "score_total": 37,
+        "score_repregunta": 20,
+        "notas": "El modelo no comprendió correctamente la pregunta inicial sobre la cooperativa, ya que no proporcionó el nombre específico. La respuesta a la repregunta fue un fallback genérico, lo que afectó su claridad y relevancia."
+      }
+    },
+    {
+      "id": 94,
+      "pregunta": "Necesito la ordenanza que regula el reciclaje en la ciudad",
+      "categoria": "Búsqueda normativa",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "La ordenanza que regula el reciclaje en la ciudad no figura en el contexto proporcionado. En el texto entregado aparecen partes de las Ordenanzas N° 8225 y N° 8051, pero ninguna de ellas contiene regu...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 0,
+        "uso_contexto": 0,
+        "no_alucinacion": 20,
+        "claridad_completitud": 5,
+        "penalizaciones": [
+          {
+            "tipo": "INCOMPRENSION_REPREGUNTA",
+            "puntos": -20,
+            "motivo": "No entendió la repregunta sobre las tarifas o la cooperativa."
+          },
+          {
+            "tipo": "VAGUEDAD",
+            "puntos": -5,
+            "motivo": "La respuesta fue muy vaga y no específica."
+          }
+        ],
+        "score_total": 15,
+        "score_repregunta": null,
+        "notas": "El modelo no entendió correctamente la pregunta inicial y no proporcionó información relevante sobre la ordenanza de reciclaje. La repregunta no fue comprendida, lo que llevó a una respuesta vaga y sin información útil."
+      }
+    },
+    {
+      "id": 95,
+      "pregunta": "Ordenanza donde interviene la Cooperativa 7 de Febrero",
+      "categoria": "Búsqueda por organización",
+      "dificultad": "media",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Las ordenanzas son:\n- Ordenanza N° 8213 (14/04/2025)\n- Ordenanza N° 8187 (13/03/2025)\n- Ordenanza N° 8084 (30/05/2024)",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 10,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 72,
+        "score_repregunta": 60,
+        "notas": "El modelo entendió parcialmente la pregunta original, pero no proporcionó contexto específico sobre las ordenanzas. La respuesta a la repregunta fue clara, pero no se mantuvo el contexto de la conversación previa, lo que afectó su puntuación."
+      }
+    },
+    {
+      "id": 96,
+      "pregunta": "¿Qué normas modifican artículos de la Ordenanza Tarifaria Nº 8.011?",
+      "categoria": "Relación entre normas",
+      "dificultad": "alta",
+      "tipo_test": "multi_norma",
+      "respuesta_modelo": "La Ordenanza N° 8096 (13/06/2024) modifica el artículo 122° de la Ordenanza Tarifaria Nº 8.011: lo redacta estableciendo que se le adicionará el 50% (exceptúese de este porcentaje a los Municipios que...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre la modificación de la Ordenanza Tarifaria Nº 8.011. Sin embargo, la respuesta podría haber incluido más detalles sobre otras posibles normas relacionadas, aunque se indicó correctamente que no hay otras modificaciones. La claridad es buena, pero podría mejorarse en la estructura."
+      }
+    },
+    {
+      "id": 97,
+      "pregunta": "¿Qué trámites municipales tienen sellado previsto en la Ordenanza Tarifaria?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "alta",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8151** (21/11/2024): La Ordenanza N.º 8151 establece la ordenanza tarifaria del municipio de Villa Marí...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 15,
+        "uso_contexto": 10,
+        "no_alucinacion": 20,
+        "claridad_completitud": 6,
+        "penalizaciones": [],
+        "score_total": 66,
+        "score_repregunta": null,
+        "notas": "El modelo entendió parcialmente la pregunta, pero la respuesta carece de información específica sobre los trámites municipales con sellado previsto en la Ordenanza Tarifaria. Se mencionan varias ordenanzas, pero no se citan artículos o montos específicos relacionados con el sellado. La claridad es aceptable, pero la respuesta es incompleta y no se utilizan adecuadamente las fuentes del contexto."
+      }
+    },
+    {
+      "id": 98,
+      "pregunta": "¿Cuál es el valor del carnet de manipulador de alimentos según la normativa tarifaria?",
+      "categoria": "Tasas y tarifarias",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n• **Ordenanza N° 8098** (20/05/2024): La Ordenanza N° 8098 de Villa María, sancionada el 20 de mayo de 2024, establece l...",
+      "es_fallback": true,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 10,
+        "exactitud": 0,
+        "uso_contexto": 5,
+        "no_alucinacion": 20,
+        "claridad_completitud": 4,
+        "penalizaciones": [],
+        "score_total": 39,
+        "score_repregunta": null,
+        "notas": "El modelo no entendió la pregunta sobre el valor del carnet de manipulador de alimentos y no proporcionó información relevante ni específica. La respuesta fue vaga y no incluyó datos concretos ni referencias a las ordenanzas pertinentes."
+      }
+    },
+    {
+      "id": 99,
+      "pregunta": "¿Cuánto cuesta el carnet de manipulador de alimentos?",
+      "categoria": "Tasas",
+      "dificultad": "alta",
+      "tipo_test": "ambiguedad",
+      "respuesta_modelo": "Según el contexto proporcionado:\n\n- Ordenanza N° 8151 (21/11/2024):\n  - Carnet manipulador de alimentos con curso de capacitación y evaluación: $7.300,00\n  - Carnet manipulador de alimentos con evalua...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": true,
+      "evaluacion": {
+        "comprension": 15,
+        "exactitud": 20,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 7,
+        "penalizaciones": [],
+        "score_total": 77,
+        "score_repregunta": 30,
+        "notas": "El modelo entendió parcialmente la pregunta y proporcionó información correcta sobre los costos, pero no citó adecuadamente las ordenanzas. La respuesta a la repregunta fue genérica y no específica, lo que afectó el score."
+      }
+    },
+    {
+      "id": 100,
+      "pregunta": "Normativa sobre el Museo Municipal Malvinas",
+      "categoria": "Búsqueda temática",
+      "dificultad": "media",
+      "tipo_test": "grounding",
+      "respuesta_modelo": "Según el contexto proporcionado, la única normativa referida al Museo Municipal Malvinas es la Ordenanza N° 8098 (20/05/2024): dispone remitir copia fiel del material legislativo que el Concejo Delibe...",
+      "es_fallback": false,
+      "es_timeout": false,
+      "tiene_repregunta": false,
+      "evaluacion": {
+        "comprension": 20,
+        "exactitud": 25,
+        "uso_contexto": 15,
+        "no_alucinacion": 20,
+        "claridad_completitud": 8,
+        "penalizaciones": [],
+        "score_total": 88,
+        "score_repregunta": null,
+        "notas": "El modelo entendió correctamente la pregunta y proporcionó información precisa sobre la normativa relacionada con el Museo Municipal Malvinas. Sin embargo, la respuesta podría haber incluido más detalles sobre la ordenanza mencionada para mejorar el uso del contexto. No se encontraron alucinaciones ni errores en los datos presentados."
+      }
+    }
+  ]
+}

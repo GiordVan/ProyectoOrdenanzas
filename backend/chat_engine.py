@@ -2262,7 +2262,7 @@ En ordenanzas_citadas incluye ÚNICAMENTE números de la lista [{lista_nums}] qu
         # RETRY: prompt simplificado, sin JSON, contexto más corto
         try:
             contexto_corto = armar_contexto(resultados, max_chars=6000)
-            retry_prompt = f"""Sos el Digesto Digital de Villa María. Tomate un segundo para pensar, analizá bien el contexto y la pregunta. Respondé esta pregunta usando SOLO el contexto proporcionado.
+            retry_prompt = f"""Sos el Digesto Digital de Villa María. Tomate un segundo para pensar, analizá bien el contexto y la pregunta. Respondé esta pregunta con un formato bonito, de manera "resumida" y usando SOLO el contexto proporcionado.
 Si la información no está en el contexto, decilo claramente.
 
 Pregunta: {pregunta}
