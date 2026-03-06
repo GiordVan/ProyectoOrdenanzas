@@ -11,7 +11,7 @@ from datetime import datetime
 from functools import lru_cache
 from collections import Counter
 
-# ⚡ NUEVO: Importar stemmer español
+# NUEVO: Importar stemmer español
 try:
     from nltk.stem import SnowballStemmer
     import nltk
@@ -38,7 +38,9 @@ INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
 TOP_K = 15  # Resultados base de FAISS
-SIMILARITY_THRESHOLD = 0.38  # Umbral mínimo de similitud coseno (unificado para FAISS y GPT)
+SIMILARITY_THRESHOLD = (
+    0.38  # Umbral mínimo de similitud coseno (unificado para FAISS y GPT)
+)
 MAX_DOCS_MOSTRADOS = 5  # Máximo de documentos únicos a mostrar al usuario
 MAX_CHUNKS_POR_ORD = 5  # Máximo de chunks por ordenanza en búsqueda híbrida
 
@@ -1618,8 +1620,10 @@ def buscar_similares(pregunta: str, top_k=None):
     if any(
         t in pregunta_lower_bs
         for t in [
-            "última ordenanza", "ultima ordenanza",
-            "más reciente", "mas reciente",
+            "última ordenanza",
+            "ultima ordenanza",
+            "más reciente",
+            "mas reciente",
             "primera ordenanza",
         ]
     ):
@@ -2025,7 +2029,9 @@ def resolver_pregunta_presupuesto(
     return None
 
 
-async def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None, historial_texto: str = "") -> dict:
+async def preguntar_a_gpt(
+    pregunta: str, contexto: str, resultados: list = None, historial_texto: str = ""
+) -> dict:
     """
     Genera respuesta con GPT y retorna un dict con:
       - respuesta: texto de la respuesta
@@ -2174,7 +2180,8 @@ Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin 
             resultados_validos = resultados[:5] if resultados else []
 
         nums_validos = [
-            r.get("numero_ordenanza", "") for r in resultados_validos
+            r.get("numero_ordenanza", "")
+            for r in resultados_validos
             if r.get("numero_ordenanza") and r.get("numero_ordenanza") != "desconocido"
         ]
         lista_nums = ", ".join(nums_validos) if nums_validos else "ninguna"
@@ -2209,7 +2216,11 @@ Respondé SOLO con JSON válido:
             ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
         )
 
-        seccion_historial = f"\nHISTORIAL DE CONVERSACIÓN (para contexto de follow-ups):\n{historial_texto}\n" if historial_texto else ""
+        seccion_historial = (
+            f"\nHISTORIAL DE CONVERSACIÓN (para contexto de follow-ups):\n{historial_texto}\n"
+            if historial_texto
+            else ""
+        )
 
         prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
 
@@ -2251,7 +2262,7 @@ En ordenanzas_citadas incluye ÚNICAMENTE números de la lista [{lista_nums}] qu
         # RETRY: prompt simplificado, sin JSON, contexto más corto
         try:
             contexto_corto = armar_contexto(resultados, max_chars=6000)
-            retry_prompt = f"""Sos el Digesto Digital de Villa María. Respondé esta pregunta usando SOLO el contexto proporcionado.
+            retry_prompt = f"""Sos el Digesto Digital de Villa María. Tomate un segundo para pensar, analizá bien el contexto y la pregunta. Respondé esta pregunta usando SOLO el contexto proporcionado.
 Si la información no está en el contexto, decilo claramente.
 
 Pregunta: {pregunta}
@@ -2268,11 +2279,14 @@ Respuesta directa:"""
             )
             texto_retry = response2.output_text.strip()
             if texto_retry and len(texto_retry) > 20:
-                nums = list({
-                    r.get("numero_ordenanza", "")
-                    for r in (resultados or [])[:7]
-                    if r.get("numero_ordenanza") and r.get("numero_ordenanza") != "desconocido"
-                })
+                nums = list(
+                    {
+                        r.get("numero_ordenanza", "")
+                        for r in (resultados or [])[:7]
+                        if r.get("numero_ordenanza")
+                        and r.get("numero_ordenanza") != "desconocido"
+                    }
+                )
                 return {"respuesta": texto_retry, "ordenanzas_citadas": nums}
         except Exception as e2:
             print(f"Retry GPT también falló: {e2}")
@@ -2291,10 +2305,15 @@ Respuesta directa:"""
                     resumen = r.get("resumen", "")
                     desc = resumen or art1 or r.get("chunk_texto", "")[:400]
                     if desc:
-                        lineas.append(f"• **Ordenanza N° {n}** ({fecha}): {desc[:400].strip()}")
+                        lineas.append(
+                            f"• **Ordenanza N° {n}** ({fecha}): {desc[:400].strip()}"
+                        )
 
             if lineas:
-                texto = f"Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n" + "\n\n".join(lineas)
+                texto = (
+                    f"Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n"
+                    + "\n\n".join(lineas)
+                )
                 return {
                     "respuesta": texto,
                     "ordenanzas_citadas": nums_fallback,
