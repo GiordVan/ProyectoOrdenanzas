@@ -531,9 +531,11 @@ Responde directamente en Markdown limpio. NO uses formato JSON."""
                 input=prompt,
                 max_output_tokens=1200,
             ) as stream:
-                async for text in stream.text_stream:
-                    respuesta_acumulada += text
-                    yield f"data: {json.dumps({'tipo': 'chunk', 'texto': text})}\n\n"
+                async for event in stream:
+                    if event.type == "response.output_text.delta":
+                        text = event.delta
+                        respuesta_acumulada += text
+                        yield f"data: {json.dumps({'tipo': 'chunk', 'texto': text})}\n\n"
 
         except Exception as e:
             print(f"Error en OpenAI Async Stream: {e}")
