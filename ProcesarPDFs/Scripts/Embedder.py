@@ -152,10 +152,9 @@ Respondé SOLO con un JSON array de strings, sin texto adicional. Ejemplo:
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5-mini",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.0,
-            max_tokens=150,
+            max_completion_tokens=150,
             response_format={"type": "json_object"},
         )
         content = response.choices[0].message.content.strip()
@@ -194,28 +193,84 @@ Respondé SOLO con un JSON array de strings, sin texto adicional. Ejemplo:
         return etiquetas_fallback
 
 
-def generar_resumen_con_gpt(texto_fragmento: str, art1: str, fecha: str, num_ord: str) -> str:
+def _construir_muestra_representativa(chunks: list, max_chars: int = 6000) -> str:
+    """
+    Para ordenanzas largas, construye una muestra representativa del texto
+    tomando el inicio, fragmentos del medio y el final.
+    """
+    texto_total = "\n\n".join(chunks)
+    if len(texto_total) <= max_chars:
+        return texto_total
+
+    n = len(chunks)
+    seleccionados = []
+
+    # Inicio (primeros 2)
+    seleccionados.extend(chunks[:2])
+
+    # Medio: muestreo equidistante
+    if n > 6:
+        paso = max(1, (n - 4) // 4)
+        for i in range(2, n - 2, paso):
+            seleccionados.append(chunks[i])
+    elif n > 4:
+        seleccionados.append(chunks[n // 2])
+
+    # Final (últimos 2)
+    if n > 2:
+        seleccionados.extend(chunks[-2:])
+
+    # Deduplicar manteniendo orden
+    vistos = set()
+    unicos = []
+    for c in seleccionados:
+        if id(c) not in vistos:
+            vistos.add(id(c))
+            unicos.append(c)
+
+    texto = "\n\n[...]\n\n".join(unicos)
+    if len(texto) > max_chars:
+        texto = texto[:max_chars] + "\n[...texto truncado...]"
+    return texto
+
+
+def generar_resumen_con_gpt(
+    texto_completo: str, fecha: str, num_ord: str, chunks_list: list = None
+) -> str:
     """
     Genera un resumen breve (2-3 oraciones) de una ordenanza usando GPT-4o-mini.
+    Para ordenanzas largas, usa muestreo representativo para cubrir todo el alcance.
     Costo: ~0.001 USD por ordenanza.
     """
+    if chunks_list and len(chunks_list) > 1:
+        texto_para_gpt = _construir_muestra_representativa(chunks_list)
+    else:
+        texto_para_gpt = texto_completo[:6000]
+
     prompt = f"""Sos un asistente legal municipal. Generá un resumen breve (2-3 oraciones) de la siguiente ordenanza municipal de Villa María, Córdoba.
 
-El resumen debe explicar de forma clara y concisa qué establece la ordenanza, para que un ciudadano común pueda entenderlo rápidamente. No uses lenguaje técnico innecesario.
+REGLAS:
+- El resumen debe describir el ALCANCE GENERAL de la ordenanza, no detalles específicos de un solo artículo.
+- Si la ordenanza regula múltiples temas (ej: tasas, tributos, servicios), mencioná los temas principales sin entrar en montos ni porcentajes específicos.
+- Si es una ordenanza tarifaria, decí que es tarifaria y mencioná qué tipos de tributos/tasas regula.
+- Explicá de forma clara y concisa para que un ciudadano común pueda entenderlo.
+- No incluyas montos, porcentajes ni valores numéricos específicos.
+- Máximo 3 oraciones.
 
 Ordenanza N°: {num_ord}
 Fecha de sanción: {fecha}
-Artículo 1°: {art1[:500] if art1 else "(no disponible)"}
-Fragmento del texto: {texto_fragmento[:1500]}
+Cantidad de artículos/secciones: ~{len(chunks_list) if chunks_list else 'desconocida'}
+
+Texto de la ordenanza (puede estar resumido por muestreo si es muy larga):
+{texto_para_gpt}
 
 Respondé SOLO con el texto del resumen, sin comillas ni formato adicional."""
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5-mini",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.3,
-            max_tokens=200,
+            max_completion_tokens=250,
         )
         resumen = response.choices[0].message.content.strip()
         if resumen.startswith('"') and resumen.endswith('"'):
@@ -819,12 +874,6 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
         texto_base, metadatos_base["Art N°1"], metadatos_base["fecha_sancion"]
     )
 
-    # Generar resumen breve con GPT
-    resumen = generar_resumen_con_gpt(
-        texto_base, metadatos_base["Art N°1"],
-        metadatos_base["fecha_sancion"], metadatos_base["numero_ordenanza"]
-    )
-
     fecha_iso = "desconocida"
     if metadatos_base["fecha_sancion"] != "desconocida":
         try:
@@ -837,6 +886,14 @@ def procesar_grupo_ordenanza(numero_ord, lista_archivos, carpeta_pdfs=CARPETA_PD
 
     # Chunks
     chunks_base = dividir_en_chunks_mejorado(texto_base)
+
+    # Generar resumen breve con GPT (después de chunking para usar muestreo representativo)
+    resumen = generar_resumen_con_gpt(
+        texto_base,
+        metadatos_base["fecha_sancion"],
+        metadatos_base["numero_ordenanza"],
+        chunks_base,
+    )
     total_chunks = len(chunks_base)
 
     # Metadatos por chunk

@@ -1,7 +1,6 @@
 import asyncio
 import json
 import os
-import re
 import threading
 import time
 from pathlib import Path
@@ -14,16 +13,19 @@ from pydantic import BaseModel
 
 from chat_engine import (
     MAX_DOCS_MOSTRADOS,
+    SIMILARITY_THRESHOLD,
     aclient,
     armar_contexto,
     buscar_similares,
+    chunks as engine_chunks,
     construir_pregunta_aclaratoria,
     detectar_tipo_pregunta,
-    detectar_zona_propiedad,
     ensure_index_loaded,
-    extraer_anios_de_texto,
     generar_embedding_local,
+    metadatos as engine_metadatos,
+    obtener_chunk_y_meta_seguro,
     preguntar_a_gpt,
+    rerank_con_llm,
     resolver_modalidad_pago_propiedad,
     resolver_pregunta_presupuesto,
     resolver_tarifaria_intenciones,
@@ -57,6 +59,15 @@ DATA_DIR = BASE_DIR / "Data"
 CONVERSATION_MEMORY = {}
 CONVERSATION_LOCK = threading.Lock()
 CONVERSATION_TTL = 3600  # 1 hora
+MAX_HISTORY = 10  # 5 intercambios (usuario + asistente)
+
+_FOLLOW_UP_INDICATORS = {
+    "eso", "esa", "ese", "esto", "esta", "este",
+    "lo mismo", "también", "tambien", "además", "ademas",
+    "y si", "pero", "entonces", "o sea",
+    "la misma", "el mismo", "de esa", "de ese", "sobre eso",
+    "me dijiste", "mencionaste", "hablamos", "dijiste",
+}
 
 
 def _cleanup_stale_conversations():
@@ -64,7 +75,8 @@ def _cleanup_stale_conversations():
     now = time.time()
     with CONVERSATION_LOCK:
         stale = [
-            k for k, v in CONVERSATION_MEMORY.items()
+            k
+            for k, v in CONVERSATION_MEMORY.items()
             if now - v.get("_last_access", 0) > CONVERSATION_TTL
         ]
         for k in stale:
@@ -134,55 +146,119 @@ def _get_memory_state(conversation_id: str) -> dict:
         return state
 
 
-def _aplicar_memoria_pregunta(pregunta: str, state: dict) -> str:
+def _parece_follow_up(pregunta: str) -> bool:
+    """Heurística rápida: ¿parece continuación de conversación anterior?"""
+    words = pregunta.strip().split()
+    if len(words) <= 3:
+        return True  # Muy corta, casi seguro follow-up
+    p_lower = pregunta.lower()
+    # Preguntas de 4-6 palabras: solo follow-up si tienen pronombres/referencias
+    if len(words) <= 6:
+        pronombres = {
+            "esa", "ese", "esta", "este", "lo", "la", "las", "los",
+            "su", "sus", "el mismo", "la misma", "ahí", "eso", "esto",
+            "dicha", "dicho", "mencionada", "mencionado",
+        }
+        if any(p in p_lower for p in pronombres):
+            return True
+        # También si tiene indicadores explícitos de follow-up
+        return any(ind in p_lower for ind in _FOLLOW_UP_INDICATORS)
+    return any(ind in p_lower for ind in _FOLLOW_UP_INDICATORS)
+
+
+async def _reformular_si_follow_up(
+    pregunta: str, historial: list, last_ordinances: list | None = None
+) -> str:
     """
-    Si hay una aclaración pendiente y el usuario responde corto (ej: 'Zona 7'),
-    reconstruye una pregunta completa para retrieval + respuesta.
+    Si hay historial y la pregunta parece follow-up, usa GPT para reformularla
+    como pregunta completa e independiente para retrieval.
     """
-    if not state:
+    if not historial or not _parece_follow_up(pregunta):
         return pregunta
 
-    pending_topic = state.get("pending_topic")
-    last_topic = state.get("last_topic")
-    if pending_topic != "tasa_propiedad" and last_topic != "tasa_propiedad":
-        return pregunta
+    hist_text = "\n".join(
+        f"{'Usuario' if m['role'] == 'user' else 'Asistente'}: {m['content'][:400]}"
+        for m in historial
+    )
 
-    zona = detectar_zona_propiedad(pregunta)
-    if zona is None:
-        return pregunta
+    ctx_ords = ""
+    if last_ordinances:
+        ctx_ords = f"\nOrdenanzas discutidas previamente: {', '.join(last_ordinances)}"
 
-    anio = state.get("year", "2025")
-    return f"¿Cuánto tengo que pagar de tasa anual por mi propiedad en zona {zona} para el año {anio}?"
+    try:
+        response = await aclient.responses.create(
+            model="gpt-5-mini",
+            input=f"""Historial de conversación:
+{hist_text}
+{ctx_ords}
+
+Pregunta actual del usuario: "{pregunta}"
+
+Si la pregunta actual es una continuación o se refiere al historial, reformulala como una pregunta completa e independiente que incluya todo el contexto necesario para buscar en una base de datos. Incluí números de ordenanza si aplica.
+Si la pregunta actual es sobre un tema NUEVO y no tiene relación con el historial, devolvela tal cual.
+
+Respondé SOLO con la pregunta reformulada, sin explicaciones ni comillas.""",
+            max_output_tokens=150,
+            timeout=8,
+        )
+        reformulada = response.output_text.strip()
+        if reformulada and len(reformulada) > 3:
+            if reformulada != pregunta:
+                print(f"  Reformulada: '{pregunta}' -> '{reformulada}'")
+            return reformulada
+    except Exception as e:
+        print(f"Error en reformulacion: {e}")
+
+    return pregunta
+
+
+def _formatear_historial(historial: list) -> str:
+    """Formatea el historial para inyectar en prompts de GPT."""
+    if not historial:
+        return ""
+    lines = []
+    for m in historial:
+        rol = "Usuario" if m["role"] == "user" else "Asistente"
+        lines.append(f"{rol}: {m['content'][:600]}")
+    return "\n".join(lines)
 
 
 def _actualizar_memoria(
-    conversation_id: str, pregunta_usuario: str, respuesta_texto: str
+    conversation_id: str,
+    pregunta_usuario: str,
+    respuesta_texto: str,
+    ordenanzas_citadas=None,
 ):
     state = _get_memory_state(conversation_id)
-    respuesta_norm = re.sub(r"\s+", " ", (respuesta_texto or "").strip().lower())
-    pregunta_norm = re.sub(r"\s+", " ", (pregunta_usuario or "").strip().lower())
+    history = state.setdefault("history", [])
+    history.append({"role": "user", "content": pregunta_usuario})
+    history.append({"role": "assistant", "content": (respuesta_texto or "")[:1500]})
+    if len(history) > MAX_HISTORY:
+        state["history"] = history[-MAX_HISTORY:]
+    # Guardar últimas ordenanzas citadas para boost en follow-ups
+    if ordenanzas_citadas:
+        state["last_ordinances"] = list(ordenanzas_citadas)[:10]
 
-    # Recordar ultimo tema aunque no quede pendiente una aclaracion.
-    if "tasa" in pregunta_norm and (
-        "propiedad" in pregunta_norm or "inmueble" in pregunta_norm
-    ):
-        state["last_topic"] = "tasa_propiedad"
 
-    if (
-        "en qué zona está tu propiedad" in respuesta_norm
-        or "en que zona esta tu propiedad" in respuesta_norm
-    ):
-        state["pending_topic"] = "tasa_propiedad"
-        anios = extraer_anios_de_texto(pregunta_usuario)
-        state["year"] = anios[0] if anios else "2025"
-        return
-
-    # Si la respuesta ya resolvió una consulta de zona, limpiar pendiente.
-    if (
-        state.get("pending_topic") == "tasa_propiedad"
-        and detectar_zona_propiedad(pregunta_usuario) is not None
-    ):
-        state.pop("pending_topic", None)
+def _boost_ordenanzas_previas(resultados: list, last_ords: list) -> list:
+    """Si es follow-up, asegura que chunks de ordenanzas previas estén en resultados."""
+    ords_en_resultados = {r.get("numero_ordenanza") for r in resultados}
+    faltantes = [o for o in last_ords if o not in ords_en_resultados]
+    if not faltantes:
+        return resultados
+    from chat_engine import normalizar_numero
+    for num_ord in faltantes[:3]:
+        num_norm = normalizar_numero(num_ord)
+        chunks_agregados = 0
+        for i, meta in enumerate(engine_metadatos):
+            if normalizar_numero(meta.get("numero_ordenanza", "")) == num_norm:
+                chunk, _ = obtener_chunk_y_meta_seguro(i)
+                if chunk:
+                    resultados.append({"chunk_texto": chunk, **meta})
+                    chunks_agregados += 1
+                    if chunks_agregados >= 3:
+                        break
+    return resultados
 
 
 NO_RESULT_MESSAGE = (
@@ -190,21 +266,22 @@ NO_RESULT_MESSAGE = (
     "Intentá reformular la pregunta con términos más específicos, "
     "o indicar el número de ordenanza si lo conocés."
 )
-MIN_COSINE_FOR_GPT = 0.38
-
-
 def _resultados_son_relevantes(resultados: list) -> bool:
     """Verifica si los resultados tienen calidad suficiente para enviar a GPT."""
     if not resultados:
         return False
     for r in resultados:
-        if r.get("score_semantico", 0) >= MIN_COSINE_FOR_GPT:
+        if r.get("score_semantico", 0) >= SIMILARITY_THRESHOLD:
             return True
         if r.get("coincidencias_textuales", 0) >= 2:
             return True
         # Resultados de CASO 1 (búsqueda directa por número de ordenanza)
         # no tienen scores pero son coincidencias exactas → siempre relevantes
-        if r.get("numero_ordenanza") and "score_semantico" not in r and "coincidencias_textuales" not in r:
+        if (
+            r.get("numero_ordenanza")
+            and "score_semantico" not in r
+            and "coincidencias_textuales" not in r
+        ):
             return True
     return False
 
@@ -272,7 +349,11 @@ async def ask_question(q: Question):
 
     conversation_id = _get_or_create_conversation_id(q.conversation_id)
     state = _get_memory_state(conversation_id)
-    pregunta_efectiva = _aplicar_memoria_pregunta(q.pregunta, state)
+    historial = state.get("history", [])
+    last_ords = state.get("last_ordinances", [])
+    pregunta_efectiva = await _reformular_si_follow_up(
+        q.pregunta, historial, last_ords
+    )
 
     loop = asyncio.get_event_loop()
     resultados = await loop.run_in_executor(None, buscar_similares, pregunta_efectiva)
@@ -281,7 +362,7 @@ async def ask_question(q: Question):
         _actualizar_memoria(conversation_id, q.pregunta, NO_RESULT_MESSAGE)
         return Answer(respuesta=NO_RESULT_MESSAGE, documentos=[])
 
-    # Intentar resolvers determinísticos primero (Consistencia con streaming)
+    # Intentar resolvers determinísticos primero (antes del rerank)
     resultado_resolver = await loop.run_in_executor(
         None, _intentar_resolver_deterministico, pregunta_efectiva, resultados
     )
@@ -290,17 +371,29 @@ async def ask_question(q: Question):
         respuesta_texto = resultado_resolver["respuesta"]
         ordenanzas_citadas = set(resultado_resolver.get("ordenanzas_citadas", []))
         documentos_info = construir_documentos_info(resultados, ordenanzas_citadas)
-        _actualizar_memoria(conversation_id, q.pregunta, respuesta_texto)
+        _actualizar_memoria(
+            conversation_id, q.pregunta, respuesta_texto, ordenanzas_citadas
+        )
         return Answer(respuesta=respuesta_texto, documentos=documentos_info)
 
+    # LLM Reranking: GPT filtra los chunks más relevantes antes de generar
+    resultados = await rerank_con_llm(pregunta_efectiva, resultados, top_n=7)
+
+    # Boost DESPUÉS del rerank: así no se eliminan los chunks inyectados
+    if last_ords and _parece_follow_up(q.pregunta):
+        resultados = _boost_ordenanzas_previas(resultados, last_ords)
+
     contexto = armar_contexto(resultados)
-    resultado_gpt = await loop.run_in_executor(
-        None, preguntar_a_gpt, pregunta_efectiva, contexto, resultados
+    historial_texto = _formatear_historial(historial)
+    resultado_gpt = await preguntar_a_gpt(
+        pregunta_efectiva, contexto, resultados, historial_texto
     )
     respuesta_texto = resultado_gpt["respuesta"]
     ordenanzas_citadas = set(resultado_gpt.get("ordenanzas_citadas", []))
     documentos_info = construir_documentos_info(resultados, ordenanzas_citadas)
-    _actualizar_memoria(conversation_id, q.pregunta, respuesta_texto)
+    _actualizar_memoria(
+        conversation_id, q.pregunta, respuesta_texto, ordenanzas_citadas
+    )
 
     return Answer(respuesta=respuesta_texto, documentos=documentos_info)
 
@@ -321,7 +414,11 @@ async def ask_question_stream(q: Question):
     async def generate():
         conversation_id = _get_or_create_conversation_id(q.conversation_id)
         state = _get_memory_state(conversation_id)
-        pregunta_efectiva = _aplicar_memoria_pregunta(q.pregunta, state)
+        historial = state.get("history", [])
+        last_ords = state.get("last_ordinances", [])
+        pregunta_efectiva = await _reformular_si_follow_up(
+            q.pregunta, historial, last_ords
+        )
 
         loop = asyncio.get_event_loop()
         resultados = await loop.run_in_executor(
@@ -350,10 +447,12 @@ async def ask_question_stream(q: Question):
         )
 
         if resultado_resolver:
-            # ⚡ Resolver respondió — streaming simulado char-a-char
+            # Resolver respondió — streaming simulado char-a-char
             respuesta_texto = resultado_resolver.get("respuesta", "")
             ordenanzas_citadas = set(resultado_resolver.get("ordenanzas_citadas", []))
-            _actualizar_memoria(conversation_id, q.pregunta, respuesta_texto)
+            _actualizar_memoria(
+                conversation_id, q.pregunta, respuesta_texto, ordenanzas_citadas
+            )
 
             # Reenviar documentos filtrados
             if ordenanzas_citadas:
@@ -372,7 +471,13 @@ async def ask_question_stream(q: Question):
             yield "data: [DONE]\n\n"
             return
 
-        # 3. Sin resolver → Streaming real de OpenAI
+        # 3. Sin resolver → LLM Reranking + Streaming real de OpenAI
+        resultados = await rerank_con_llm(pregunta_efectiva, resultados, top_n=7)
+
+        # Boost DESPUÉS del rerank: así no se eliminan los chunks inyectados
+        if last_ords and _parece_follow_up(q.pregunta):
+            resultados = _boost_ordenanzas_previas(resultados, last_ords)
+
         contexto = armar_contexto(resultados)
 
         # Calcular números disponibles para el prompt
@@ -389,13 +494,15 @@ async def ask_question_stream(q: Question):
             ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
         )
         tipo_pregunta = detectar_tipo_pregunta(pregunta_efectiva)
+        historial_texto = _formatear_historial(historial)
+        seccion_historial = f"\nHISTORIAL DE CONVERSACIÓN (para contexto de follow-ups):\n{historial_texto}\n" if historial_texto else ""
 
         if tipo_pregunta == "numero_especifico":
             prompt = f"""Eres el Digesto Digital de Villa María. El usuario quiere saber de qué trata la ordenanza N° {pregunta_efectiva}.
 
 Usando SOLO la información del contexto, escribe un resumen claro y conciso.
 Comienza tu respuesta con "La Ordenanza N° {pregunta_efectiva}" y describe su contenido principal.
-
+{seccion_historial}
 Contexto:
 {contexto}
 
@@ -408,7 +515,7 @@ REGLAS ESTRICTAS:
 2. NUNCA inventes números de ordenanza. Solo podés citar estas ordenanzas: {lista_nums}. Si la respuesta no está en el contexto, decilo claramente.
 3. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas Markdown. Si es una pregunta simple, responde en 1-2 oraciones.
 4. El Intendente Municipal actual (2025) es Eduardo Luis Accastello. No menciones intendentes de gestiones anteriores como actuales.
-
+{seccion_historial}
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
 
@@ -417,22 +524,16 @@ Pregunta: {pregunta_efectiva}
 Responde directamente en Markdown limpio. NO uses formato JSON."""
 
         respuesta_acumulada = ""
-        citas_extraidas = []
 
         try:
-            stream = await aclient.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.0,
-                max_tokens=600,
-                stream=True,
-            )
-
-            async for chunk in stream:
-                delta = chunk.choices[0].delta.content
-                if delta is not None:
-                    respuesta_acumulada += delta
-                    yield f"data: {json.dumps({'tipo': 'chunk', 'texto': delta})}\n\n"
+            async with aclient.responses.stream(
+                model="gpt-5-mini",
+                input=prompt,
+                max_output_tokens=1200,
+            ) as stream:
+                async for text in stream.text_stream:
+                    respuesta_acumulada += text
+                    yield f"data: {json.dumps({'tipo': 'chunk', 'texto': text})}\n\n"
 
         except Exception as e:
             print(f"Error en OpenAI Async Stream: {e}")
@@ -443,12 +544,16 @@ Responde directamente en Markdown limpio. NO uses formato JSON."""
             respuesta_acumulada = error_msg
 
         # Actualizar memoria y reenviar documentos con citas
-        _actualizar_memoria(conversation_id, q.pregunta, respuesta_acumulada)
-
-        # Intentar extraer citas del texto
+        citas_extraidas = []
         for n in numeros_disponibles:
             if n in respuesta_acumulada:
                 citas_extraidas.append(n)
+        _actualizar_memoria(
+            conversation_id,
+            q.pregunta,
+            respuesta_acumulada,
+            set(citas_extraidas) if citas_extraidas else None,
+        )
 
         if citas_extraidas:
             docs_filtrados = construir_documentos_info(resultados, set(citas_extraidas))

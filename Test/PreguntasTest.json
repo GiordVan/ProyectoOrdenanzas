@@ -15,7 +15,8 @@
             "dificultad": "baja",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 2,
@@ -27,7 +28,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 3,
@@ -39,7 +41,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 4,
@@ -51,7 +54,8 @@
             "dificultad": "baja",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 5,
@@ -63,7 +67,8 @@
             "dificultad": "baja",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "precision"
+            "tipo_test": "precision",
+            "repregunta": null
         },
         {
             "id": 6,
@@ -75,7 +80,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 7,
@@ -87,7 +93,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 8,
@@ -99,7 +106,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 9,
@@ -111,7 +119,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 10,
@@ -123,7 +132,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 11,
@@ -135,7 +145,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 12,
@@ -147,7 +158,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 13,
@@ -159,7 +171,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 14,
@@ -171,7 +184,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 15,
@@ -183,7 +197,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 16,
@@ -193,7 +208,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "No se especifica qué tasa ni ejercicio fiscal",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "La tasa de servicios a la propiedad, para zona 5"
         },
         {
             "id": 17,
@@ -203,7 +219,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "No se especifica infracción ni ordenanza",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Por ejemplo, por estacionar en lugar prohibido"
         },
         {
             "id": 18,
@@ -213,7 +230,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "No se especifica tipo de actividad comercial",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Es un local gastronómico"
         },
         {
             "id": 19,
@@ -223,7 +241,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de zonificación específica",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "En la zona céntrica de Villa María"
         },
         {
             "id": 20,
@@ -233,7 +252,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de zona y normativa aplicable",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "En zona residencial"
         },
         {
             "id": 21,
@@ -243,7 +263,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Nombre sin contexto",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Quiero saber en qué ordenanzas aparece mencionado"
         },
         {
             "id": 22,
@@ -253,7 +274,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Nombre sin contexto",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "¿En qué ordenanzas se lo menciona?"
         },
         {
             "id": 23,
@@ -265,7 +287,8 @@
             "dificultad": "alta",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "multi_norma"
+            "tipo_test": "multi_norma",
+            "repregunta": null
         },
         {
             "id": 24,
@@ -277,7 +300,8 @@
             "dificultad": "alta",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "multi_norma"
+            "tipo_test": "multi_norma",
+            "repregunta": null
         },
         {
             "id": 25,
@@ -289,7 +313,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 26,
@@ -299,7 +324,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de valuación y categoría",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Zona 5"
         },
         {
             "id": 27,
@@ -309,7 +335,8 @@
             "dificultad": "media",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "No se especifica tributo",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "La tasa de servicios a la propiedad"
         },
         {
             "id": 28,
@@ -319,7 +346,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de requisitos normativos específicos",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Para la tasa de servicios a la propiedad"
         },
         {
             "id": 29,
@@ -329,7 +357,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de tipo de sepultura",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Una tumba individual"
         },
         {
             "id": 30,
@@ -339,7 +368,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 31,
@@ -351,7 +381,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 32,
@@ -361,7 +392,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Un comercio gastronómico"
         },
         {
             "id": 33,
@@ -371,7 +403,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de cobertura y normativa",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "El servicio de SAMU, necesito una ambulancia con médico"
         },
         {
             "id": 34,
@@ -381,7 +414,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de transporte",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Camiones de transporte de carga"
         },
         {
             "id": 35,
@@ -391,7 +425,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de evento",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Para un recital o evento musical"
         },
         {
             "id": 36,
@@ -401,7 +436,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 37,
@@ -411,7 +447,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de infracción y días de guarda",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Un auto particular, estuvo 3 días en el depósito"
         },
         {
             "id": 38,
@@ -421,7 +458,8 @@
             "dificultad": "media",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Sigla sin contexto específico",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "En el contexto de la ordenanza tarifaria"
         },
         {
             "id": 39,
@@ -433,7 +471,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de aeronave",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Una avioneta privada monomotor"
         },
         {
             "id": 40,
@@ -445,7 +484,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 41,
@@ -457,7 +497,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 42,
@@ -469,7 +510,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 43,
@@ -481,7 +523,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 44,
@@ -493,7 +536,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 45,
@@ -505,7 +549,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "precision"
+            "tipo_test": "precision",
+            "repregunta": null
         },
         {
             "id": 46,
@@ -517,7 +562,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "precision"
+            "tipo_test": "precision",
+            "repregunta": null
         },
         {
             "id": 47,
@@ -529,7 +575,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 48,
@@ -541,7 +588,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 49,
@@ -553,7 +601,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 50,
@@ -565,7 +614,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "precision"
+            "tipo_test": "precision",
+            "repregunta": null
         },
         {
             "id": 51,
@@ -575,7 +625,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Nombre propio sin contexto",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "¿En qué ordenanzas aparece?"
         },
         {
             "id": 52,
@@ -585,7 +636,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Nombre propio sin contexto",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "¿En qué ordenanzas se lo menciona?"
         },
         {
             "id": 53,
@@ -597,7 +649,8 @@
             "dificultad": "alta",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "multi_norma"
+            "tipo_test": "multi_norma",
+            "repregunta": null
         },
         {
             "id": 54,
@@ -609,7 +662,8 @@
             "dificultad": "alta",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "multi_norma"
+            "tipo_test": "multi_norma",
+            "repregunta": null
         },
         {
             "id": 55,
@@ -621,7 +675,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 56,
@@ -631,7 +686,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de valuación fiscal y categoría",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Zona 7"
         },
         {
             "id": 57,
@@ -641,7 +697,8 @@
             "dificultad": "media",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "No se especifica tributo",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "La tasa de servicios a la propiedad"
         },
         {
             "id": 58,
@@ -651,7 +708,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de requisitos normativos específicos",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Para el servicio de agua"
         },
         {
             "id": 59,
@@ -661,7 +719,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de sepultura y período",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Un panteón familiar"
         },
         {
             "id": 60,
@@ -671,7 +730,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 61,
@@ -683,7 +743,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 62,
@@ -693,7 +754,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del rubro y categoría fiscal",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Un kiosco"
         },
         {
             "id": 63,
@@ -703,7 +765,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de cobertura o convenio",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Necesito una ambulancia con médico"
         },
         {
             "id": 64,
@@ -713,7 +776,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de transporte",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Transporte interurbano de pasajeros"
         },
         {
             "id": 65,
@@ -723,7 +787,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de evento",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Para un evento benéfico sin fines de lucro"
         },
         {
             "id": 66,
@@ -733,7 +798,8 @@
             "dificultad": "media",
             "requiere_repregunta": false,
             "motivo_ambiguedad": null,
-            "tipo_test": "grounding"
+            "tipo_test": "grounding",
+            "repregunta": null
         },
         {
             "id": 67,
@@ -743,7 +809,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende de infracción y días de guarda",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Es un auto particular"
         },
         {
             "id": 68,
@@ -753,7 +820,8 @@
             "dificultad": "media",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Sigla sin contexto",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "En la ordenanza tarifaria"
         },
         {
             "id": 69,
@@ -765,7 +833,8 @@
             "dificultad": "alta",
             "requiere_repregunta": true,
             "motivo_ambiguedad": "Depende del tipo de aeronave",
-            "tipo_test": "ambiguedad"
+            "tipo_test": "ambiguedad",
+            "repregunta": "Un avión comercial pequeño"
         },
         {
             "id": 70,
@@ -776,6 +845,372 @@
             ],
             "dificultad": "media",
             "requiere_repregunta": false,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding",
+            "repregunta": null
+        },
+        {
+            "id": 71,
+            "pregunta": "¿Me dirías de manera breve de qué trata la ordenanza 8177?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [
+                "8177"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 72,
+            "pregunta": "Dame acuerdos donde se encuentra Marcos Bovo",
+            "categoria": "Búsqueda por persona",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "repregunta": "¿Me podés dar el último?",
+            "motivo_ambiguedad": "Puede haber múltiples acuerdos asociados a la persona",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 73,
+            "pregunta": "Hola, necesito todos los convenios del año 2024",
+            "categoria": "Búsqueda temporal",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 74,
+            "pregunta": "¿Qué finalidad tiene el convenio de la ordenanza 8058?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [
+                "8058"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 75,
+            "pregunta": "Dame ordenanzas que posean convenios que a la fecha estén vencidos",
+            "categoria": "Búsqueda normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 76,
+            "pregunta": "Ordenanza donde una de las partes es Toranzo",
+            "categoria": "Búsqueda por persona",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "repregunta": "¿Está vigente?",
+            "motivo_ambiguedad": "Puede haber múltiples ordenanzas donde participe la persona mencionada",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 77,
+            "pregunta": "¿Cuál es la última ordenanza subida?",
+            "categoria": "Identificación normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "precision"
+        },
+        {
+            "id": 78,
+            "pregunta": "Ordenanza con fecha 25 de junio de 2025",
+            "categoria": "Búsqueda por fecha",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 79,
+            "pregunta": "Información sobre Pablo Roque Agolanti",
+            "categoria": "Búsqueda por persona",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "repregunta": "¿En qué contexto o documento querés la información sobre esta persona?",
+            "motivo_ambiguedad": "Nombre propio sin contexto específico",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 80,
+            "pregunta": "¿Qué modificación introduce la Ordenanza 8097 respecto al tratamiento de residuos sólidos urbanos?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8097"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 81,
+            "pregunta": "¿Qué incentivo económico establece la Ordenanza 8097 para los residuos que ingresan correctamente separados al Centro de Gestión Ambiental?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8097"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 82,
+            "pregunta": "¿Qué dependencia municipal debe informar periódicamente sobre los ingresos de residuos según la Ordenanza 8097?",
+            "categoria": "Gestión ambiental",
+            "ordenanzas_referenciadas": [
+                "8097"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 83,
+            "pregunta": "¿Qué tipo de modificación introduce la Ordenanza 8096 sobre la Ordenanza Tarifaria Nº 8.011?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8096",
+                "8011"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 84,
+            "pregunta": "¿Qué valores se establecen para la reserva de espacios de estacionamiento en la vía pública según la Ordenanza 8096?",
+            "categoria": "Espacio público",
+            "ordenanzas_referenciadas": [
+                "8096"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 85,
+            "pregunta": "¿Desde qué fecha comienza a regir la Ordenanza Tarifaria correspondiente al año 2025?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8151"
+            ],
+            "dificultad": "baja",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 86,
+            "pregunta": "¿Qué regula la Ordenanza 8080 respecto al trabajo de una cooperativa vinculada a la gestión de residuos?",
+            "categoria": "Servicios públicos",
+            "ordenanzas_referenciadas": [
+                "8080"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 87,
+            "pregunta": "¿Qué mecanismo de control establece la Ordenanza 8082 para supervisar las tareas de la cooperativa?",
+            "categoria": "Control y fiscalización",
+            "ordenanzas_referenciadas": [
+                "8082"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 88,
+            "pregunta": "¿Qué sucede si una cooperativa incumple las obligaciones establecidas en la Ordenanza 8082?",
+            "categoria": "Control y fiscalización",
+            "ordenanzas_referenciadas": [
+                "8082"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 89,
+            "pregunta": "¿Qué convenio se ratifica mediante la Ordenanza 8081?",
+            "categoria": "Convenios",
+            "ordenanzas_referenciadas": [
+                "8081"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 90,
+            "pregunta": "¿Qué tipo de instituciones participan en el Consejo Consultivo que puede conformar el ENDEMUR?",
+            "categoria": "Organización institucional",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 91,
+            "pregunta": "¿Qué normativa debe aplicarse supletoriamente para el funcionamiento del ENDEMUR cuando la ordenanza no lo prevea expresamente?",
+            "categoria": "Interpretación normativa",
+            "ordenanzas_referenciadas": [
+                "8241"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 92,
+            "pregunta": "¿Cuánto cuesta ingresar residuos al Centro de Gestión Ambiental?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "repregunta": "¿Te referís a residuos separados o sin separar?",
+            "motivo_ambiguedad": "El valor depende de si los residuos ingresan separados o no",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 93,
+            "pregunta": "¿Qué cooperativa presta servicios vinculados a la gestión de residuos en el municipio?",
+            "categoria": "Servicios públicos",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "repregunta": "¿Querés saber sobre la cooperativa que opera el centro de reciclaje u otro servicio?",
+            "motivo_ambiguedad": "Existen varias cooperativas con convenios en distintas ordenanzas",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 94,
+            "pregunta": "Necesito la ordenanza que regula el reciclaje en la ciudad",
+            "categoria": "Búsqueda normativa",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "repregunta": "¿Buscás la que establece tarifas por residuos o la que regula el funcionamiento de la cooperativa?",
+            "motivo_ambiguedad": "Hay múltiples ordenanzas vinculadas a reciclaje y residuos",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 95,
+            "pregunta": "Ordenanza donde interviene la Cooperativa 7 de Febrero",
+            "categoria": "Búsqueda por organización",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": true,
+            "repregunta": "¿Querés el convenio ratificado o información sobre sus obligaciones?",
+            "motivo_ambiguedad": "Puede haber más de una norma que mencione a la cooperativa",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 96,
+            "pregunta": "¿Qué normas modifican artículos de la Ordenanza Tarifaria Nº 8.011?",
+            "categoria": "Relación entre normas",
+            "ordenanzas_referenciadas": [
+                "8011"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "multi_norma"
+        },
+        {
+            "id": 97,
+            "pregunta": "¿Qué trámites municipales tienen sellado previsto en la Ordenanza Tarifaria?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8151"
+            ],
+            "dificultad": "alta",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 98,
+            "pregunta": "¿Cuál es el valor del carnet de manipulador de alimentos según la normativa tarifaria?",
+            "categoria": "Tasas y tarifarias",
+            "ordenanzas_referenciadas": [
+                "8011"
+            ],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
+            "motivo_ambiguedad": null,
+            "tipo_test": "grounding"
+        },
+        {
+            "id": 99,
+            "pregunta": "¿Cuánto cuesta el carnet de manipulador de alimentos?",
+            "categoria": "Tasas",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "alta",
+            "requiere_repregunta": true,
+            "repregunta": "¿Es para emisión inicial, evaluación o renovación?",
+            "motivo_ambiguedad": "Existen distintos valores según el tipo de trámite",
+            "tipo_test": "ambiguedad"
+        },
+        {
+            "id": 100,
+            "pregunta": "Normativa sobre el Museo Municipal Malvinas",
+            "categoria": "Búsqueda temática",
+            "ordenanzas_referenciadas": [],
+            "dificultad": "media",
+            "requiere_repregunta": false,
+            "repregunta": null,
             "motivo_ambiguedad": null,
             "tipo_test": "grounding"
         }

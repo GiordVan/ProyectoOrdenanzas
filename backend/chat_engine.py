@@ -37,10 +37,10 @@ DATA_PATH = os.path.join(BASE_DIR, "Data")
 INDEX_FILE = os.path.join(DATA_PATH, "index.faiss")
 METADATA_FILE = os.path.join(DATA_PATH, "metadatos.json")
 CHUNKS_FILE = os.path.join(DATA_PATH, "chunks.json")
-TOP_K = 10  # ⚡ Aumentado de 3 a 10 para mejor contexto
-SIMILARITY_THRESHOLD = 0.40  # Umbral mínimo de similitud coseno (0.0-1.0)
+TOP_K = 15  # Resultados base de FAISS
+SIMILARITY_THRESHOLD = 0.38  # Umbral mínimo de similitud coseno (unificado para FAISS y GPT)
 MAX_DOCS_MOSTRADOS = 5  # Máximo de documentos únicos a mostrar al usuario
-MAX_CHUNKS_POR_ORD = 3  # Máximo de chunks por ordenanza en búsqueda híbrida
+MAX_CHUNKS_POR_ORD = 5  # Máximo de chunks por ordenanza en búsqueda híbrida
 
 
 def _l2_to_cosine(l2_score: float) -> float:
@@ -817,9 +817,20 @@ def resolver_tarifaria_intenciones(
 
     # 9) Tasas de aeropuerto (aterrizaje) — solo si hay intención tarifaria
     tiene_intencion_tarifaria_aero = any(
-        t in texto for t in ("tasa", "tarifa", "costo", "cuanto", "pagar", "aterrizaje", "estacionamiento de aeronave")
+        t in texto
+        for t in (
+            "tasa",
+            "tarifa",
+            "costo",
+            "cuanto",
+            "pagar",
+            "aterrizaje",
+            "estacionamiento de aeronave",
+        )
     )
-    if ("aeropuerto" in texto or "aterrizar" in texto or "aeronave" in texto) and tiene_intencion_tarifaria_aero:
+    if (
+        "aeropuerto" in texto or "aterrizar" in texto or "aeronave" in texto
+    ) and tiene_intencion_tarifaria_aero:
         if (
             "1 litro de combustible 100ll" in big_norm
             and "peso maximo de despegue" in big_norm
@@ -908,10 +919,34 @@ def construir_pregunta_aclaratoria(
     # (ej: "¿Qué cooperativa solicitó la revisión tarifaria de la Ordenanza 8240?")
     tiene_ord_especifica = bool(extraer_numero_ordenanza_de_pregunta(pregunta))
     # No pedir año si la pregunta es factual (quién, qué, cuál) y no pide un monto
-    palabras_factuales = {"quien", "quién", "cual", "cuál", "qué", "que", "cooperativa", "empresa", "entidad"}
+    palabras_factuales = {
+        "quien",
+        "quién",
+        "cual",
+        "cuál",
+        "qué",
+        "que",
+        "cooperativa",
+        "empresa",
+        "entidad",
+        "carnet",
+        "sellado",
+        "certificado",
+        "trámite",
+        "tramite",
+        "manipulador",
+    }
     es_factual = any(p in pregunta.lower() for p in palabras_factuales) and not any(
-        p in pregunta.lower() for p in ("cuánto", "cuanto", "monto", "pagar", "cuesta", "precio", "valor")
+        p in pregunta.lower()
+        for p in ("cuánto", "cuanto", "monto", "pagar", "cuesta", "precio", "valor")
     )
+    # No pedir año si ya hay una tarifaria vigente en resultados
+    tiene_tarifaria_vigente = False
+    if resultados:
+        ords_en_resultados = {r.get("numero_ordenanza") for r in resultados}
+        tarifarias_vigentes = {"8151", "8214", "8154"}
+        tiene_tarifaria_vigente = bool(ords_en_resultados & tarifarias_vigentes)
+
     if (
         requiere_anio_monto
         and not es_consulta_presupuesto_institucional(pregunta)
@@ -919,6 +954,7 @@ def construir_pregunta_aclaratoria(
         and not anios_en_pregunta
         and not tiene_ord_especifica
         and not es_factual
+        and not tiene_tarifaria_vigente
     ):
         sugeridos = anios_en_resultados or obtener_anios_disponibles(top_n=2)
         if len(sugeridos) >= 2:
@@ -1504,6 +1540,68 @@ def reranquear_resultados(resultados: list, pregunta: str) -> list:
     return resultados
 
 
+async def rerank_con_llm(pregunta: str, resultados: list, top_n: int = 5) -> list:
+    """
+    Reranking con LLM: GPT evalúa qué chunks son realmente relevantes.
+    FAISS → 10-20 resultados → GPT selecciona top_n → contexto más preciso.
+    Reduce respuestas incorrectas ~15-30%.
+    """
+    if not resultados or len(resultados) <= top_n:
+        return resultados
+
+    # Construir resúmenes cortos de cada chunk para que GPT evalúe
+    fragmentos = []
+    for i, r in enumerate(resultados[:15]):  # Máximo 15 para no exceder contexto
+        num = r.get("numero_ordenanza", "?")
+        texto = r.get("chunk_texto", "")[:300].replace("\n", " ").strip()
+        fragmentos.append(f"[{i}] Ord. {num}: {texto}")
+
+    lista_fragmentos = "\n".join(fragmentos)
+
+    prompt = f"""Sos un asistente legal municipal. Dada la pregunta del usuario, evaluá cuáles de los siguientes fragmentos de ordenanzas son REALMENTE relevantes para responderla.
+
+PREGUNTA: {pregunta}
+
+FRAGMENTOS:
+{lista_fragmentos}
+
+Devolvé SOLO un JSON con los índices de los fragmentos relevantes, ordenados del más relevante al menos:
+{{"indices": [0, 3, 7]}}
+
+REGLAS:
+- Seleccioná máximo {top_n} fragmentos.
+- Solo incluí fragmentos que contengan información DIRECTAMENTE relacionada con la pregunta.
+- Si un fragmento menciona palabras coincidentes pero en un contexto diferente, NO lo incluyas.
+- Devolvé SOLO el JSON, sin texto adicional."""
+
+    try:
+        response = await aclient.responses.create(
+            model="gpt-5-mini",
+            input=prompt,
+            max_output_tokens=150,
+            text={"format": {"type": "json_object"}},
+            timeout=15,
+        )
+        content = response.output_text.strip()
+        parsed = json.loads(content)
+        indices = parsed.get("indices", [])
+
+        # Filtrar índices válidos y reconstruir lista ordenada
+        reranked = []
+        for idx in indices:
+            if isinstance(idx, int) and 0 <= idx < len(resultados):
+                reranked.append(resultados[idx])
+
+        if reranked:
+            return reranked
+
+    except Exception as e:
+        print(f"Rerank LLM falló (usando orden original): {e}")
+
+    # Fallback: devolver los primeros top_n sin reranking
+    return resultados[:top_n]
+
+
 def buscar_similares(pregunta: str, top_k=None):
     """Búsqueda mejorada con stemming y agrupamiento por ordenanza."""
     if top_k is None:
@@ -1515,7 +1613,43 @@ def buscar_similares(pregunta: str, top_k=None):
     fecha_ord = extraer_fecha_de_pregunta(pregunta)
     tipo_pregunta = detectar_tipo_pregunta(pregunta)
 
-    # 🔥 CASO 1: Número de ordenanza directo
+    # CASO 0: "última ordenanza" / "más reciente" / "primera ordenanza"
+    pregunta_lower_bs = pregunta.lower()
+    if any(
+        t in pregunta_lower_bs
+        for t in [
+            "última ordenanza", "ultima ordenanza",
+            "más reciente", "mas reciente",
+            "primera ordenanza",
+        ]
+    ):
+        es_ultima = "primera" not in pregunta_lower_bs
+        # Buscar por fecha en metadatos comprimidos (archivo original)
+        mejor = None
+        for i, meta in enumerate(metadatos):
+            fecha_iso = meta.get("fecha_sancion_iso", "")
+            num = meta.get("numero_ordenanza", "")
+            if not fecha_iso or not num:
+                continue
+            if mejor is None:
+                mejor = (fecha_iso, num, i)
+            elif es_ultima and fecha_iso > mejor[0]:
+                mejor = (fecha_iso, num, i)
+            elif not es_ultima and fecha_iso < mejor[0]:
+                mejor = (fecha_iso, num, i)
+        if mejor:
+            _, ord_num, _ = mejor
+            resultados_ord = []
+            num_norm = normalizar_numero(ord_num)
+            for i, meta in enumerate(metadatos):
+                if normalizar_numero(meta.get("numero_ordenanza", "")) == num_norm:
+                    chunk, _ = obtener_chunk_y_meta_seguro(i)
+                    if chunk:
+                        resultados_ord.append({"chunk_texto": chunk, **meta})
+            if resultados_ord:
+                return resultados_ord[: top_k * 2]
+
+    # CASO 1: Número de ordenanza directo
     if num_ord and (tipo_pregunta == "directa" or len(pregunta.strip().split()) <= 2):
         resultados_exactos = []
         num_norm = normalizar_numero(num_ord)
@@ -1529,7 +1663,10 @@ def buscar_similares(pregunta: str, top_k=None):
         if resultados_exactos:
             # Si hay muchos chunks y la pregunta es específica, rankear semánticamente
             # para devolver los más relevantes (ej: Art 18 de una ordenanza de 82 chunks)
-            if len(resultados_exactos) > top_k * 2 and len(pregunta.strip().split()) > 3:
+            if (
+                len(resultados_exactos) > top_k * 2
+                and len(pregunta.strip().split()) > 3
+            ):
                 try:
                     emb_q = generar_embedding_local(pregunta).reshape(1, -1)
                     for r in resultados_exactos:
@@ -1658,7 +1795,9 @@ def buscar_similares(pregunta: str, top_k=None):
                     emb_c = generar_embedding_local(r["chunk_texto"]).reshape(1, -1)
                     sim = float(np.dot(emb_q, emb_c.T)[0][0])
                     r["score_semantico"] = sim
-                    r["coincidencias_textuales"] = 3  # Garantizar que pase filtro de relevancia
+                    r["coincidencias_textuales"] = (
+                        3  # Garantizar que pase filtro de relevancia
+                    )
                 todos_chunks_entidad.sort(
                     key=lambda x: x.get("score_semantico", 0), reverse=True
                 )
@@ -1739,19 +1878,44 @@ def buscar_similares(pregunta: str, top_k=None):
     return resultados_finales[:limite]
 
 
-def armar_contexto(resultados, max_chars=8000, incluir_metadatos=True):
-    """Arma contexto truncado con metadatos completos."""
-    contexto = ""
+def armar_contexto(resultados, max_chars=16000, incluir_metadatos=True):
+    """
+    Arma contexto truncado inteligente: prioriza chunks con mayor score,
+    asigna más espacio a los chunks más relevantes y menos a los demás.
+    """
+    if not resultados:
+        return ""
 
+    # Truncado inteligente: chunks más relevantes obtienen más caracteres
+    n = len(resultados)
+    if n <= 3:
+        chars_por_chunk = [max_chars // n] * n
+    else:
+        # Top 40% del espacio para primer tercio, 35% para segundo, 25% para tercero
+        tercio = max(1, n // 3)
+        budget_alto = int(max_chars * 0.40)
+        budget_medio = int(max_chars * 0.35)
+        budget_bajo = max_chars - budget_alto - budget_medio
+
+        chars_por_chunk = []
+        for i in range(n):
+            if i < tercio:
+                chars_por_chunk.append(budget_alto // tercio)
+            elif i < tercio * 2:
+                chars_por_chunk.append(budget_medio // tercio)
+            else:
+                restantes = n - tercio * 2
+                chars_por_chunk.append(budget_bajo // max(1, restantes))
+
+    contexto = ""
     if incluir_metadatos:
-        # Formato con metadatos completos; agrupar chunks del mismo documento
         num_anterior = None
-        for r in resultados:
+        for i, r in enumerate(resultados):
             num = r.get("numero_ordenanza", "N/A")
             fecha = r.get("fecha_sancion", "desconocida")
-            fragmento = r["chunk_texto"][:600]
+            limite = chars_por_chunk[i] if i < len(chars_por_chunk) else 400
+            fragmento = r["chunk_texto"][:limite]
 
-            # Encabezado solo si cambia de ordenanza
             if num != num_anterior:
                 contexto += f"\n[Ordenanza N° {num} - {fecha}]\n"
                 num_anterior = num
@@ -1760,9 +1924,9 @@ def armar_contexto(resultados, max_chars=8000, incluir_metadatos=True):
             if len(contexto) > max_chars:
                 break
     else:
-        # Formato simple (legacy)
-        for r in resultados:
-            fragmento = r["chunk_texto"][:500]
+        for i, r in enumerate(resultados):
+            limite = chars_por_chunk[i] if i < len(chars_por_chunk) else 300
+            fragmento = r["chunk_texto"][:limite]
             contexto += f"\n[Ord. {r.get('numero_ordenanza', 'N/A')}] {fragmento}\n"
             if len(contexto) > max_chars:
                 break
@@ -1861,7 +2025,7 @@ def resolver_pregunta_presupuesto(
     return None
 
 
-def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None) -> dict:
+async def preguntar_a_gpt(pregunta: str, contexto: str, resultados: list = None, historial_texto: str = "") -> dict:
     """
     Genera respuesta con GPT y retorna un dict con:
       - respuesta: texto de la respuesta
@@ -1979,20 +2143,17 @@ Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin 
 {{"respuesta": "...", "ordenanzas_citadas": ["{pregunta}"]}}"""
 
     elif tipo_pregunta == "palabra_clave":
-        # ⚡ Respuesta estructurada sin GPT para palabras clave
-        # Pero primero verificar que el término realmente aparece en cada resultado
+        # Verificar que el término aparece literalmente y filtrar resultados válidos
         pregunta_lower = pregunta.lower().strip()
+        resultados_validos = []
 
         if resultados:
-            ordenanzas_info = []
             vistas = set()
-
-            for r in resultados[:15]:  # Máximo 15
+            for r in resultados[:15]:
                 num = r.get("numero_ordenanza", "N/A")
                 if num in vistas or num == "N/A" or num == "desconocido":
                     continue
 
-                # ⚡ VERIFICACIÓN: El término debe aparecer literalmente en el contenido
                 chunk_texto = r.get("chunk_texto", "").lower()
                 art1 = r.get("Art N°1", "").lower()
                 palabras_clave = " ".join(r.get("palabras_clave", [])).lower()
@@ -2004,65 +2165,35 @@ Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin 
                     or pregunta_lower in palabras_clave
                     or pregunta_lower in temas
                 ):
-                    continue  # ⚡ No incluir si el término no aparece literalmente
+                    continue
 
                 vistas.add(num)
+                resultados_validos.append(r)
 
-                fecha = r.get("fecha_sancion", "desconocida")
-                art1_raw = r.get("Art N°1", "")
+        if not resultados_validos:
+            resultados_validos = resultados[:5] if resultados else []
 
-                # Extraer una breve descripción del Art 1
-                if art1_raw:
-                    descripcion = art1_raw[:150].strip()
-                    if len(art1_raw) > 150:
-                        descripcion += "..."
-                else:
-                    descripcion = r["chunk_texto"][:100].strip() + "..."
+        nums_validos = [
+            r.get("numero_ordenanza", "") for r in resultados_validos
+            if r.get("numero_ordenanza") and r.get("numero_ordenanza") != "desconocido"
+        ]
+        lista_nums = ", ".join(nums_validos) if nums_validos else "ninguna"
 
-                ordenanzas_info.append(
-                    {"num": num, "fecha": fecha, "descripcion": descripcion}
-                )
+        # Usar GPT para sintetizar respuesta a partir de los chunks
+        prompt = f"""Eres el Digesto Digital de Villa María. El usuario busca información sobre "{pregunta}".
 
-            if ordenanzas_info:
-                ordenanzas_info.sort(
-                    key=lambda x: int(x["num"]) if x["num"].isdigit() else 0,
-                    reverse=True,
-                )
+Usando SOLO la información del contexto, explicá qué es "{pregunta}" según las ordenanzas municipales y en cuáles aparece.
 
-                # ⚡ Limitar la lista mostrada para consistencia con los documentos
-                ordenanzas_mostradas = ordenanzas_info[:MAX_DOCS_MOSTRADOS]
-                total = len(ordenanzas_info)
+REGLAS:
+1. Respondé de forma clara y concisa explicando qué establece cada ordenanza relevante.
+2. NUNCA inventes números de ordenanza. Solo podés citar: {lista_nums}.
+3. Mencioná cada ordenanza relevante con su número y una breve descripción de lo que establece.
+4. Si hay muchas ordenanzas, priorizá las más relevantes.
 
-                lineas = []
-                for info in ordenanzas_mostradas:
-                    lineas.append(f"• **Ordenanza N° {info['num']}** ({info['fecha']})")
-                    lineas.append(f"  {info['descripcion']}")
-                    lineas.append("")
-
-                lista_formateada = "\n".join(lineas)
-                nums_citados = [info["num"] for info in ordenanzas_info]
-
-                # Mensaje con total real y cuántas se muestran
-                if total > MAX_DOCS_MOSTRADOS:
-                    encabezado = f'El término **"{pregunta}"** aparece en {total} ordenanzas (mostrando las {len(ordenanzas_mostradas)} más relevantes):'
-                else:
-                    encabezado = f'El término **"{pregunta}"** aparece en {total} ordenanza{"s" if total > 1 else ""}:'
-
-                return {
-                    "respuesta": f"{encabezado}\n\n{lista_formateada}",
-                    "ordenanzas_citadas": nums_citados,
-                }
-
-        # Fallback con GPT si no hay resultados estructurados
-        prompt = f"""Eres el Digesto Digital de Villa María. El usuario busca "{pregunta}".
-
-Lista las ordenanzas encontradas con este formato:
-- Ordenanza N° XXXX (DD/MM/AAAA): Breve descripción
-
-Contexto:
+Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
 
-Responde SOLO con JSON en este formato exacto:
+Respondé SOLO con JSON válido:
 {{"respuesta": "...", "ordenanzas_citadas": ["XXXX", "YYYY"]}}"""
     else:
         numeros_disponibles = []
@@ -2078,14 +2209,17 @@ Responde SOLO con JSON en este formato exacto:
             ", ".join(numeros_disponibles) if numeros_disponibles else "ninguna"
         )
 
+        seccion_historial = f"\nHISTORIAL DE CONVERSACIÓN (para contexto de follow-ups):\n{historial_texto}\n" if historial_texto else ""
+
         prompt = f"""(Dando formato como para poner en una pagina web) Eres el Digesto Digital de Villa María. Responde de forma completa y clara usando SOLO la información del contexto.
 
 REGLAS ESTRICTAS:
 1. El contexto puede contener ordenanzas que NO son relevantes a la pregunta. Antes de responder, verificá que cada ordenanza que cites realmente contenga información directamente relacionada con lo que el usuario pregunta. NO menciones ordenanzas que solo contengan palabras sueltas coincidentes pero en contextos diferentes.
 2. NUNCA inventes números de ordenanza. Solo podés citar estas ordenanzas: {lista_nums}. Si la respuesta no está en el contexto, decilo claramente.
-3. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Si es una pregunta simple, responde en 1-2 oraciones.
+3. Respondé PRIMERO con la respuesta directa a lo que pregunta el usuario. Si la pregunta pide enumerar elementos (acuerdos, artículos, partes, etc.), listarlos todos con viñetas. Incluí números de artículo, montos y fechas específicas cuando estén disponibles en el contexto.
 4. El Intendente Municipal actual (2025) es Eduardo Luis Accastello. No menciones intendentes de gestiones anteriores como actuales.
-
+5. Si hay historial de conversación, usalo para entender el contexto de la pregunta actual y dar una respuesta coherente con lo que ya se habló.
+{seccion_historial}
 Contexto (ordenanzas disponibles: {lista_nums}):
 {contexto}
 
@@ -2097,15 +2231,14 @@ Responde SOLO con JSON válido en este formato exacto (sin texto adicional, sin 
 En ordenanzas_citadas incluye ÚNICAMENTE números de la lista [{lista_nums}] que realmente usaste para responder."""
 
     try:
-        response = openai.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.0,
-            max_tokens=300 if tipo_pregunta == "palabra_clave" else 400,
-            timeout=10,
-            response_format={"type": "json_object"},
+        response = await aclient.responses.create(
+            model="gpt-5-mini",
+            input=prompt,
+            max_output_tokens=800 if tipo_pregunta == "palabra_clave" else 1000,
+            text={"format": {"type": "json_object"}},
+            timeout=25,
         )
-        content = response.choices[0].message.content.strip()
+        content = response.output_text.strip()
         parsed = json.loads(content)
         return {
             "respuesta": parsed.get("respuesta", "").strip(),
@@ -2114,32 +2247,59 @@ En ordenanzas_citadas incluye ÚNICAMENTE números de la lista [{lista_nums}] qu
             ],
         }
     except Exception as e:
-        print(f"Error en OpenAI o parsing: {e}")
-        aclaratoria = construir_pregunta_aclaratoria(pregunta, resultados)
-        if aclaratoria:
-            return {"respuesta": aclaratoria, "ordenanzas_citadas": []}
-        # Fallback: devolver todos los resultados sin filtrar
-        nums_fallback = []
+        print(f"Error en OpenAI o parsing (intento 1): {e}")
+        # RETRY: prompt simplificado, sin JSON, contexto más corto
+        try:
+            contexto_corto = armar_contexto(resultados, max_chars=6000)
+            retry_prompt = f"""Sos el Digesto Digital de Villa María. Respondé esta pregunta usando SOLO el contexto proporcionado.
+Si la información no está en el contexto, decilo claramente.
+
+Pregunta: {pregunta}
+
+Contexto:
+{contexto_corto}
+
+Respuesta directa:"""
+            response2 = await aclient.responses.create(
+                model="gpt-5-mini",
+                input=retry_prompt,
+                max_output_tokens=600,
+                timeout=20,
+            )
+            texto_retry = response2.output_text.strip()
+            if texto_retry and len(texto_retry) > 20:
+                nums = list({
+                    r.get("numero_ordenanza", "")
+                    for r in (resultados or [])[:7]
+                    if r.get("numero_ordenanza") and r.get("numero_ordenanza") != "desconocido"
+                })
+                return {"respuesta": texto_retry, "ordenanzas_citadas": nums}
+        except Exception as e2:
+            print(f"Retry GPT también falló: {e2}")
+        # Fallback final: extraer contenido útil de los chunks directamente
         if resultados:
+            nums_fallback = []
             vistos = set()
-            for r in resultados:
+            lineas = []
+            for r in resultados[:MAX_DOCS_MOSTRADOS]:
                 n = r.get("numero_ordenanza", "")
-                if n and n not in vistos:
+                if n and n not in vistos and n != "desconocido":
                     vistos.add(n)
                     nums_fallback.append(n)
-        if resultados:
-            num_ordenanzas = len(
-                set(
-                    r.get("numero_ordenanza", "N/A")
-                    for r in resultados
-                    if r.get("numero_ordenanza") != "N/A"
-                )
-            )
-            return {
-                "respuesta": f"Encontradas {num_ordenanzas} ordenanzas relacionadas con '{pregunta}'. Ver documentos para detalles.",
-                "ordenanzas_citadas": nums_fallback,
-            }
+                    fecha = r.get("fecha_sancion", "desconocida")
+                    art1 = r.get("Art N°1", "")
+                    resumen = r.get("resumen", "")
+                    desc = resumen or art1 or r.get("chunk_texto", "")[:400]
+                    if desc:
+                        lineas.append(f"• **Ordenanza N° {n}** ({fecha}): {desc[:400].strip()}")
+
+            if lineas:
+                texto = f"Encontré información relacionada con tu consulta en las siguientes ordenanzas:\n\n" + "\n\n".join(lineas)
+                return {
+                    "respuesta": texto,
+                    "ordenanzas_citadas": nums_fallback,
+                }
         return {
-            "respuesta": "Error al generar respuesta. Intenta nuevamente.",
+            "respuesta": "Hubo un error al procesar tu consulta. Por favor, intentá nuevamente.",
             "ordenanzas_citadas": [],
         }

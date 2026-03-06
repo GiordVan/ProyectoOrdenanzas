@@ -63,6 +63,10 @@ def detecta_repregunta(respuesta):
         "necesito más información",
         "podrías aclarar",
         "puede indicar",
+        "en qué zona",
+        "qué tipo",
+        "qué tasa",
+        "qué tributo",
     ]
 
     repregunta_detectada = False
@@ -111,11 +115,21 @@ def main():
 
         print(f"Procesando pregunta {item['id']}...")
 
+        # Usar el mismo conversation_id para pregunta + repregunta
         conversation_id = str(uuid.uuid4())
 
         respuesta = hacer_pregunta(item["pregunta"], conversation_id)
 
         repregunto, texto_repregunta = detecta_repregunta(respuesta)
+
+        # Si la pregunta tiene repregunta definida, enviarla con el MISMO conversation_id
+        respuesta_repregunta = None
+        if item.get("requiere_repregunta") and item.get("repregunta"):
+            print(f"  → Enviando repregunta: {item['repregunta'][:60]}...")
+            time.sleep(0.5)  # Pausa breve antes de la repregunta
+            respuesta_repregunta = hacer_pregunta(
+                item["repregunta"], conversation_id
+            )
 
         resultado = {
             "id": item["id"],
@@ -129,6 +143,14 @@ def main():
             "respuesta_modelo": respuesta,
             "repregunto": repregunto,
             "texto_repregunta": texto_repregunta,
+            # Campos de repregunta/follow-up
+            "repregunta_enviada": item.get("repregunta"),
+            "respuesta_repregunta": respuesta_repregunta,
+            "calidad_respuesta_repregunta": (
+                evaluar_placeholder(respuesta_repregunta)
+                if respuesta_repregunta
+                else None
+            ),
             # Placeholder – luego lo ajustamos manualmente
             "calidad_respuesta": evaluar_placeholder(respuesta),
         }
@@ -143,8 +165,13 @@ def main():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=4, ensure_ascii=False)
 
-    print("\nEvaluación terminada.")
-    print(f"Archivo generado: {OUTPUT_FILE}")
+    # Resumen final
+    total = len(resultados)
+    con_repregunta = sum(1 for r in resultados if r["respuesta_repregunta"])
+    print(f"\nEvaluación terminada.")
+    print(f"  Total preguntas: {total}")
+    print(f"  Con repregunta enviada: {con_repregunta}")
+    print(f"  Archivo generado: {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":

@@ -27,27 +27,89 @@ CARPETA_DATA = os.path.join(
 )
 
 
-def generar_resumen_con_gpt(texto_fragmento: str, art1: str, fecha: str, num_ord: str) -> str:
+def _construir_muestra_representativa(chunks: list[str], max_chars: int = 6000) -> str:
+    """
+    Para ordenanzas largas, construye una muestra representativa del texto
+    tomando el inicio, fragmentos del medio y el final, para que GPT
+    entienda el alcance completo de la ordenanza.
+    """
+    texto_total = "\n\n".join(chunks)
+    if len(texto_total) <= max_chars:
+        return texto_total
+
+    n = len(chunks)
+    # Estrategia: primeros 2 chunks + 1 cada N del medio + últimos 2 chunks
+    seleccionados = []
+
+    # Inicio (primeros 2)
+    seleccionados.extend(chunks[:2])
+
+    # Medio: muestreo equidistante
+    if n > 6:
+        paso = max(1, (n - 4) // 4)  # ~4 muestras del medio
+        for i in range(2, n - 2, paso):
+            seleccionados.append(chunks[i])
+    elif n > 4:
+        seleccionados.append(chunks[n // 2])
+
+    # Final (últimos 2)
+    if n > 2:
+        seleccionados.extend(chunks[-2:])
+
+    # Deduplicar manteniendo orden
+    vistos = set()
+    unicos = []
+    for c in seleccionados:
+        if id(c) not in vistos:
+            vistos.add(id(c))
+            unicos.append(c)
+
+    texto = "\n\n[...]\n\n".join(unicos)
+
+    # Si aún excede, truncar
+    if len(texto) > max_chars:
+        texto = texto[:max_chars] + "\n[...texto truncado...]"
+
+    return texto
+
+
+def generar_resumen_con_gpt(
+    texto_completo: str, fecha: str, num_ord: str, chunks: list[str] | None = None
+) -> str:
     """
     Genera un resumen breve (2-3 oraciones) de una ordenanza usando GPT-4o-mini.
+    Para ordenanzas largas, usa muestreo representativo para cubrir todo el alcance.
     """
+    # Si tenemos chunks individuales, usar muestreo representativo
+    if chunks and len(chunks) > 1:
+        texto_para_gpt = _construir_muestra_representativa(chunks)
+    else:
+        texto_para_gpt = texto_completo[:6000]
+
     prompt = f"""Sos un asistente legal municipal. Generá un resumen breve (2-3 oraciones) de la siguiente ordenanza municipal de Villa María, Córdoba.
 
-El resumen debe explicar de forma clara y concisa qué establece la ordenanza, para que un ciudadano común pueda entenderlo rápidamente. No uses lenguaje técnico innecesario.
+REGLAS:
+- El resumen debe describir el ALCANCE GENERAL de la ordenanza, no detalles específicos de un solo artículo.
+- Si la ordenanza regula múltiples temas (ej: tasas, tributos, servicios), mencioná los temas principales sin entrar en montos ni porcentajes específicos.
+- Si es una ordenanza tarifaria, decí que es tarifaria y mencioná qué tipos de tributos/tasas regula.
+- Explicá de forma clara y concisa para que un ciudadano común pueda entenderlo.
+- No incluyas montos, porcentajes ni valores numéricos específicos.
+- Máximo 3 oraciones.
 
 Ordenanza N°: {num_ord}
 Fecha de sanción: {fecha}
-Artículo 1°: {art1[:500] if art1 else "(no disponible)"}
-Fragmento del texto: {texto_fragmento[:1500]}
+Cantidad de artículos/secciones: ~{len(chunks) if chunks else 'desconocida'}
+
+Texto de la ordenanza (puede estar resumido por muestreo si es muy larga):
+{texto_para_gpt}
 
 Respondé SOLO con el texto del resumen, sin comillas ni formato adicional."""
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5-mini",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.3,
-            max_tokens=200,
+            max_completion_tokens=250,
         )
         resumen = response.choices[0].message.content.strip()
         # Limpiar comillas envolventes si las hay
@@ -61,6 +123,10 @@ Respondé SOLO con el texto del resumen, sin comillas ni formato adicional."""
 
 
 def main():
+    force = "--force" in sys.argv
+    if force:
+        print("  Modo --force: regenerando TODOS los resumenes\n")
+
     metadatos_path = os.path.join(CARPETA_DATA, "metadatos.json")
     chunks_path = os.path.join(CARPETA_DATA, "chunks.json")
 
@@ -81,23 +147,24 @@ def main():
 
     total = len(metadatos_comprimidos)
     ya_tienen = sum(1 for m in metadatos_comprimidos if m.get("resumen"))
-    print(f"  Generando resumenes para {total} ordenanzas ({ya_tienen} ya tienen resumen)...\n")
+    print(
+        f"  Generando resumenes para {total} ordenanzas ({ya_tienen} ya tienen resumen)...\n"
+    )
 
     modificados = 0
     errores = 0
 
     for idx, meta in enumerate(metadatos_comprimidos, 1):
         num_ord = meta.get("numero_ordenanza", "?")
-        art1 = meta.get("Art N\u00b01", "")
         fecha = meta.get("fecha_sancion", "desconocida")
 
-        # Si ya tiene resumen, saltar
-        if meta.get("resumen") and len(meta["resumen"].strip()) > 10:
+        # Si ya tiene resumen, saltar (pasar --force para regenerar todos)
+        if not force and meta.get("resumen") and len(meta["resumen"].strip()) > 10:
             print(f"  [{idx}/{total}] Ord. {num_ord}: ya tiene resumen, saltando")
             continue
 
-        # Obtener fragmento de texto del primer chunk de esta ordenanza
-        texto_fragmento = ""
+        # Obtener TODOS los chunks de la ordenanza
+        chunks_ord = []
         chunk_indices = meta.get("chunk_indices", [])
         if chunk_indices and chunks:
             # Calcular offset global del primer chunk de esta ordenanza
@@ -105,18 +172,24 @@ def main():
             for prev_meta in metadatos_comprimidos[: idx - 1]:
                 global_offset += len(prev_meta.get("chunk_indices", [0]))
 
-            # Tomar primer chunk y segundo si existe (para mas contexto)
-            fragmentos = []
-            for i in range(min(2, len(chunk_indices))):
+            # Tomar TODOS los chunks de esta ordenanza
+            for i in range(len(chunk_indices)):
                 ci = global_offset + i
                 if ci < len(chunks):
-                    fragmentos.append(chunks[ci])
-            texto_fragmento = " ".join(fragmentos)
+                    chunks_ord.append(chunks[ci])
 
-        print(f"  [{idx}/{total}] Ord. {num_ord}...", end=" ", flush=True)
+        texto_completo = "\n\n".join(chunks_ord)
+
+        print(
+            f"  [{idx}/{total}] Ord. {num_ord} ({len(chunks_ord)} chunks)...",
+            end=" ",
+            flush=True,
+        )
 
         try:
-            resumen = generar_resumen_con_gpt(texto_fragmento, art1, fecha, num_ord)
+            resumen = generar_resumen_con_gpt(
+                texto_completo, fecha, num_ord, chunks_ord
+            )
             if resumen:
                 meta["resumen"] = resumen
                 modificados += 1
@@ -134,6 +207,7 @@ def main():
     backup_path = metadatos_path + ".backup_resumen"
     if not os.path.exists(backup_path):
         import shutil
+
         shutil.copy2(metadatos_path, backup_path)
         print(f"\n  Backup guardado en {backup_path}")
 
