@@ -33,3 +33,4 @@ Este proyecto es un sistema de búsqueda y consulta de ordenanzas basado en **RA
 - `/frontend`: Aplicación cliente en React.
 - `/backend`: API server y motor de búsqueda.
 - `/ProcesarPDFs`: Scripts para cargar ordenanzas y generar el índice vectorial.
+- `/Test`: Json con 100 preguntas para testear el asistente IA y su respectivo Script.
