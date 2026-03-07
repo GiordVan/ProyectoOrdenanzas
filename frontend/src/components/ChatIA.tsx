@@ -26,6 +26,7 @@ interface Mensaje {
   texto: string;
   documentos?: Documento[];
   cargando?: boolean;
+  estadoCarga?: "buscando" | "pensando";
 }
 
 interface ChatIAProps {
@@ -84,7 +85,12 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
     const idxAsistente = mensajes.length + 1;
     setMensajes((prev) => [
       ...prev,
-      { rol: "asistente", texto: "", cargando: true },
+      {
+        rol: "asistente",
+        texto: "",
+        cargando: true,
+        estadoCarga: "buscando",
+      },
     ]);
 
     try {
@@ -132,6 +138,16 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                   };
                   return updated;
                 });
+              } else if (parsed.tipo === "estado") {
+                setMensajes((prev) => {
+                  const updated = [...prev];
+                  updated[idxAsistente] = {
+                    ...updated[idxAsistente],
+                    estadoCarga:
+                      parsed.estado === "pensando" ? "pensando" : "buscando",
+                  };
+                  return updated;
+                });
               } else if (parsed.tipo === "chunk") {
                 respuestaTexto += parsed.texto;
                 // Actualizar texto progresivamente con cada chunk y quitar indicador de carga
@@ -140,7 +156,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                   updated[idxAsistente] = {
                     ...updated[idxAsistente],
                     texto: respuestaTexto,
-                    cargando: false
+                    cargando: false,
                   };
                   return updated;
                 });
@@ -160,6 +176,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
           texto: respuestaTexto || "No pude generar una respuesta.",
           documentos: docsRecibidos,
           cargando: false,
+          estadoCarga: undefined,
         };
         return updated;
       });
@@ -171,6 +188,7 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
           rol: "asistente",
           texto: "Hubo un problema al buscar. Intenta nuevamente.",
           cargando: false,
+          estadoCarga: undefined,
         };
         return updated;
       });
@@ -292,7 +310,9 @@ function ChatIA({ abierto, onCerrar }: ChatIAProps) {
                         <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
                         <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                       </div>
-                      <span className="text-sm text-gray-400">Buscando...</span>
+                      <span className="text-sm text-gray-400">
+                        {msg.estadoCarga === "pensando" ? "Pensando..." : "Buscando..."}
+                      </span>
                     </div>
                   ) : (
                     <>

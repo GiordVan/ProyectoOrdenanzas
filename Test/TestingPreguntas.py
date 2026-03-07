@@ -33,18 +33,26 @@ def hacer_pregunta(pregunta, conversation_id):
 
     try:
         response = requests.post(API_URL, json=payload, timeout=TIMEOUT)
-        respuesta_completa = ""
-
         if response.status_code == 200:
             data = response.json()
-            respuesta_completa = data.get("respuesta", "")
+            return {
+                "respuesta": data.get("respuesta", "").strip(),
+                "escalado": bool(data.get("escalado", False)),
+                "modelo_usado": data.get("modelo_usado"),
+            }
         else:
-            respuesta_completa = f"ERROR {response.status_code}: {response.text}"
-
-        return respuesta_completa.strip()
+            return {
+                "respuesta": f"ERROR {response.status_code}: {response.text}",
+                "escalado": False,
+                "modelo_usado": None,
+            }
 
     except Exception as e:
-        return f"ERROR EXCEPCION: {str(e)}"
+        return {
+            "respuesta": f"ERROR EXCEPCION: {str(e)}",
+            "escalado": False,
+            "modelo_usado": None,
+        }
 
 
 def detecta_repregunta(respuesta):
@@ -118,18 +126,21 @@ def main():
         # Usar el mismo conversation_id para pregunta + repregunta
         conversation_id = str(uuid.uuid4())
 
-        respuesta = hacer_pregunta(item["pregunta"], conversation_id)
+        resultado_pregunta = hacer_pregunta(item["pregunta"], conversation_id)
+        respuesta = resultado_pregunta["respuesta"]
 
         repregunto, texto_repregunta = detecta_repregunta(respuesta)
 
         # Si la pregunta tiene repregunta definida, enviarla con el MISMO conversation_id
         respuesta_repregunta = None
+        resultado_repregunta = None
         if item.get("requiere_repregunta") and item.get("repregunta"):
             print(f"  → Enviando repregunta: {item['repregunta'][:60]}...")
             time.sleep(0.5)  # Pausa breve antes de la repregunta
-            respuesta_repregunta = hacer_pregunta(
+            resultado_repregunta = hacer_pregunta(
                 item["repregunta"], conversation_id
             )
+            respuesta_repregunta = resultado_repregunta["respuesta"]
 
         resultado = {
             "id": item["id"],
@@ -141,11 +152,21 @@ def main():
             "motivo_ambiguedad": item.get("motivo_ambiguedad"),
             "tipo_test": item.get("tipo_test", "grounding"),
             "respuesta_modelo": respuesta,
+            "escalado": resultado_pregunta["escalado"],
+            "modelo_usado": resultado_pregunta["modelo_usado"],
             "repregunto": repregunto,
             "texto_repregunta": texto_repregunta,
             # Campos de repregunta/follow-up
             "repregunta_enviada": item.get("repregunta"),
             "respuesta_repregunta": respuesta_repregunta,
+            "escalado_repregunta": (
+                resultado_repregunta["escalado"] if resultado_repregunta else None
+            ),
+            "modelo_usado_repregunta": (
+                resultado_repregunta["modelo_usado"] if resultado_repregunta else None
+            ),
+            "hubo_escalado": resultado_pregunta["escalado"]
+            or bool(resultado_repregunta and resultado_repregunta["escalado"]),
             "calidad_respuesta_repregunta": (
                 evaluar_placeholder(respuesta_repregunta)
                 if respuesta_repregunta
@@ -168,9 +189,15 @@ def main():
     # Resumen final
     total = len(resultados)
     con_repregunta = sum(1 for r in resultados if r["respuesta_repregunta"])
+    escaladas = sum(1 for r in resultados if r.get("escalado"))
+    escaladas_repregunta = sum(1 for r in resultados if r.get("escalado_repregunta"))
+    items_con_alguna_escalada = sum(1 for r in resultados if r.get("hubo_escalado"))
     print(f"\nEvaluación terminada.")
     print(f"  Total preguntas: {total}")
     print(f"  Con repregunta enviada: {con_repregunta}")
+    print(f"  Escaladas en pregunta principal: {escaladas}")
+    print(f"  Escaladas en repregunta: {escaladas_repregunta}")
+    print(f"  Items con alguna escalada: {items_con_alguna_escalada}")
     print(f"  Archivo generado: {OUTPUT_FILE}")
 
 

@@ -259,6 +259,15 @@ async def main():
                 "es_fallback": item.get("respuesta_modelo", "").startswith("Encontré información"),
                 "es_timeout": "ERROR EXCEPCION" in item.get("respuesta_modelo", ""),
                 "tiene_repregunta": item.get("repregunta_enviada") is not None,
+                "escalado": bool(item.get("escalado", False)),
+                "modelo_usado": item.get("modelo_usado"),
+                "escalado_repregunta": item.get("escalado_repregunta"),
+                "modelo_usado_repregunta": item.get("modelo_usado_repregunta"),
+                "hubo_escalado": bool(
+                    item.get("hubo_escalado")
+                    or item.get("escalado", False)
+                    or item.get("escalado_repregunta", False)
+                ),
                 "evaluacion": eval_result
             }
             resultados_analisis.append(resultado)
@@ -271,6 +280,20 @@ async def main():
     n_fallback = sum(1 for r in resultados_analisis if r["es_fallback"])
     n_timeout = sum(1 for r in resultados_analisis if r["es_timeout"])
     n_directa = total - n_fallback - n_timeout
+    n_escaladas = sum(1 for r in resultados_analisis if r.get("escalado"))
+    n_escaladas_repregunta = sum(
+        1 for r in resultados_analisis if r.get("escalado_repregunta")
+    )
+    n_items_con_alguna_escalada = sum(
+        1 for r in resultados_analisis if r.get("hubo_escalado")
+    )
+
+    modelos_usados = {}
+    for r in resultados_analisis:
+        for campo in ("modelo_usado", "modelo_usado_repregunta"):
+            modelo = r.get(campo)
+            if modelo:
+                modelos_usados[modelo] = modelos_usados.get(modelo, 0) + 1
 
     # Distribución de calidad
     muy_malos = sum(1 for s in scores if s < 30)
@@ -299,6 +322,10 @@ async def main():
         "n_fallback": n_fallback,
         "n_timeout": n_timeout,
         "n_directa": n_directa,
+        "n_escaladas": n_escaladas,
+        "n_escaladas_repregunta": n_escaladas_repregunta,
+        "n_items_con_alguna_escalada": n_items_con_alguna_escalada,
+        "modelos_usados": modelos_usados,
         "distribucion_calidad": {
             "muy_malos_0_29": muy_malos,
             "malos_30_49": malos,
@@ -330,6 +357,10 @@ async def main():
     print(f"Score mediana: {resumen['score_mediana']}/100")
     print(f"Score min/max: {resumen['score_min']}/{resumen['score_max']}")
     print(f"Directas: {n_directa} | Fallbacks: {n_fallback} | Timeouts: {n_timeout}")
+    print(
+        f"Escaladas: {n_escaladas} | Escaladas en repregunta: {n_escaladas_repregunta} | "
+        f"Items con alguna escalada: {n_items_con_alguna_escalada}"
+    )
     print(f"\nDistribución de calidad:")
     print(f"  Muy malos (0-29):    {muy_malos}")
     print(f"  Malos (30-49):       {malos}")
@@ -343,6 +374,11 @@ async def main():
         print(f"\nPenalizaciones más frecuentes:")
         for tipo, count in sorted(pen_counter.items(), key=lambda x: -x[1]):
             print(f"  {tipo}: {count}")
+
+    if modelos_usados:
+        print(f"\nModelos usados:")
+        for modelo, count in sorted(modelos_usados.items(), key=lambda x: (-x[1], x[0])):
+            print(f"  {modelo}: {count}")
 
     print(f"\nResultado guardado en: {OUTPUT_PATH}")
 
